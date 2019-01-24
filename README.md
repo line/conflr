@@ -29,9 +29,9 @@ open the file with `usethis::edit_r_environ()`).
 Markdown’s powerfulness allows you to execute arbitrary codes; be sure
 about what the code does before clicking “Post to Confluence”\!)
 
-![](./screenshot1.png)
+![](./man/figures/screenshot1.png)
 
-![](./screenshot2.png)
+![](./man/figures/screenshot2.png)
 
 ### 2\. Check the preview and click “Publish”
 
@@ -40,11 +40,11 @@ about what the code does before clicking “Post to Confluence”\!)
   - **Parent page ID**: (optional) page ID to which the new page will
     belong
 
-![](./screenshot3.png)
+![](./man/figures/screenshot3.png)
 
 ### 3\. Check the result
 
-![](./screenshot4.png)
+![](./man/figures/screenshot4.png)
 
 ## Usage in console
 

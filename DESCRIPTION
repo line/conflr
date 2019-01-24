@@ -1,0 +1,32 @@
+Package: conflr
+Type: Package
+Title: R Client for 'Confluence' API
+Version: 0.0.4.9003
+Authors@R: c(
+    person("Hiroaki", "Yutani", email = "hiroaki.yutani@linecorp.com", role = c("aut", "cre")),
+    person(family = "LINE Corporation", role = c("cph"))
+    )
+Description: Post R Markdown documents as 'Confluence' pages via its API.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    commonmark,
+    curl,
+    glue,
+    httr,
+    knitr,
+    miniUI,
+    purrr,
+    rmarkdown,
+    rstudioapi,
+    shiny,
+    stringi,
+    xml2
+Suggests: 
+    mockery,
+    testthat,
+    withr
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)

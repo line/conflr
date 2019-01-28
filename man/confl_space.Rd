@@ -4,7 +4,7 @@
 \alias{confl_space}
 \alias{confl_list_spaces}
 \alias{confl_get_space}
-\title{REST wrapper for the SpaceService.}
+\title{REST Wrapper for the SpaceService}
 \usage{
 confl_list_spaces(spaceKey = NULL, type = c("global", "personal"),
   status = c("current", "archived"), label = NULL, favourite = NULL,
@@ -31,5 +31,5 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 \item{limit}{The limit of the number of items to return, this may be restricted by fixed system limits.}
 }
 \description{
-REST wrapper for the SpaceService.
+REST Wrapper for the SpaceService
 }

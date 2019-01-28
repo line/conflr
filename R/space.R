@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 
-#' REST wrapper for the SpaceService.
+#' REST Wrapper for the SpaceService
 #'
 #' @name confl_space
 #' @param spaceKey

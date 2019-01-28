@@ -37,8 +37,6 @@ translate_to_confl_macro <- function(html_text) {
   # unescape texts inside CDATA
   html_text <- restore_cdata(html_text)
 
-  # TODO: as.character(xml2::)
-
   html_text
 }
 

@@ -7,7 +7,7 @@
 \alias{confl_post_page}
 \alias{confl_update_page}
 \alias{confl_delete_page}
-\title{REST wrapper for the ContentService}
+\title{REST Wrapper for the ContentService}
 \usage{
 confl_list_pages(type = c("page", "blogpost", "comment", "attachment"),
   limit = 10, start = 0, spaceKey = NULL, title = NULL,
@@ -31,7 +31,7 @@ confl_delete_page(id)
 
 \item{spaceKey}{The space key to find content under.}
 
-\item{title}{The title of the page to find. Required for `page`` type.}
+\item{title}{The title of the page to find. Required for \code{page} type.}
 
 \item{expand}{A comma separated list of properties to expand. To refer the nested
 contents, use periods. (e.g. \code{body.storage,history}).}
@@ -43,7 +43,7 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 \item{ancestors}{The page ID of the parent pages.}
 }
 \description{
-REST wrapper for the ContentService
+REST Wrapper for the ContentService
 }
 \seealso{
 \url{https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/}

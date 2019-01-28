@@ -6,7 +6,7 @@
 \alias{confl_post_attachment}
 \alias{confl_update_attachment_metadata}
 \alias{confl_update_attachment_data}
-\title{CRUD operations for Attachments on Content}
+\title{CRUD Operations for Attachments on Content}
 \usage{
 confl_list_attachments(id, filename = NULL, mediaType = NULL,
   start = 0, limit = 50, expand = NULL)
@@ -38,5 +38,5 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 \item{...}{Other arguments passed to 'query'.}
 }
 \description{
-CRUD operations for Attachments on Content
+CRUD Operations for Attachments on Content
 }

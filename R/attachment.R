@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 
-#' CRUD operations for Attachments on Content
+#' CRUD Operations for Attachments on Content
 #'
 #' @name confl_attachment
 #' @param id

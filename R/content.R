@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 
-#' REST wrapper for the ContentService
+#' REST Wrapper for the ContentService
 #'
 #' @name confl_content
 #' @param type
@@ -21,7 +21,7 @@
 #' @param spaceKey
 #'   The space key to find content under.
 #' @param title
-#'   The title of the page to find. Required for `page`` type.
+#'   The title of the page to find. Required for `page` type.
 #' @param expand
 #'   A comma separated list of properties to expand. To refer the nested
 #'   contents, use periods. (e.g. `body.storage,history`).

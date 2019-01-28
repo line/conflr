@@ -29,7 +29,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL) {
     stop(glue::glue("{basename(Rmd_file)} is not .Rmd file!"), call. = FALSE)
   }
 
-  # confirm the username and password is valid.
+  # confirm the username and password are valid.
   tryCatch(
     confl_get_current_user(),
     error = function(e) {
@@ -64,7 +64,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL) {
 }
 
 confl_addin_upload <- function(md_file, title, tags) {
-  # confl doesn't insert title in its content automatically
+  # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)
 
@@ -117,7 +117,7 @@ confl_addin_upload <- function(md_file, title, tags) {
   server <- function(input, output, session) {
     shiny::observeEvent(input$done, {
 
-      # check if there is existing pages
+      # check if there is an existing page
       existing_pages <- confl_list_pages(title = title, spaceKey = input$spaceKey)
       if (existing_pages$size == 0) {
         # if the page doesn't exist, create a blank page
@@ -147,7 +147,7 @@ confl_addin_upload <- function(md_file, title, tags) {
       # Step 1) Upload Images
       progress$set(message = "Checking the existing images...")
 
-      # Check if the image is already exists
+      # Check if the images already exist
       imgs_exist <- confl_list_attachments(id)
       imgs_exist_ids <- purrr::map_chr(imgs_exist$results, "id")
       names(imgs_exist_ids) <- purrr::map_chr(imgs_exist$results, "title")
@@ -170,7 +170,7 @@ confl_addin_upload <- function(md_file, title, tags) {
         progress$set(value = i / num_imgs)
       }
 
-      # Step 2) Upload Markdown
+      # Step 2) Upload the document
       progress$set(message = "Uploading the document...")
 
       result <- confl_update_page(

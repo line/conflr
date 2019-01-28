@@ -4,7 +4,7 @@
 \alias{confl_user}
 \alias{confl_get_user}
 \alias{confl_get_current_user}
-\title{Non-admin user operations}
+\title{Non-admin User Operations}
 \usage{
 confl_get_user(key = NULL, username = NULL, expand = NULL)
 
@@ -19,5 +19,5 @@ confl_get_current_user(expand = NULL)
 contents, use periods. (e.g. \code{body.storage,history}).}
 }
 \description{
-Non-admin user operations
+Non-admin User Operations
 }

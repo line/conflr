@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 
-#' Non-admin user operations
+#' Non-admin User Operations
 #'
 #' @name confl_user
 #' @param key

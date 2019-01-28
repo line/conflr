@@ -7,7 +7,7 @@
 confl_create_post_from_Rmd(Rmd_file = NULL)
 }
 \arguments{
-\item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the activedocument.}
+\item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the active document.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.

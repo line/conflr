@@ -13,7 +13,7 @@
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param Rmd_file path to a .Rmd file. If `NULL`, use the activedocument.
+#' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
 #'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file = NULL) {

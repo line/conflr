@@ -165,4 +165,13 @@ $$")
   <ac:plain-text-body><![CDATA[\n\\frac{1}{3}\n]]></ac:plain-text-body>
 </ac:structured-macro></p>'
   )
+
+  html_text <- commonmark::markdown_html(
+    "<p> $$\\frac{1}{3}$$ </p>")
+  expect_equal(
+    translate_to_confl_macro(html_text),
+    '<p><ac:structured-macro ac:name="mathblock">
+  <ac:plain-text-body><![CDATA[\\frac{1}{3}]]></ac:plain-text-body>
+</ac:structured-macro></p>'
+  )
 })

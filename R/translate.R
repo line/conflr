@@ -107,11 +107,17 @@ replace_inline_math <- function(x) {
 mark_math <- function(x) stringi::stri_replace_all_regex(x, "\\$\\$", "%2%D%O%L%L%A%R%")
 
 replace_math <- function(x) {
+  # matches:
+  #   1. %2%D%O%L%L%A%R%
+  #      ...
+  #      %2%D%O%L%L%A%R%
+  #
+  #   2. <p>%2%D%O%L%L%A%R%...%2%D%O%L%L%A%R%</p>
   x <- stringi::stri_replace_all_regex(
     x,
-    '^%2%D%O%L%L%A%R%(.*?)^%2%D%O%L%L%A%R%',
+    '(^|(?<=<p>))\\s*%2%D%O%L%L%A%R%(?<content>.*?)%2%D%O%L%L%A%R%\\s*($|(?=</p>))',
 '<ac:structured-macro ac:name="mathblock">
-  <ac:plain-text-body><![CDATA[$1]]></ac:plain-text-body>
+  <ac:plain-text-body><![CDATA[${content}]]></ac:plain-text-body>
 </ac:structured-macro>',
     multiline = TRUE,
     dotall = TRUE

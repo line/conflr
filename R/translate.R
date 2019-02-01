@@ -99,6 +99,9 @@ replace_inline_math <- function(x) {
 </ac:structured-macro>',
     dotall = TRUE
   )
+  # restore dollars that doesn't have pairs
+  x <- stringi::stri_replace_all_fixed(x, "%1%D%O%L%L%A%R%", "$")
+  x
 }
 
 mark_math <- function(x) stringi::stri_replace_all_regex(x, "\\$\\$", "%2%D%O%L%L%A%R%")
@@ -113,6 +116,7 @@ replace_math <- function(x) {
     multiline = TRUE,
     dotall = TRUE
   )
+  # restore dollars that doesn't have pairs
   x <- stringi::stri_replace_all_fixed(x, "%2%D%O%L%L%A%R%", "$$")
   x
 }

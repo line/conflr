@@ -68,6 +68,11 @@ test_that("replace_inline_math() works", {
   <ac:parameter ac:name=\"body\">0.3333\\cdots</ac:parameter>
 </ac:structured-macro>"
   )
+
+  # unpaired
+  x <- mark_inline_math("$100")
+  expect_equal(x, "%1%D%O%L%L%A%R%100")
+  expect_equal(replace_inline_math(x), "$100")
 })
 
 test_that("Unrelated $s are left as is", {

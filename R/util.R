@@ -22,13 +22,15 @@ confl_verb <- function(verb, path, ...) {
   base_url <- Sys.getenv("CONFLUENCE_URL") %|""|% ask_confluence_url()
   # remove trailing /
   base_url <- stringi::stri_replace_last_regex(base_url, "/$", "")
+  # remove /rest/api
+  base_url <- stringi::stri_replace_last_regex(base_url, "/rest/api$", "")
 
   username <- Sys.getenv("CONFLUENCE_USERNAME") %|""|% ask_confluence_username()
   password <- Sys.getenv("CONFLUENCE_PASSWORD") %|""|% ask_confluence_password()
 
   res <- httr::VERB(
     verb = verb,
-    url  = glue::glue("{base_url}{path}"),
+    url  = glue::glue("{base_url}/rest/api{path}"),
     httr::authenticate(username, password),
     ...
   )

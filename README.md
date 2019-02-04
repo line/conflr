@@ -22,7 +22,7 @@ devtools::install_github("line/conflr")
 Set `CONFLUENCE_URL` to the Confluence endpoint in `.Renviron` (you can
 open the file with `usethis::edit_r_environ()`).
 
-    CONFLUENCE_URL=https://confluence.example.com/rest/api
+    CONFLUENCE_URL=https://confluence.example.com
 
 ## Usage
 

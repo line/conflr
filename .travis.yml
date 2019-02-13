@@ -2,7 +2,9 @@
 
 language: R
 sudo: false
+latex: false
 cache: packages
+dist: xenial
 
 matrix:
   include:

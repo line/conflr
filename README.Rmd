@@ -21,13 +21,16 @@ conflr is an R package to post [R Markdown](https://rmarkdown.rstudio.com/) docu
 
 ## Installation
 
-```r
+You can install conflr from GitHub.
+
+``` r
+# install.packages("devtools")
 devtools::install_github("line/conflr")
 ```
 
 ## Preparation
 
-Set `CONFLUENCE_URL` to the Confluence endpoint in `.Renviron` (you can open the file with `usethis::edit_r_environ()`).
+Set `CONFLUENCE_URL` to the Confluence endpoint in `.Renviron` (you can open the file with `usethis::edit_r_environ()`). If you are using Confluence on Atlassian Cloud, the URL is `https://<your-domain>.atlassian.net/wiki`.
 
 ```
 CONFLUENCE_URL=https://confluence.example.com
@@ -37,17 +40,21 @@ CONFLUENCE_URL=https://confluence.example.com
 
 ### 1. Move focus to the .Rmd file and click "Post to Confluence" Addin
 
-(**Caution for those who are not familiar with R Markdown**: R Markdown's powerfulness allows you to execute arbitrary codes; be sure about what the code does before clicking "Post to Confluence"!)
+(**Caution for those who are not familiar with R Markdown**: R Markdown's powerfulness allows you to execute arbitrary code; be sure about what the code does before clicking "Post to Confluence"!)
 
 ![](./man/figures/screenshot1.png)
 
 ![](./man/figures/screenshot2.png)
 
+Then, you will be asked your username and password. If you are using Confluence on Atlassian Cloud, the username is an email address, and the password is an API token (see <https://confluence.atlassian.com/cloud/api-tokens-938839638.html> for more details about API tokens).
+
+![](./man/figures/popup1.png)
+
 ### 2. Check the preview and click "Publish"
 
-* **type**: page or blogpost
-* **Space Key**: key for the space
-* **Parent page ID**: (optional) page ID to which the new page will belong
+* **type**: The type of the page (*page* means a normal wiki page, whereas *blogpost* mean a blog post, not a page).
+* **Space Key**: The key of the space you want to post.
+* **Parent page ID**: (optional): The ID of the parent page to the page.
 
 ![](./man/figures/screenshot3.png)
 

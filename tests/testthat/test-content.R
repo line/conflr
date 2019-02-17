@@ -8,7 +8,7 @@ test_that("confl_post_page() works", {
   m <- mockery::mock(res)
 
   with_mock(
-    "confl_verb" = m,
+    "conflr::confl_verb" = m,
     "httr::content" = function(res) NULL,
     {
       confl_post_page("page", "space1", "title", "<p>foo</p>")
@@ -41,8 +41,8 @@ test_that("confl_update_page() works", {
   m2 <- mockery::mock(info)
 
   with_mock(
-    "confl_verb" = m,
-    "confl_get_page" = m2,
+    "conflr::confl_verb" = m,
+    "conflr::confl_get_page" = m2,
     "httr::content" = function(res) NULL,
     {
       confl_update_page("1234", "title", "<p>foo</p>")

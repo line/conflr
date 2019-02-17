@@ -19,9 +19,9 @@ test_that("confl_verb() asks for credentials if it is not set", {
 
   with_mock(
     "httr::VERB" = mock_success,
-    "ask_confluence_url" = mock_ask,
-    "ask_confluence_username" = mock_ask,
-    "ask_confluence_password" = mock_ask,
+    "conflr::ask_confluence_url" = mock_ask,
+    "conflr::ask_confluence_username" = mock_ask,
+    "conflr::ask_confluence_password" = mock_ask,
     withr::with_envvar(
       list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"),
       {
@@ -44,9 +44,9 @@ test_that("confl_verb() asks for credentials if it is not set", {
 
   with_mock(
     "httr::VERB" = mock_failure,
-    "ask_confluence_url" = mock_ask2,
-    "ask_confluence_username" = mock_ask2,
-    "ask_confluence_password" = mock_ask2,
+    "conflr::ask_confluence_url" = mock_ask2,
+    "conflr::ask_confluence_username" = mock_ask2,
+    "conflr::ask_confluence_password" = mock_ask2,
     withr::with_envvar(
       list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"),
       {

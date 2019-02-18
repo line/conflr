@@ -10,6 +10,10 @@
 
 
 # Util
+`%||%` <- function (lhs, rhs) {
+  if (is_null(lhs)) rhs else lhs
+}
+
 `%|""|%` <- function(lhs, rhs) {
   if (is.null(lhs) || identical(lhs, "")) rhs else lhs
 }

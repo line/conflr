@@ -128,9 +128,33 @@ replace_math <- function(x) {
 }
 
 replace_image <- function(x) {
-  stringi::stri_replace_all_regex(
+  locs <- stringi::stri_locate_all_regex(
     x,
-    '<img src="[^"]*/([^"/]+?)" alt="[^"]*"/>',
-    '<ac:image ac:height="400"><ri:attachment ri:filename="$1" /></ac:image>'
-  )
+    '<img[^>]*/>',
+    dotall = TRUE,
+    omit_no_match = TRUE
+  )[[1]]
+
+  for (loc in rev(split(locs, row(locs)))) {
+    # extract attributes
+    img_tag <- stringi::stri_sub(x, loc[1], loc[2])
+    img_attrs <- as.list(xml2::xml_attrs(xml2::read_xml(img_tag)))
+
+    src <- img_attrs$src
+    if (is.null(src)) {
+      warning(img_tag, " doesn't contain src attribute.", call. = FALSE)
+      next()
+    }
+
+    # construct height and width params (e.g. ac:height="400" ac:width="300")
+    hw <- list(height = img_attrs$height %||% "400")
+    # width might be missing
+    hw$width <- img_attrs$width
+    hw_params <- paste0('ac:', names(hw), '="', hw, '"', collapse = " ")
+
+    stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
+      '<ac:image {hw_params}><ri:attachment ri:filename="{basename(src)}" /></ac:image>'
+    )
+  }
+  x
 }

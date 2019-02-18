@@ -11,7 +11,7 @@
 
 # Util
 `%||%` <- function (lhs, rhs) {
-  if (is_null(lhs)) rhs else lhs
+  if (is.null(lhs)) rhs else lhs
 }
 
 `%|""|%` <- function(lhs, rhs) {

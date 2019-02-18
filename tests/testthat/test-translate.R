@@ -103,6 +103,23 @@ test_that("replace_image() works", {
     replace_image('<img src="/path/to/img.png" alt="foo"/>'),
     '<ac:image ac:height="400"><ri:attachment ri:filename="img.png" /></ac:image>'
   )
+
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" />'),
+    '<ac:image ac:height="400"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
+
+  # use width
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" height="300" />'),
+    '<ac:image ac:height="300"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
+
+  # use width and height
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" height="300" width="300" />'),
+    '<ac:image ac:height="300" ac:width="300"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
 })
 
 test_that("translate_to_confl_macro() works", {

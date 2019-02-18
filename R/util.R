@@ -48,9 +48,10 @@ confl_verb <- function(verb, path, ...) {
   res
 }
 
+# TODO: should modify only inside img tags.
 embed_images <- function(html_text, imgs, imgs_realpath) {
   for (i in seq_along(imgs)) {
-    locs <- stringi::stri_locate_all_regex(html_text, imgs[[i]])[[1]]
+    locs <- stringi::stri_locate_all_fixed(html_text, imgs[[i]])[[1]]
     for (loc in rev(split(locs, row(locs)))) {
       stringi::stri_sub(html_text, loc[1], loc[2]) <- knitr::image_uri(imgs_realpath[[i]])
     }

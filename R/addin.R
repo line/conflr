@@ -70,7 +70,9 @@ confl_addin_upload <- function(md_file, title, tags) {
 
   md_dir <- dirname(md_file)
   imgs <- extract_image_paths(html_text)
-  imgs_realpath <- file.path(md_dir, curl::curl_unescape(imgs))
+  imgs <- curl::curl_unescape(imgs)
+  # imgs might be absolute, relative to md_dir, or relative to the current dir.
+  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
 
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
 
@@ -200,7 +202,7 @@ extract_image_paths <- function(html_text) {
   img_nodes <- xml2::xml_find_all(html_doc, ".//img")
   img_paths <- xml2::xml_attr(img_nodes, "src")
   # exclude external images
-  img_paths[!grepl(pattern = "^http", img_paths)]
+  img_paths[!is.na(img_paths) & !grepl(pattern = "^http", img_paths)]
 }
 
 try_get_personal_space_key <- function() {

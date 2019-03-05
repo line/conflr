@@ -30,12 +30,12 @@ conflr uses these environmental variables to access your Confluence.
   - `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
     address).
   - `CONFLUENCE_PASSWORD`: Your password (On Atlassian Cloud, your API
-    token. For more details, please see
-    <https://confluence.atlassian.com/cloud/api-tokens-938839638.html>).
+    token. For more details about API token, please read [the official
+    document](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
 
-There are several ways to set the variables. You can enter the
-environment variables in the popups that are displayed when you run the
-install command (see Usages section).
+There are several ways to set the variables. The most quick qay is to
+enter the environment variables in the popups that are displayed when
+you run the install command (see Usages section below).
 
 Another way is to set the variables in the `.Renviron` file (you can
 open the file with `usethis::edit_r_environ()`). For example, you can
@@ -72,6 +72,23 @@ Then, you will be asked your username and password.
 ### 3\. Check the result
 
 ![](./man/figures/screenshot4.png)
+
+## Know limitations
+
+### LaTeX support
+
+conflr supports [Math
+expressions](https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions)
+to some extent. But, it requires [LaTeX Math
+addon](https://marketplace.atlassian.com/apps/1210882/latex-math)
+installed. Otherwise, you will see “unknown macro” errors on the page.
+
+### htmlwidgets (e.g. leaflet, plotly)
+
+conflr doesn’t support htmlwidgets-based packages like leaflet and
+plotly. Instead, you can embed the screenshot by setting
+`screenshot.force = TRUE` in the chunk option (c.f.
+<https://bookdown.org/yihui/bookdown/html-widgets.html>).
 
 ## Usage in console
 

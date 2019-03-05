@@ -18,9 +18,30 @@
   if (is.null(lhs) || identical(lhs, "")) rhs else lhs
 }
 
-ask_confluence_url <- function() rstudioapi::showPrompt("URL", "Base URL of Confluence API: ", default = "https://")
-ask_confluence_username <- function() rstudioapi::showPrompt("Username", "Username for Confluence: ", default = "")
-ask_confluence_password <- function() rstudioapi::askForPassword("Password for Confluence: ")
+ask_secret <- function(message) {
+  if (!interactive()) {
+    stop("Please set up environmental variables before running non-interactive session.", call. = FALSE)
+  }
+
+  askpass::askpass(message)
+}
+
+ask_non_secret <- function(title, message, default = NULL) {
+  if (!interactive()) {
+    stop("Please set up environmental variables before running non-interactive session.", call. = FALSE)
+  }
+
+  if (rstudioapi::isAvailable()) {
+    return(rstudioapi::showPrompt(title, message, default))
+  }
+
+  # Fallback to the readline
+  readline(message)
+}
+
+ask_confluence_url <- function() ask_non_secret("URL", "Base URL of Confluence API: ", default = "https://")
+ask_confluence_username <- function() ask_non_secret("Username", "Username for Confluence: ", default = "")
+ask_confluence_password <- function() ask_secret("Password for Confluence: ")
 
 confl_verb <- function(verb, path, ...) {
   base_url <- Sys.getenv("CONFLUENCE_URL") %|""|% ask_confluence_url()

@@ -33,8 +33,8 @@ conflr uses these environmental variables to access your Confluence.
     token. For more details about API token, please read [the official
     document](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
 
-There are several ways to set theese. The quickest way is to enter the
-environmental variables in the popups that are displayed when you run
+There are several ways to set these environmental variables. The
+quickest way is to enter in the popups that are displayed when you run
 the install command (see Usages section below).
 
 Another way is to set the variables in the `.Renviron` file (you can

@@ -101,24 +101,42 @@ $$")
 test_that("replace_image() works", {
   expect_equal(
     replace_image('<img src="/path/to/img.png" alt="foo"/>'),
-    '<ac:image ac:height="400"><ri:attachment ri:filename="img.png" /></ac:image>'
+    '<ac:image ac:width="600"><ri:attachment ri:filename="img.png" /></ac:image>'
   )
 
   expect_equal(
     replace_image('<img src="/path/to/img.png" />'),
-    '<ac:image ac:height="400"><ri:attachment ri:filename="img.png" /></ac:image>'
+    '<ac:image ac:width="600"><ri:attachment ri:filename="img.png" /></ac:image>'
   )
 
   # use width
   expect_equal(
     replace_image('<img src="/path/to/img.png" height="300" />'),
-    '<ac:image ac:height="300"><ri:attachment ri:filename="img.png" /></ac:image>'
+    '<ac:image ac:width="600" ac:height="300"><ri:attachment ri:filename="img.png" /></ac:image>'
   )
 
   # use width and height
   expect_equal(
     replace_image('<img src="/path/to/img.png" height="300" width="300" />'),
-    '<ac:image ac:height="300" ac:width="300"><ri:attachment ri:filename="img.png" /></ac:image>'
+    '<ac:image ac:width="300" ac:height="300"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
+
+  # use the other default size
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" />', image_size_default = 333),
+    '<ac:image ac:width="333"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
+  
+  # the default size is ignored when the image has its width
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" width="450" />', image_size_default = 333),
+    '<ac:image ac:width="450"><ri:attachment ri:filename="img.png" /></ac:image>'
+  )
+
+  # use the original size
+  expect_equal(
+    replace_image('<img src="/path/to/img.png" />', image_size_default = NULL),
+    '<ac:image ><ri:attachment ri:filename="img.png" /></ac:image>'
   )
 })
 
@@ -158,7 +176,7 @@ iris$Species
   html_text <- commonmark::markdown_html("![foo](/path/to/foo.png)")
   expect_equal(
     translate_to_confl_macro(html_text),
-    '<p>\n  <ac:image ac:height="400"><ri:attachment ri:filename="foo.png" /></ac:image>\n</p>'
+    '<p>\n  <ac:image ac:width="600"><ri:attachment ri:filename="foo.png" /></ac:image>\n</p>'
   )
   # inline math
   html_text <- commonmark::markdown_html("$ is $\\frac{1}{3}$")

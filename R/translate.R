@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 
-translate_to_confl_macro <- function(html_text) {
+translate_to_confl_macro <- function(html_text, image_size_default = 600) {
   html_text <- paste0("<body>", html_text, "</body>")
   html_doc <- xml2::read_xml(html_text, options = c("RECOVER", "NOERROR", "NOBLANKS"))
 
@@ -33,7 +33,7 @@ translate_to_confl_macro <- function(html_text) {
   html_text <- replace_code_chunk(html_text)
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
-  html_text <- replace_image(html_text)
+  html_text <- replace_image(html_text, image_size_default = image_size_default)
   # unescape texts inside CDATA
   html_text <- restore_cdata(html_text)
 
@@ -127,7 +127,7 @@ replace_math <- function(x) {
   x
 }
 
-replace_image <- function(x) {
+replace_image <- function(x, image_size_default = 600) {
   locs <- stringi::stri_locate_all_regex(
     x,
     '<img[^>]*/>',
@@ -147,10 +147,19 @@ replace_image <- function(x) {
     }
 
     # construct height and width params (e.g. ac:height="400" ac:width="300")
-    hw <- list(height = img_attrs$height %||% "400")
-    # width might be missing
-    hw$width <- img_attrs$width
-    hw_params <- paste0('ac:', names(hw), '="', hw, '"', collapse = " ")
+    hw <- list(
+        width = img_attrs$width %||% image_size_default,
+        height = img_attrs$height
+    )
+    hw <- purrr::compact(hw)
+
+    # glue_collapse returns character(0) for character(0), so this if branch is needed.
+    if (length(hw) > 0) {
+      hw_params <- glue::glue('ac:{names(hw)}="{hw}"')
+      hw_params <- glue::glue_collapse(hw_params, sep = " ")
+    } else {
+      hw_params <- ""
+    }
 
     stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
       '<ac:image {hw_params}><ri:attachment ri:filename="{basename(src)}" /></ac:image>'

@@ -58,15 +58,18 @@ confl_get_page <- function(id, expand = "body.storage") {
 #'   The HTML source of the page.
 #' @param ancestors
 #'   The page ID of the parent pages.
+#' @param image_size_default
+#'   The default width of images in pixel. If `NULL`, images are displayed in their original sizes.
 #' @export
 confl_post_page <- function(type = c("page", "blogpost"),
                             spaceKey,
                             title,
                             body,
-                            ancestors = NULL) {
+                            ancestors = NULL,
+                            image_size_default = 600) {
   type <- match.arg(type)
 
-  body <- translate_to_confl_macro(body)
+  body <- translate_to_confl_macro(body, image_size_default = image_size_default)
 
   req_body = list(
     type = type,
@@ -88,11 +91,12 @@ confl_post_page <- function(type = c("page", "blogpost"),
 #' @export
 confl_update_page <- function(id,
                               title,
-                              body) {
+                              body,
+                              image_size_default = 600) {
   id <- as.character(id)
   page_info <- confl_get_page(id, expand = "version")
 
-  body <- translate_to_confl_macro(body)
+  body <- translate_to_confl_macro(body, image_size_default = image_size_default)
 
   res <- confl_verb("PUT", glue::glue("/content/{id}"),
                     body = list(

@@ -71,7 +71,7 @@ confl_post_page <- function(type = c("page", "blogpost"),
 
   body <- translate_to_confl_macro(body, image_size_default = image_size_default)
 
-  req_body = list(
+  req_body <- list(
     type = type,
     title = title,
     space = list(key = spaceKey),
@@ -80,10 +80,11 @@ confl_post_page <- function(type = c("page", "blogpost"),
 
   if (!is.null(ancestors) && !identical(ancestors, "")) {
     ancestors <- stringi::stri_trim_both(ancestors)
-    req_body$ancestors <- purrr::map(ancestors, ~list(id = .))
+    req_body$ancestors <- purrr::map(ancestors, ~ list(id = .))
   }
   res <- confl_verb("POST", "/content/",
-                    body = req_body, encode = "json")
+    body = req_body, encode = "json"
+  )
   httr::content(res)
 }
 
@@ -102,16 +103,17 @@ confl_update_page <- function(id,
   body <- translate_to_confl_macro(body, image_size_default = image_size_default)
 
   res <- confl_verb("PUT", glue::glue("/content/{id}"),
-                    body = list(
-                      type = page_info$type,
-                      title = title,
-                      body = list(storage = list(value = body, representation = "storage")),
-                      version = list(
-                        number = page_info$version$number + 1L,
-                        minorEdit = minor_edit
-                      )
-                    ),
-                    encode = "json")
+    body = list(
+      type = page_info$type,
+      title = title,
+      body = list(storage = list(value = body, representation = "storage")),
+      version = list(
+        number = page_info$version$number + 1L,
+        minorEdit = minor_edit
+      )
+    ),
+    encode = "json"
+  )
   httr::content(res)
 }
 

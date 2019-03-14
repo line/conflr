@@ -34,8 +34,10 @@ confl_list_spaces <- function(spaceKey = NULL,
                               limit = 25) {
   type <- match.arg(type)
   status <- match.arg(status)
-  query <- list(type = type, status = status, label = label, favourite = favourite,
-                expand = expand, start = start, limit = limit)
+  query <- list(
+    type = type, status = status, label = label, favourite = favourite,
+    expand = expand, start = start, limit = limit
+  )
   res <- confl_verb("GET", "/space", query = purrr::compact(query))
   httr::content(res)
 }

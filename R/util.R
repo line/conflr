@@ -10,7 +10,7 @@
 
 
 # Util
-`%||%` <- function (lhs, rhs) {
+`%||%` <- function(lhs, rhs) {
   if (is.null(lhs)) rhs else lhs
 }
 
@@ -55,14 +55,16 @@ confl_verb <- function(verb, path, ...) {
 
   res <- httr::VERB(
     verb = verb,
-    url  = glue::glue("{base_url}/rest/api{path}"),
+    url = glue::glue("{base_url}/rest/api{path}"),
     httr::authenticate(username, password),
     ...
   )
 
   if (httr::status_code(res) >= 300) {
-    stop(httr::http_condition(res, type = "error"),
-         httr::content(res))
+    stop(
+      httr::http_condition(res, type = "error"),
+      httr::content(res)
+    )
   }
 
   # If the request succeeds, cache the credentials.

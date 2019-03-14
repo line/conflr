@@ -23,8 +23,7 @@ test_that("confl_verb() asks for credentials if it is not set", {
     "conflr::ask_confluence_username" = mock_ask,
     "conflr::ask_confluence_password" = mock_ask,
     withr::with_envvar(
-      list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"),
-      {
+      list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"), {
         confl_verb("GET", "/")
         expect_equal(Sys.getenv("CONFLUENCE_URL"), "foo")
       }
@@ -48,10 +47,9 @@ test_that("confl_verb() asks for credentials if it is not set", {
     "conflr::ask_confluence_username" = mock_ask2,
     "conflr::ask_confluence_password" = mock_ask2,
     withr::with_envvar(
-      list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"),
-      {
+      list(CONFLUENCE_URL = "", CONFLUENCE_USERNAME = "user", CONFLUENCE_PASSWORD = "pass"), {
         expect_error(confl_verb("GET", "/"))
-        expect_equal(Sys.getenv("CONFLUENCE_URL"), "")  # the url provided is not stored
+        expect_equal(Sys.getenv("CONFLUENCE_URL"), "") # the url provided is not stored
       }
     )
   )

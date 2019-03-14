@@ -51,20 +51,20 @@ confl_post_attachment <- function(id, path) {
 #' @param ... Other arguments passed to 'query'.
 #' @export
 confl_update_attachment_metadata <- function(id, attachmentId, ...) {
-   id <- as.character(id)
-   res <- confl_verb("PUT", glue::glue("/content/{id}/child/attachment/{attachmentId}"),
-                     query = list(...)
-   )
-   httr::content(res)
+  id <- as.character(id)
+  res <- confl_verb("PUT", glue::glue("/content/{id}/child/attachment/{attachmentId}"),
+    query = list(...)
+  )
+  httr::content(res)
 }
 
 #' @rdname confl_attachment
 #' @export
 confl_update_attachment_data <- function(id, attachmentId, path, ...) {
-   id <- as.character(id)
-   res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment/{attachmentId}/data"),
-                     body = list(file = httr::upload_file(path)),
-                     httr::add_headers(`X-Atlassian-Token` = "nocheck")
-   )
-   httr::content(res)
+  id <- as.character(id)
+  res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment/{attachmentId}/data"),
+    body = list(file = httr::upload_file(path)),
+    httr::add_headers(`X-Atlassian-Token` = "nocheck")
+  )
+  httr::content(res)
 }

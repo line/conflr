@@ -236,5 +236,6 @@ try_get_personal_space_key <- function() {
   error = function(e) {
     warning(e)
     return(NULL)
-  })
+  }
+  )
 }

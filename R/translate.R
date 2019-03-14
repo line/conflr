@@ -44,7 +44,7 @@ unescape_html <- function(x) {
   stringi::stri_replace_all_regex(
     x,
     c("&amp;", "&lt;", "&gt;", "&#39;", "&quot;"),
-    c("&",     "<",    ">",    "'",     "\""    ),
+    c("&", "<", ">", "'", "\""),
     vectorize_all = FALSE
   )
 }
@@ -52,7 +52,7 @@ unescape_html <- function(x) {
 restore_cdata <- function(x) {
   locs <- stringi::stri_locate_all_regex(
     x,
-    '(?<=<ac:plain-text-body><\\!\\[CDATA\\[).*?(?=\\]\\]></ac:plain-text-body>)',
+    "(?<=<ac:plain-text-body><\\!\\[CDATA\\[).*?(?=\\]\\]></ac:plain-text-body>)",
     dotall = TRUE,
     omit_no_match = TRUE
   )[[1]]
@@ -66,8 +66,8 @@ restore_cdata <- function(x) {
 replace_code_chunk <- function(x) {
   stringi::stri_replace_all_regex(
     x,
-    '<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>',
-'<ac:structured-macro ac:name="code">
+    "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
+    '<ac:structured-macro ac:name="code">
   <ac:plain-text-body><![CDATA[$1]]></ac:plain-text-body>
 </ac:structured-macro>',
     dotall = TRUE
@@ -93,8 +93,8 @@ mark_inline_math <- function(x) {
 replace_inline_math <- function(x) {
   x <- stringi::stri_replace_all_regex(
     x,
-    '%1%D%O%L%L%A%R%(.*?)%1%D%O%L%L%A%R%',
-'<ac:structured-macro ac:name="mathinline">
+    "%1%D%O%L%L%A%R%(.*?)%1%D%O%L%L%A%R%",
+    '<ac:structured-macro ac:name="mathinline">
   <ac:parameter ac:name="body">$1</ac:parameter>
 </ac:structured-macro>',
     dotall = TRUE
@@ -115,8 +115,8 @@ replace_math <- function(x) {
   #   2. <p>%2%D%O%L%L%A%R%...%2%D%O%L%L%A%R%</p>
   x <- stringi::stri_replace_all_regex(
     x,
-    '(^|(?<=<p>))\\s*%2%D%O%L%L%A%R%(.*?)%2%D%O%L%L%A%R%\\s*($|(?=</p>))',
-'<ac:structured-macro ac:name="mathblock">
+    "(^|(?<=<p>))\\s*%2%D%O%L%L%A%R%(.*?)%2%D%O%L%L%A%R%\\s*($|(?=</p>))",
+    '<ac:structured-macro ac:name="mathblock">
   <ac:plain-text-body><![CDATA[$2]]></ac:plain-text-body>
 </ac:structured-macro>',
     multiline = TRUE,
@@ -130,7 +130,7 @@ replace_math <- function(x) {
 replace_image <- function(x, image_size_default = 600) {
   locs <- stringi::stri_locate_all_regex(
     x,
-    '<img[^>]*/>',
+    "<img[^>]*/>",
     dotall = TRUE,
     omit_no_match = TRUE
   )[[1]]
@@ -148,8 +148,8 @@ replace_image <- function(x, image_size_default = 600) {
 
     # construct height and width params (e.g. ac:height="400" ac:width="300")
     hw <- list(
-        width = img_attrs$width %||% image_size_default,
-        height = img_attrs$height
+      width = img_attrs$width %||% image_size_default,
+      height = img_attrs$height
     )
     hw <- purrr::compact(hw)
 

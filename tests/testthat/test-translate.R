@@ -21,29 +21,29 @@ test_that("restore_cdata() works", {
   )
   # multiple matches
   expect_equal(
-    restore_cdata('<ac:plain-text-body><![CDATA[x &lt; 1\nx &lt; 1]]></ac:plain-text-body>\n<ac:plain-text-body><![CDATA[x &lt; 1\nx &lt; 1]]></ac:plain-text-body>'),
-    '<ac:plain-text-body><![CDATA[x < 1\nx < 1]]></ac:plain-text-body>\n<ac:plain-text-body><![CDATA[x < 1\nx < 1]]></ac:plain-text-body>'
+    restore_cdata("<ac:plain-text-body><![CDATA[x &lt; 1\nx &lt; 1]]></ac:plain-text-body>\n<ac:plain-text-body><![CDATA[x &lt; 1\nx &lt; 1]]></ac:plain-text-body>"),
+    "<ac:plain-text-body><![CDATA[x < 1\nx < 1]]></ac:plain-text-body>\n<ac:plain-text-body><![CDATA[x < 1\nx < 1]]></ac:plain-text-body>"
   )
 })
 
 test_that("replace_code_chunk() works", {
   expect_equal(
     replace_code_chunk("<pre><code>print(1)</code></pre>"),
-'<ac:structured-macro ac:name="code">
+    '<ac:structured-macro ac:name="code">
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
-)
+  )
   # w/ spaces
   expect_equal(
     replace_code_chunk("<pre>\n<code>print(1)</code>  </pre>"),
-'<ac:structured-macro ac:name="code">
+    '<ac:structured-macro ac:name="code">
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
-)
+  )
   # w/ attributes
   expect_equal(
     replace_code_chunk("<pre><code language='r'>print(1)</code></pre>"),
-'<ac:structured-macro ac:name="code">
+    '<ac:structured-macro ac:name="code">
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
   )
@@ -54,7 +54,7 @@ test_that("replace_inline_math() works", {
   expect_equal(x, "%1%D%O%L%L%A%R%\\frac{1}{3}%1%D%O%L%L%A%R%")
   expect_equal(
     replace_inline_math(x),
-"<ac:structured-macro ac:name=\"mathinline\">
+    "<ac:structured-macro ac:name=\"mathinline\">
   <ac:parameter ac:name=\"body\">\\frac{1}{3}</ac:parameter>
 </ac:structured-macro>"
   )
@@ -62,7 +62,7 @@ test_that("replace_inline_math() works", {
   expect_equal(x, "%1%D%O%L%L%A%R%\\frac{1}{3}%1%D%O%L%L%A%R% is %1%D%O%L%L%A%R%0.3333\\cdots%1%D%O%L%L%A%R%")
   expect_equal(
     replace_inline_math(x),
-"<ac:structured-macro ac:name=\"mathinline\">
+    "<ac:structured-macro ac:name=\"mathinline\">
   <ac:parameter ac:name=\"body\">\\frac{1}{3}</ac:parameter>
 </ac:structured-macro> is <ac:structured-macro ac:name=\"mathinline\">
   <ac:parameter ac:name=\"body\">0.3333\\cdots</ac:parameter>
@@ -86,13 +86,14 @@ test_that("Unrelated $s are left as is", {
 
 test_that("replace_math() works", {
   x <- mark_math(
-"$$
+    "$$
 \\frac{1}{3}
-$$")
+$$"
+  )
   expect_equal(x, "%2%D%O%L%L%A%R%\n\\frac{1}{3}\n%2%D%O%L%L%A%R%")
   expect_equal(
     replace_math(x),
-'<ac:structured-macro ac:name="mathblock">
+    '<ac:structured-macro ac:name="mathblock">
   <ac:plain-text-body><![CDATA[\n\\frac{1}{3}\n]]></ac:plain-text-body>
 </ac:structured-macro>'
   )
@@ -126,7 +127,7 @@ test_that("replace_image() works", {
     replace_image('<img src="/path/to/img.png" />', image_size_default = 333),
     '<ac:image ac:width="333"><ri:attachment ri:filename="img.png" /></ac:image>'
   )
-  
+
   # the default size is ignored when the image has its width
   expect_equal(
     replace_image('<img src="/path/to/img.png" width="450" />', image_size_default = 333),
@@ -143,14 +144,15 @@ test_that("replace_image() works", {
 test_that("translate_to_confl_macro() works", {
   # code chunk
   html_text <- commonmark::markdown_html(
-"code:
+    "code:
 ``` r
 x < 1 & y > 1
 ```
-")
+"
+  )
   expect_equal(
     translate_to_confl_macro(html_text),
-"<p>code:</p>
+    "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
   <ac:plain-text-body><![CDATA[x < 1 & y > 1\n]]></ac:plain-text-body>
 </ac:structured-macro>"
@@ -158,15 +160,16 @@ x < 1 & y > 1
 
   # code chunk with $ and $$
   html_text <- commonmark::markdown_html(
-"code:
+    "code:
 ``` r
 iris$Species
 '$$'
 ```
-")
+"
+  )
   expect_equal(
     translate_to_confl_macro(html_text),
-"<p>code:</p>
+    "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
   <ac:plain-text-body><![CDATA[iris$Species\n'$$'\n]]></ac:plain-text-body>
 </ac:structured-macro>"
@@ -182,27 +185,29 @@ iris$Species
   html_text <- commonmark::markdown_html("$ is $\\frac{1}{3}$")
   expect_equal(
     translate_to_confl_macro(html_text),
-'<p>$ is <ac:structured-macro ac:name="mathinline">
+    '<p>$ is <ac:structured-macro ac:name="mathinline">
   <ac:parameter ac:name="body">\\frac{1}{3}</ac:parameter>
 </ac:structured-macro></p>'
   )
 
   # math
   html_text <- commonmark::markdown_html(
-"This $$ is not
+    "This $$ is not
 $$
 \\frac{1}{3}
-$$")
+$$"
+  )
   expect_equal(
     translate_to_confl_macro(html_text),
-'<p>This $$ is not
+    '<p>This $$ is not
 <ac:structured-macro ac:name="mathblock">
   <ac:plain-text-body><![CDATA[\n\\frac{1}{3}\n]]></ac:plain-text-body>
 </ac:structured-macro></p>'
   )
 
   html_text <- commonmark::markdown_html(
-    "<p> $$\\frac{1}{3}$$ </p>")
+    "<p> $$\\frac{1}{3}$$ </p>"
+  )
   expect_equal(
     translate_to_confl_macro(html_text),
     '<p><ac:structured-macro ac:name="mathblock">

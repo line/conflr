@@ -86,7 +86,7 @@ confl_addin_upload <- function(md_file, title, tags) {
         shiny::column(
           width = 2,
           shiny::selectInput(
-            inputId = "type", label = "type",
+            inputId = "type", label = "Type",
             choices = eval(formals(confl_post_page)$type),
           )
         ),
@@ -102,6 +102,13 @@ confl_addin_upload <- function(md_file, title, tags) {
           shiny::textInput(
             inputId = "ancestors", label = "Parent page ID",
             value = NULL
+          )
+        ),
+        shiny::column(
+          width = 4,
+          shiny::checkboxInput(
+            inputId = "use_original_size", label = "Use the original image size",
+            value = FALSE
           )
         )
       ),
@@ -175,10 +182,12 @@ confl_addin_upload <- function(md_file, title, tags) {
       # Step 2) Upload the document
       progress$set(message = "Uploading the document...")
 
+      image_size_default <- if (!input$use_original_size) 600 else NULL
       result <- confl_update_page(
         id = id,
         title = title,
-        body = html_text
+        body = html_text,
+        image_size_default = image_size_default
       )
 
       progress$set(value = 2, message = "Done!")

@@ -107,7 +107,7 @@ confl_addin_upload <- function(md_file, title, tags) {
         shiny::column(
           width = 4,
           shiny::checkboxInput(
-            inputId = "use_original_size", label = "Use the original image size",
+            inputId = "use_original_size", label = "Use original image sizes",
             value = FALSE
           )
         )

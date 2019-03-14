@@ -88,10 +88,13 @@ confl_post_page <- function(type = c("page", "blogpost"),
 }
 
 #' @rdname confl_content
+#' @param minor_edit
+#'   If `FALSE`, do not notify to the watchers.
 #' @export
 confl_update_page <- function(id,
                               title,
                               body,
+                              minor_edit = FALSE,
                               image_size_default = 600) {
   id <- as.character(id)
   page_info <- confl_get_page(id, expand = "version")
@@ -103,7 +106,10 @@ confl_update_page <- function(id,
                       type = page_info$type,
                       title = title,
                       body = list(storage = list(value = body, representation = "storage")),
-                      version = list(number = page_info$version$number + 1L)
+                      version = list(
+                        number = page_info$version$number + 1L,
+                        minorEdit = minor_edit
+                      )
                     ),
                     encode = "json")
   httr::content(res)

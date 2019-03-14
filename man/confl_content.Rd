@@ -18,7 +18,8 @@ confl_get_page(id, expand = "body.storage")
 confl_post_page(type = c("page", "blogpost"), spaceKey, title, body,
   ancestors = NULL, image_size_default = 600)
 
-confl_update_page(id, title, body, image_size_default = 600)
+confl_update_page(id, title, body, minor_edit = FALSE,
+  image_size_default = 600)
 
 confl_delete_page(id)
 }
@@ -43,6 +44,8 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 \item{ancestors}{The page ID of the parent pages.}
 
 \item{image_size_default}{The default width of images in pixel. If \code{NULL}, images are displayed in their original sizes.}
+
+\item{minor_edit}{If \code{FALSE}, do not notify to the watchers.}
 }
 \description{
 REST Wrapper for the ContentService

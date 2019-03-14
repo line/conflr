@@ -36,9 +36,9 @@ test_that("confl_update_page() works", {
   skip_on_ci_or_cran()
 
   res <- structure(list(status_code = 200), class = "response")
-  m <- mockery::mock(res)
+  m <- mockery::mock(res, cycle = TRUE)
   info <- list(version = list(number = 11L), type = "page")
-  m2 <- mockery::mock(info)
+  m2 <- mockery::mock(info, cycle = TRUE)
 
   with_mock(
     "conflr::confl_verb" = m,
@@ -46,9 +46,10 @@ test_that("confl_update_page() works", {
     "httr::content" = function(res) NULL,
     {
       confl_update_page("1234", "title", "<p>foo</p>")
+      confl_update_page("1234", "title", "<p>foo</p>", minor_edit = TRUE)
     }
   )
-    args <- mockery::mock_args(m)[[1]]
+  args <- mockery::mock_args(m)[[1]]
   expect_equal(args$body, list(
     type = "page",
     title = "title",
@@ -59,7 +60,24 @@ test_that("confl_update_page() works", {
       )
     ),
     version = list(
-      number = 12L
+      number = 12L,
+      minorEdit = FALSE
+    )
+  ))
+
+  args <- mockery::mock_args(m)[[2]]
+  expect_equal(args$body, list(
+    type = "page",
+    title = "title",
+    body =  list(
+      storage = list(
+        value = "<p>foo</p>",
+        representation = "storage"
+      )
+    ),
+    version = list(
+      number = 12L,
+      minorEdit = TRUE
     )
   ))
 })

@@ -4,7 +4,7 @@
 
 * conflr now works outside RStudio (e.g. Emacs/Vim) thanks to the power of
   askpass package (#10).
-  
+
 * Addin now has "Use original image sizes" option to control whether to resize
   the image (default) or not (#21).
 

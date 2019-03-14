@@ -89,7 +89,7 @@ confl_post_page <- function(type = c("page", "blogpost"),
 
 #' @rdname confl_content
 #' @param minor_edit
-#'   If `FALSE`, do not notify to the watchers.
+#'   If `FALSE`, do not notify the watchers.
 #' @export
 confl_update_page <- function(id,
                               title,

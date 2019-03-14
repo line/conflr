@@ -45,7 +45,7 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 
 \item{image_size_default}{The default width of images in pixel. If \code{NULL}, images are displayed in their original sizes.}
 
-\item{minor_edit}{If \code{FALSE}, do not notify to the watchers.}
+\item{minor_edit}{If \code{FALSE}, do not notify the watchers.}
 }
 \description{
 REST Wrapper for the ContentService

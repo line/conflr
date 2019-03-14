@@ -109,6 +109,10 @@ confl_addin_upload <- function(md_file, title, tags) {
           shiny::checkboxInput(
             inputId = "use_original_size", label = "Use original image sizes",
             value = FALSE
+          ),
+          shiny::checkboxInput(
+            inputId = "notify_watchers", label = "Notify watchers",
+            value = TRUE
           )
         )
       ),
@@ -187,6 +191,7 @@ confl_addin_upload <- function(md_file, title, tags) {
         id = id,
         title = title,
         body = html_text,
+        minor_edit = !input$notify_watchers,
         image_size_default = image_size_default
       )
 

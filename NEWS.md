@@ -8,9 +8,6 @@
 * conflr addin now has "Use original image sizes" option to control whether to resize
   the image (default) or not (#21).
 
-* conflr addin now has "Notify watchers" option to control whether to notify watchers
-  (default) or not (#20).
-
 # conflr 0.0.5
 
 * Initial release on GitHub

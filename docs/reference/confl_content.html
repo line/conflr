@@ -115,9 +115,9 @@
 <span class='fu'>confl_get_page</span>(<span class='no'>id</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='st'>"body.storage"</span>)
 
 <span class='fu'>confl_post_page</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"page"</span>, <span class='st'>"blogpost"</span>), <span class='no'>spaceKey</span>, <span class='no'>title</span>, <span class='no'>body</span>,
-  <span class='kw'>ancestors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>ancestors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>)
 
-<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>)
+<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>, <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>)
 
 <span class='fu'>confl_delete_page</span>(<span class='no'>id</span>)</pre>
     
@@ -160,6 +160,10 @@ contents, use periods. (e.g. <code>body.storage,history</code>).</p></td>
     <tr>
       <th>ancestors</th>
       <td><p>The page ID of the parent pages.</p></td>
+    </tr>
+    <tr>
+      <th>image_size_default</th>
+      <td><p>The default width of images in pixel. If <code>NULL</code>, images are displayed in their original sizes.</p></td>
     </tr>
     </table>
     

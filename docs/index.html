@@ -76,12 +76,22 @@
 <p>You can install conflr from GitHub.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"line/conflr"</span>)</a></code></pre></div>
-</div>
-<div id="preparation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preparation" class="anchor"></a>Preparation</h2>
-<p>Set <code>CONFLUENCE_URL</code> to the Confluence endpoint in <code>.Renviron</code> (you can open the file with <code><a href="https://www.rdocumentation.org/packages/usethis/topics/edit">usethis::edit_r_environ()</a></code>). If you are using Confluence on Atlassian Cloud, the URL is <code>https://&lt;your-domain&gt;.atlassian.net/wiki</code>.</p>
+<div id="preparation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#preparation" class="anchor"></a>Preparation</h3>
+<p>conflr uses these environmental variables to access your Confluence.</p>
+<ul>
+<li>
+<code>CONFLUENCE_URL</code>: The base URL of your Confluence. e.g. <code>https://confluence.example.com</code> (On Atlassian Cloud, <code>https://&lt;your-domain&gt;.atlassian.net/wiki</code>).</li>
+<li>
+<code>CONFLUENCE_USERNAME</code>: Your username (On Atlassian Cloud, your email address).</li>
+<li>
+<code>CONFLUENCE_PASSWORD</code>: Your password (On Atlassian Cloud, your API token. For more details about API token, please read <a href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html">the official document</a>).</li>
+</ul>
+<p>There are several ways to set these environmental variables. The quickest way is to enter in the popups that are displayed when you run the install command (see Usages section below).</p>
+<p>Another way is to set the variables in the <code>.Renviron</code> file (you can open the file with <code><a href="https://www.rdocumentation.org/packages/usethis/topics/edit">usethis::edit_r_environ()</a></code>). For example, you can set the base URL in the file as the following.</p>
 <pre><code>CONFLUENCE_URL=https://confluence.example.com</code></pre>
+</div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -92,7 +102,7 @@
 <p>(<strong>Caution for those who are not familiar with R Markdown</strong>: R Markdown’s powerfulness allows you to execute arbitrary code; be sure about what the code does before clicking “Post to Confluence”!)</p>
 <p><img src="reference/figures/screenshot1.png"></p>
 <p><img src="reference/figures/screenshot2.png"></p>
-<p>Then, you will be asked your username and password. If you are using Confluence on Atlassian Cloud, the username is an email address, and the password is an API token (see <a href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html" class="uri">https://confluence.atlassian.com/cloud/api-tokens-938839638.html</a> for more details about API tokens).</p>
+<p>Then, you will be asked your username and password.</p>
 <p><img src="reference/figures/popup1.png"></p>
 </div>
 <div id="check-the-preview-and-click-publish" class="section level3">
@@ -112,6 +122,20 @@
 <h3 class="hasAnchor">
 <a href="#check-the-result" class="anchor"></a>3. Check the result</h3>
 <p><img src="reference/figures/screenshot4.png"></p>
+</div>
+</div>
+<div id="know-limitations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#know-limitations" class="anchor"></a>Know limitations</h2>
+<div id="latex-support" class="section level3">
+<h3 class="hasAnchor">
+<a href="#latex-support" class="anchor"></a>LaTeX support</h3>
+<p>conflr supports <a href="https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions">Math expressions</a> to some extent. But, it requires <a href="https://marketplace.atlassian.com/apps/1210882/latex-math">LaTeX Math addon</a> installed. Otherwise, you will see “unknown macro” errors on the page.</p>
+</div>
+<div id="htmlwidgets-e-g-leaflet-plotly" class="section level3">
+<h3 class="hasAnchor">
+<a href="#htmlwidgets-e-g-leaflet-plotly" class="anchor"></a>htmlwidgets (e.g. leaflet, plotly)</h3>
+<p>conflr doesn’t support htmlwidgets-based packages like leaflet and plotly. Instead, you can embed the screenshot by setting <code>screenshot.force = TRUE</code> in the chunk option (c.f. <a href="https://bookdown.org/yihui/bookdown/html-widgets.html" class="uri">https://bookdown.org/yihui/bookdown/html-widgets.html</a>).</p>
 </div>
 </div>
 <div id="usage-in-console" class="section level2">
@@ -141,7 +165,7 @@
 <div id="how-to-contribute" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-contribute" class="anchor"></a>How to contribute</h2>
-<p>See <a href="CONTRIBUTING.html">CONTRIBUTING.md</a></p>
+<p>See <a href="CONTRIBUTING.html" class="uri">CONTRIBUTING.md</a></p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
@@ -159,7 +183,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</code></pre>
-<p>See <a href="LICENSE.html">LICENSE.md</a> for more detail.</p>
+<p>See <a href="LICENSE.html" class="uri">LICENSE.md</a> for more detail.</p>
 </div>
 </div>
   </div>

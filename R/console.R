@@ -82,5 +82,7 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
   message("Done!")
   Sys.sleep(2)
 
-  message(paste0("Results at: ", result$`_links`$base, result$`_links`$webui))
+  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
+  message(paste0("Results at: ", results_url))
+  results_url
 }

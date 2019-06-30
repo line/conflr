@@ -16,7 +16,8 @@
 #' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file = NULL) {
+confl_create_post_from_Rmd <- function(Rmd_file = NULL, shiny = TRUE,
+                                       title = NULL, ...) {
   if (is.null(Rmd_file) && rstudioapi::isAvailable()) {
     Rmd_file <- rstudioapi::getSourceEditorContext()$path
     if (identical(Rmd_file, "")) {
@@ -56,11 +57,24 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL) {
 
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
-  confl_addin_upload(
-    md_file = md_file,
-    title = front_matter$title,
-    tags = front_matter$tags
-  )
+  if (!is.null(title)) {
+    front_matter$title <- title
+  }
+
+  if (shiny) {
+    confl_addin_upload(
+      md_file = md_file,
+      title = front_matter$title,
+      tags = front_matter$tags
+    )
+  } else {
+    confl_console_upload(
+      md_file = md_file,
+      title = front_matter$title,
+      tags = front_matter$tags,
+      ...
+    )
+  }
 }
 
 confl_addin_upload <- function(md_file, title, tags) {

@@ -7,6 +7,8 @@ Authors@R: c(
     person(family = "LINE Corporation", role = c("cph"))
     )
 Description: Post R Markdown documents as 'Confluence' pages via its API.
+URL: https://line.github.io/conflr/, https://github.com/line/conflr
+BugReports: https://github.com/line/conflr/issues
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

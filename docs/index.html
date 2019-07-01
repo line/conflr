@@ -49,7 +49,14 @@
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/line/conflr">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -89,7 +96,7 @@
 <code>CONFLUENCE_PASSWORD</code>: Your password (On Atlassian Cloud, your API token. For more details about API token, please read <a href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html">the official document</a>).</li>
 </ul>
 <p>There are several ways to set these environmental variables. The quickest way is to enter in the popups that are displayed when you run the install command (see Usages section below).</p>
-<p>Another way is to set the variables in the <code>.Renviron</code> file (you can open the file with <code><a href="https://www.rdocumentation.org/packages/usethis/topics/edit">usethis::edit_r_environ()</a></code>). For example, you can set the base URL in the file as the following.</p>
+<p>Another way is to set the variables in the <code>.Renviron</code> file (you can open the file with <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>). For example, you can set the base URL in the file as the following.</p>
 <pre><code>CONFLUENCE_URL=https://confluence.example.com</code></pre>
 </div>
 </div>
@@ -189,7 +196,16 @@ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</cod
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/line/conflr">https://​github.com/​line/​conflr</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/line/conflr/issues">https://​github.com/​line/​conflr/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -220,7 +236,7 @@ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>

@@ -15,7 +15,8 @@
 #'
 #' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
 #' @param interactive If `FALSE` shiny interface is not launched.
-#' @param ... Addtional arguments passed to [confl_console_upload()].
+#' @param title If provided this overwrites the YAML front matter title.
+#' @param ... Addtional arguments passed to `confl_console_upload()`.
 #'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = interactive(),

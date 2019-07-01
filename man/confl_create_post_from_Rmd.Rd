@@ -12,7 +12,9 @@ confl_create_post_from_Rmd(Rmd_file = NULL,
 
 \item{interactive}{If \code{FALSE} shiny interface is not launched.}
 
-\item{...}{Addtional arguments passed to \code{\link[=confl_console_upload]{confl_console_upload()}}.}
+\item{title}{If provided this overwrites the YAML front matter title.}
+
+\item{...}{Addtional arguments passed to \code{confl_console_upload()}.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.

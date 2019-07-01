@@ -8,6 +8,15 @@
 \description{
 Post R Markdown documents as 'Confluence' pages via its API.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://line.github.io/conflr/}
+  \item \url{https://github.com/line/conflr}
+  \item Report bugs at \url{https://github.com/line/conflr/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Hiroaki Yutani \email{hiroaki.yutani@linecorp.com}
 

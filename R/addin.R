@@ -14,9 +14,11 @@
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
 #' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
+#' @param interactive If `FALSE` shiny interface is not launched.
+#' @param ... Addtional arguments passed to [confl_console_upload()].
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file = NULL, shiny = TRUE,
+confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = interactive(),
                                        title = NULL, ...) {
   if (is.null(Rmd_file) && rstudioapi::isAvailable()) {
     Rmd_file <- rstudioapi::getSourceEditorContext()$path
@@ -61,7 +63,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, shiny = TRUE,
     front_matter$title <- title
   }
 
-  if (shiny) {
+  if (interactive) {
     confl_addin_upload(
       md_file = md_file,
       title = front_matter$title,

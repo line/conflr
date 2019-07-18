@@ -19,8 +19,12 @@
 #' @param ... Addtional arguments passed to `confl_console_upload()`.
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = interactive(),
+confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
                                        title = NULL, ...) {
+  if (is.null(interactive)) {
+    interactive <- interactive()
+  }
+
   if (is.null(Rmd_file) && rstudioapi::isAvailable()) {
     Rmd_file <- rstudioapi::getSourceEditorContext()$path
     if (identical(Rmd_file, "")) {

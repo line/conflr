@@ -10,6 +10,9 @@
 
 
 translate_to_confl_macro <- function(html_text, image_size_default = 600) {
+  # remove UTF-8 characters that are invalid XML
+  html_text <- gsub("[^\u0009\u000a\u000d\u0020-\uD7FF\uE000-\uFFFD]", "", html_text)
+
   html_text <- paste0("<body>", html_text, "</body>")
   html_doc <- xml2::read_xml(html_text, options = c("RECOVER", "NOERROR", "NOBLANKS"))
 

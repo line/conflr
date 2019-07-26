@@ -235,7 +235,7 @@ extract_image_paths <- function(html_text) {
   img_paths[!is.na(img_paths) & !grepl(pattern = "^http", img_paths)]
 }
 
-try_get_personal_space_key <- function() {
+try_get_personal_space_key <- function(verbose = FALSE) {
   tryCatch({
     # get the current username
     username <- confl_get_current_user()$username
@@ -250,7 +250,10 @@ try_get_personal_space_key <- function() {
     space$key
   },
   error = function(e) {
-    warning(e)
+    if (verbose) {
+      # by default, do not show the error, because the keys of personal spaces are often numeric (#30).
+      warning(e, call. = FALSE)
+    }
     return(NULL)
   }
   )

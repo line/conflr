@@ -16,11 +16,13 @@
 #' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
 #' @param interactive If `FALSE` shiny interface is not launched.
 #' @param title If provided this overwrites the YAML front matter title.
+#' @param params If provided, a list of named parameters that override custom
+#'   params in the YAML front-matter.
 #' @param ... Addtional arguments passed to `confl_console_upload()`.
 #'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
-                                       title = NULL, ...) {
+                                       title = NULL, params = NULL, ...) {
   if (is.null(interactive)) {
     interactive <- interactive()
   }
@@ -60,6 +62,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       md_extensions = "-tex_math_single_backslash-tex_math_dollars-raw_tex"
     ),
     encoding = "UTF-8",
+    params = params,
     # TODO: I'm not fully sure the global env is always the right place to knit, but this is needed to avoid
     #       an error related to data.table (#29). If this doesn't work, I need to add this code (c.f. https://github.com/Rdatatable/data.table/blob/5ceda0f383f91b7503d4a236ee4e7438724340be/R/cedta.R#L13):
     #   assignInNamespace("cedta.pkgEvalsUserCode", c(data.table:::cedta.pkgEvalsUserCode, "conflr"), "data.table")

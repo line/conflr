@@ -5,7 +5,7 @@
 \title{Publish R Markdown Document to 'Confluence'}
 \usage{
 confl_create_post_from_Rmd(Rmd_file = NULL, interactive = NULL,
-  title = NULL, ...)
+  title = NULL, params = NULL, ...)
 }
 \arguments{
 \item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the active document.}
@@ -13,6 +13,9 @@ confl_create_post_from_Rmd(Rmd_file = NULL, interactive = NULL,
 \item{interactive}{If \code{FALSE} shiny interface is not launched.}
 
 \item{title}{If provided this overwrites the YAML front matter title.}
+
+\item{params}{If provided, a list of named parameters that override custom
+params in the YAML front-matter.}
 
 \item{...}{Addtional arguments passed to \code{confl_console_upload()}.}
 }

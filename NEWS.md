@@ -11,6 +11,9 @@
 * `confl_create_post_from_Rmd()` gets `interactive` argument. When it's `FALSE`
   it doesn't show Shiny popups, which is suitable for console use (#32, @ndiquattro).
 
+* `confl_create_post_from_Rmd()` gets `params` argument for parameterized R
+  Markdown (#37, @ellisvalentiner).
+
 # conflr 0.0.5
 
 * Initial release on GitHub

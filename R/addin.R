@@ -239,7 +239,7 @@ extract_image_paths <- function(html_text) {
   img_nodes <- xml2::xml_find_all(html_doc, ".//img")
   img_paths <- xml2::xml_attr(img_nodes, "src")
   # exclude external images
-  img_paths[!is.na(img_paths) & !grepl(pattern = "^http", img_paths)]
+  img_paths[!is.na(img_paths) & !grepl("^https?://", img_paths)]
 }
 
 try_get_personal_space_key <- function(verbose = FALSE) {

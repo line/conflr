@@ -139,6 +139,12 @@ test_that("replace_image() works", {
     replace_image('<img src="/path/to/img.png" />', image_size_default = NULL),
     '<ac:image ><ri:attachment ri:filename="img.png" /></ac:image>'
   )
+
+  # external images are not converted
+  expect_equal(
+    replace_image('<img src="https://example.com/img.png" />', image_size_default = NULL),
+    '<img src="https://example.com/img.png" />'
+  )
 })
 
 test_that("translate_to_confl_macro() works", {

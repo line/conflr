@@ -147,7 +147,7 @@ replace_image <- function(x, image_size_default = 600) {
     }
 
     # skip external files
-    if (startsWith(src, "http")) {
+    if (grepl("^https?://", src)) {
       next()
     }
 

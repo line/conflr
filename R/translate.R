@@ -146,6 +146,11 @@ replace_image <- function(x, image_size_default = 600) {
       next()
     }
 
+    # skip external files
+    if (startsWith(src, "http")) {
+      next()
+    }
+
     # construct height and width params (e.g. ac:height="400" ac:width="300")
     hw <- list(
       width = img_attrs$width %||% image_size_default,

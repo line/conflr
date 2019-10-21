@@ -14,6 +14,8 @@
 * `confl_create_post_from_Rmd()` gets `params` argument for parameterized R
   Markdown (#37, @ellisvalentiner).
 
+* External images are now converted properly (#39).
+
 # conflr 0.0.5
 
 * Initial release on GitHub

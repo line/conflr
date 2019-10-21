@@ -145,6 +145,12 @@ test_that("replace_image() works", {
     replace_image('<img src="https://example.com/img.png" />', image_size_default = NULL),
     '<img src="https://example.com/img.png" />'
   )
+
+  # minor case
+  expect_equal(
+    replace_image('<img src="http.png" width="450" />', image_size_default = 333),
+    '<ac:image ac:width="450"><ri:attachment ri:filename="http.png" /></ac:image>'
+  )
 })
 
 test_that("translate_to_confl_macro() works", {

@@ -89,6 +89,8 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       ...
     )
   }
+  
+  Sys.unsetenv("CONFLUENCE_PASSWORD")
 }
 
 confl_addin_upload <- function(md_file, title, tags) {

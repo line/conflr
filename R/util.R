@@ -67,10 +67,12 @@ confl_verb <- function(verb, path, ...) {
     )
   }
 
-  # If the request succeeds, cache the credentials.
-  Sys.setenv(CONFLUENCE_URL = base_url)
-  Sys.setenv(CONFLUENCE_USERNAME = username)
-  Sys.setenv(CONFLUENCE_PASSWORD = password)
+  # If the request succeeds, cache the credentials except when the user explicitly choose not to.
+  if (!isTRUE(getOption("conflr_dont_cache_envvar"))) {
+    Sys.setenv(CONFLUENCE_URL = base_url)
+    Sys.setenv(CONFLUENCE_USERNAME = username)
+    Sys.setenv(CONFLUENCE_PASSWORD = password)
+  }
 
   res
 }

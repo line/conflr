@@ -16,6 +16,9 @@
 
 * External images are now converted properly (#39).
 
+* Add an option `conflr_dont_cache_envvar` not to cache the URL, username and
+  password as envvars (#41).
+
 # conflr 0.0.5
 
 * Initial release on GitHub

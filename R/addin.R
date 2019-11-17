@@ -113,7 +113,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       confl_setting$update <- front_matter_confl$update
     }
 
-    if (!is.null(!use_original_size)) {
+    if (!is.null(use_original_size)) {
       confl_setting$use_original_size <- use_original_size
     } else {
       confl_setting$use_original_size <- front_matter_confl$use_original_size

@@ -69,29 +69,81 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     env = globalenv()
   )
 
+  # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
+  front_matter_confl <- front_matter$confl_setting
+
+  # set confl setting: base
   if (!is.null(title)) {
-    front_matter$title <- title
+    confl_setting$title <- title
+  } else {
+    confl_setting$title <- front_matter$title
   }
+
+  if (!is.null(tags)) {
+    confl_setting$tags <- tags
+  } else {
+    confl_setting <- front_matter_confl$tags
+  }
+
+  if (!is.null(space_key)) {
+    confl_setting$space_key <- space_key
+  } else {
+    confl_setting$space_key <- front_matter_confl$space_key
+  }
+
+  if (!is.null(parent_id)) {
+    confl_setting$parent_id <- parent_id
+  } else {
+    confl_setting$parent_id <- front_matter_confl$parent_id
+  }
+
+  # set confl_setting for console
+  if (!interactive) {
+    if (!is.null(type)) {
+      confl_setting$type <- type
+    } else {
+      confl_setting$type <- front_matter_confl$type
+    }
+
+    if (!is.null(update)) {
+      confl_setting$update <- update
+    } else {
+      confl_setting$update <- front_matter_confl$update
+    }
+
+    if (!is.null(!use_original_size)) {
+      confl_setting$use_original_size <- use_original_size
+    } else {
+      confl_setting$use_original_size <- front_matter_confl$use_original_size
+    }
+  }
+
 
   if (interactive) {
     confl_addin_upload(
       md_file = md_file,
-      title = front_matter$title,
-      tags = front_matter$tags
+      title = confl_setting$title,
+      tags = confl_setting$tags,
+      space_key = confl_setting$space_key,
+      parent_id = confl_setting$parent_id
     )
   } else {
     confl_console_upload(
       md_file = md_file,
-      title = front_matter$title,
-      tags = front_matter$tags,
-      ...
+      title = confl_setting$title,
+      tags = confl_setting$tags,
+      space_key = confl_setting$space_key,
+      type = confl_setting$type,
+      parent_id = confl_setting$parent_id,
+      update = confl_setting$update,
+      use_original_size = confl_setting$use_original_size
     )
   }
 }
 
-confl_addin_upload <- function(md_file, title, tags) {
+confl_addin_upload <- function(md_file, title, tags, space_key, parent_id) {
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)
@@ -115,21 +167,21 @@ confl_addin_upload <- function(md_file, title, tags) {
           width = 2,
           shiny::selectInput(
             inputId = "type", label = "Type",
-            choices = eval(formals(confl_post_page)$type),
+            choices = eval(formals(confl_post_page)$type)
           )
         ),
         shiny::column(
           width = 2,
           shiny::textInput(
             inputId = "spaceKey", label = "Space Key",
-            value = try_get_personal_space_key()
+            value = ifelse(!is.null(space_key), space_key, try_get_personal_space_key())
           )
         ),
         shiny::column(
           width = 2,
           shiny::textInput(
             inputId = "ancestors", label = "Parent page ID",
-            value = NULL
+            value = parent_id
           )
         ),
         shiny::column(

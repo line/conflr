@@ -174,7 +174,7 @@ confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id
           width = 2,
           shiny::textInput(
             inputId = "spaceKey", label = "Space Key",
-            value = ifelse(!is.null(space_key), space_key, try_get_personal_space_key())
+            value = space_key %||% try_get_personal_space_key()
           )
         ),
         shiny::column(

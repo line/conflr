@@ -74,6 +74,8 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
 
   front_matter_confl <- front_matter$confl_setting
 
+  confl_setting <- c()
+
   # set confl setting: base
   if (!is.null(title)) {
     confl_setting$title <- title

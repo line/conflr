@@ -143,7 +143,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   }
 }
 
-confl_addin_upload <- function(md_file, title, tags, space_key, parent_id) {
+confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id = NULL) {
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)

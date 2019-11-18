@@ -23,6 +23,9 @@
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
                                        title = NULL, params = NULL, ...) {
+
+  args <- list(...)
+
   if (is.null(interactive)) {
     interactive <- interactive()
   }
@@ -83,40 +86,40 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     confl_setting$title <- front_matter$title
   }
 
-  if (!is.null(tags)) {
-    confl_setting$tags <- tags
+  if (!is.null(args$tags)) {
+    confl_setting$tags <- args$tags
   } else {
     confl_setting <- front_matter_confl$tags
   }
 
-  if (!is.null(space_key)) {
-    confl_setting$space_key <- space_key
+  if (!is.null(args$space_key)) {
+    confl_setting$space_key <- args$space_key
   } else {
     confl_setting$space_key <- front_matter_confl$space_key
   }
 
-  if (!is.null(parent_id)) {
-    confl_setting$parent_id <- parent_id
+  if (!is.null(args$parent_id)) {
+    confl_setting$parent_id <- args$parent_id
   } else {
     confl_setting$parent_id <- front_matter_confl$parent_id
   }
 
   # set confl_setting for console
   if (!interactive) {
-    if (!is.null(type)) {
-      confl_setting$type <- type
+    if (!is.null(args$type)) {
+      confl_setting$type <- args$type
     } else {
       confl_setting$type <- front_matter_confl$type
     }
 
-    if (!is.null(update)) {
-      confl_setting$update <- update
+    if (!is.null(args$update)) {
+      confl_setting$update <- args$update
     } else {
       confl_setting$update <- front_matter_confl$update
     }
 
-    if (!is.null(use_original_size)) {
-      confl_setting$use_original_size <- use_original_size
+    if (!is.null(args$use_original_size)) {
+      confl_setting$use_original_size <- args$use_original_size
     } else {
       confl_setting$use_original_size <- front_matter_confl$use_original_size
     }

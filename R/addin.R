@@ -24,8 +24,6 @@
 confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
                                        title = NULL, params = NULL, ...) {
 
-  args <- list(...)
-
   if (is.null(interactive)) {
     interactive <- interactive()
   }
@@ -75,56 +73,20 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
-  front_matter_confl <- front_matter$confl_setting
+  confl_setting <- purrr::list_modify(front_matter$confl_setting, ...)
 
-  confl_setting <- c()
-
-  # set confl setting: base
-  if (!is.null(title)) {
-    confl_setting$title <- title
-  } else {
+  if (is.null(confl_setting$title)) {
     confl_setting$title <- front_matter$title
   }
 
-  if (!is.null(args$tags)) {
-    confl_setting$tags <- args$tags
-  } else {
-    confl_setting <- front_matter_confl$tags
-  }
-
-  if (!is.null(args$space_key)) {
-    confl_setting$space_key <- args$space_key
-  } else {
-    confl_setting$space_key <- front_matter_confl$space_key
-  }
-
-  if (!is.null(args$parent_id)) {
-    confl_setting$parent_id <- args$parent_id
-  } else {
-    confl_setting$parent_id <- front_matter_confl$parent_id
-  }
-
-  # set confl_setting for console
   if (!interactive) {
-    if (!is.null(args$type)) {
-      confl_setting$type <- args$type
-    } else {
-      confl_setting$type <- front_matter_confl$type
+    if (is.null(confl_setting$update)) {
+      confl_setting$update <- FALSE
     }
-
-    if (!is.null(args$update)) {
-      confl_setting$update <- args$update
-    } else {
-      confl_setting$update <- front_matter_confl$update
-    }
-
-    if (!is.null(args$use_original_size)) {
-      confl_setting$use_original_size <- args$use_original_size
-    } else {
-      confl_setting$use_original_size <- front_matter_confl$use_original_size
+    if (is.null(confl_setting$use_origin_size)) {
+      confl_setting$use_original_size <- FALSE
     }
   }
-
 
   if (interactive) {
     confl_addin_upload(
@@ -164,7 +126,7 @@ confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id
   # Shiny UI -----------------------------------------------------------
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Preview",
-      right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
     ),
     miniUI::miniContentPanel(
       shiny::fluidRow(

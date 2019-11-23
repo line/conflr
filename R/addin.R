@@ -23,6 +23,7 @@
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
                                        title = NULL, params = NULL, ...) {
+
   if (is.null(interactive)) {
     interactive <- interactive()
   }
@@ -69,29 +70,45 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     env = globalenv()
   )
 
+  # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
-  if (!is.null(title)) {
-    front_matter$title <- title
+  confluence_settings <- purrr::list_modify(front_matter$confluence_settings, ...)
+
+  confluence_settings$title <- title %||% front_matter$title
+
+  if (!interactive) {
+    if (is.null(confluence_settings$update)) {
+      confluence_settings$update <- FALSE
+    }
+    if (is.null(confluence_settings$use_origin_size)) {
+      confluence_settings$use_original_size <- FALSE
+    }
   }
 
   if (interactive) {
     confl_addin_upload(
       md_file = md_file,
-      title = front_matter$title,
-      tags = front_matter$tags
+      title = confluence_settings$title,
+      tags = confluence_settings$tags,
+      space_key = confluence_settings$space_key,
+      parent_id = confluence_settings$parent_id
     )
   } else {
     confl_console_upload(
       md_file = md_file,
-      title = front_matter$title,
-      tags = front_matter$tags,
-      ...
+      title = confluence_settings$title,
+      tags = confluence_settings$tags,
+      space_key = confluence_settings$space_key,
+      type = confluence_settings$type,
+      parent_id = confluence_settings$parent_id,
+      update = confluence_settings$update,
+      use_original_size = confluence_settings$use_original_size
     )
   }
 }
 
-confl_addin_upload <- function(md_file, title, tags) {
+confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id = NULL) {
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)
@@ -107,7 +124,7 @@ confl_addin_upload <- function(md_file, title, tags) {
   # Shiny UI -----------------------------------------------------------
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Preview",
-      right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
     ),
     miniUI::miniContentPanel(
       shiny::fluidRow(
@@ -115,21 +132,21 @@ confl_addin_upload <- function(md_file, title, tags) {
           width = 2,
           shiny::selectInput(
             inputId = "type", label = "Type",
-            choices = eval(formals(confl_post_page)$type),
+            choices = eval(formals(confl_post_page)$type)
           )
         ),
         shiny::column(
           width = 2,
           shiny::textInput(
             inputId = "spaceKey", label = "Space Key",
-            value = try_get_personal_space_key()
+            value = space_key %||% try_get_personal_space_key()
           )
         ),
         shiny::column(
           width = 2,
           shiny::textInput(
             inputId = "ancestors", label = "Parent page ID",
-            value = NULL
+            value = parent_id
           )
         ),
         shiny::column(

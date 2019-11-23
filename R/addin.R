@@ -73,11 +73,17 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
-  confluence_settings <- purrr::list_modify(front_matter$confluence_settings, ...)
+  # 1. Use confluence_settings on the front matter if it's available
+  # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
+  confluence_settings <- purrr::list_modify(front_matter$confluence_settings %||% list(), ...)
 
+  # title is specified as a seperate item on front matter
+  # override title if it's specified as the argument of confl_create_post_from_Rmd
   confluence_settings$title <- title %||% front_matter$title
 
   if (!interactive) {
+    # TODO: these arguments should be logical, so we need to check and fill it.
+    #       But, this should be done inside confl_addin_upload()...
     if (is.null(confluence_settings$update)) {
       confluence_settings$update <- FALSE
     }

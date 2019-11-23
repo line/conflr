@@ -19,6 +19,9 @@
 * Add an option `conflr_dont_cache_envvar` not to cache the URL, username and
   password as envvars (#43).
 
+" conflr now accepts `confluence_settings` front-matter, which is useful for
+  automation (#44, @kazutan).
+
 # conflr 0.0.5
 
 * Initial release on GitHub

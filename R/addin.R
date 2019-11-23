@@ -73,39 +73,37 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
 
-  confl_setting <- purrr::list_modify(front_matter$confl_setting, ...)
+  confluence_setting <- purrr::list_modify(front_matter$confluence_setting, ...)
 
-  if (is.null(confl_setting$title)) {
-    confl_setting$title <- front_matter$title
-  }
+  confluence_setting$title <- title %||% front_matter$title
 
   if (!interactive) {
-    if (is.null(confl_setting$update)) {
-      confl_setting$update <- FALSE
+    if (is.null(confluence_setting$update)) {
+      confluence_setting$update <- FALSE
     }
-    if (is.null(confl_setting$use_origin_size)) {
-      confl_setting$use_original_size <- FALSE
+    if (is.null(confluence_setting$use_origin_size)) {
+      confluence_setting$use_original_size <- FALSE
     }
   }
 
   if (interactive) {
     confl_addin_upload(
       md_file = md_file,
-      title = confl_setting$title,
-      tags = confl_setting$tags,
-      space_key = confl_setting$space_key,
-      parent_id = confl_setting$parent_id
+      title = confluence_setting$title,
+      tags = confluence_setting$tags,
+      space_key = confluence_setting$space_key,
+      parent_id = confluence_setting$parent_id
     )
   } else {
     confl_console_upload(
       md_file = md_file,
-      title = confl_setting$title,
-      tags = confl_setting$tags,
-      space_key = confl_setting$space_key,
-      type = confl_setting$type,
-      parent_id = confl_setting$parent_id,
-      update = confl_setting$update,
-      use_original_size = confl_setting$use_original_size
+      title = confluence_setting$title,
+      tags = confluence_setting$tags,
+      space_key = confluence_setting$space_key,
+      type = confluence_setting$type,
+      parent_id = confluence_setting$parent_id,
+      update = confluence_setting$update,
+      use_original_size = confluence_setting$use_original_size
     )
   }
 }

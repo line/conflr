@@ -36,10 +36,10 @@ conflr uses these environmental variables to access your Confluence.
 * `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email address).
 * `CONFLUENCE_PASSWORD`: Your password (On Atlassian Cloud, your API token. For more details about API token, please read [the official document](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
 
-There are several ways to set these environmental variables. The quickest way is to enter in the popups that are displayed when you run the addin (see Usages section below). The inputs are cached in the environmental variables listed above by default. If you don't want to cache them, please set the following option.
+There are several ways to set these environmental variables. The quickest way is to enter in the popups that are displayed when you run the addin (see Usages section below). The inputs are cached in the environmental variables listed above by default. If you don't want to cache the password, please set the following option.
 
 ```{r options, eval=FALSE}
-options(conflr_dont_cache_envvar = TRUE)
+options(conflr_addin_clear_password_after_success = TRUE)
 ```
 
 Another way is to set the variables in the `.Renviron` file (you can open the file with `usethis::edit_r_environ()`). For example, you can set the base URL in the file as the following.

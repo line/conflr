@@ -37,10 +37,10 @@ There are several ways to set these environmental variables. The
 quickest way is to enter in the popups that are displayed when you run
 the addin (see Usages section below). The inputs are cached in the
 environmental variables listed above by default. If you don’t want to
-cache them, please set the following option.
+cache the password, please set the following option.
 
 ``` r
-options(conflr_dont_cache_envvar = TRUE)
+options(conflr_addin_clear_password_after_success = TRUE)
 ```
 
 Another way is to set the variables in the `.Renviron` file (you can

@@ -100,6 +100,12 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       space_key = confluence_settings$space_key,
       parent_id = confluence_settings$parent_id
     )
+
+    # if the user doesn't want to store the password as envvar, clear it.
+    if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
+      message("unsetting CONFLUENCE_PASSWORD...")
+      Sys.unsetenv("CONFLUENCE_PASSWORD")
+    }
   } else {
     confl_console_upload(
       md_file = md_file,

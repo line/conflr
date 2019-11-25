@@ -16,8 +16,8 @@
 
 * External images are now converted properly (#39).
 
-* Add an option `conflr_dont_cache_envvar` not to cache the URL, username and
-  password as envvars (#43).
+* Add an option `conflr_addin_clear_password_after_success` not to cache the
+  password as envvars (#48).
 
 " conflr now accepts `confluence_settings` front-matter, which is useful for
   automation (#44, @kazutan).

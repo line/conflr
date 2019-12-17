@@ -57,13 +57,13 @@ set the base URL in the file as the following.
 Markdown’s powerfulness allows you to execute arbitrary code; be sure
 about what the code does before clicking “Post to Confluence”\!)
 
-![](./man/figures/screenshot1.png)
+![](man/figures/screenshot1.png)
 
-![](./man/figures/screenshot2.png)
+![](man/figures/screenshot2.png)
 
 Then, you will be asked your username and password.
 
-![](./man/figures/popup1.png)
+![](man/figures/popup1.png)
 
 ### 2\. Check the preview and click “Publish”
 
@@ -73,11 +73,11 @@ Then, you will be asked your username and password.
   - **Parent page ID**: (optional): The ID of the parent page to the
     page.
 
-![](./man/figures/screenshot3.png)
+![](man/figures/screenshot3.png)
 
 ### 3\. Check the result
 
-![](./man/figures/screenshot4.png)
+![](man/figures/screenshot4.png)
 
 ## Know limitations
 

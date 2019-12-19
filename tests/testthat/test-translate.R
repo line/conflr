@@ -28,22 +28,33 @@ test_that("restore_cdata() works", {
 
 test_that("replace_code_chunk() works", {
   expect_equal(
-    replace_code_chunk("<pre><code>print(1)</code></pre>"),
+    replace_code_chunk("<pre><code class=\"language-r\">print(1)</code></pre>"),
     '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">r</ac:parameter>
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
   )
   # w/ spaces
   expect_equal(
-    replace_code_chunk("<pre>\n<code>print(1)</code>  </pre>"),
+    replace_code_chunk("<pre>\n<code class=\"language-r\">print(1)</code>  </pre>"),
     '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">r</ac:parameter>
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
   )
-  # w/ attributes
+  # w/ language attribute
   expect_equal(
     replace_code_chunk("<pre><code language='r'>print(1)</code></pre>"),
     '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">r</ac:parameter>
+  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
+</ac:structured-macro>'
+  )
+  # w/o attribute
+  expect_equal(
+    replace_code_chunk("<pre><code>print(1)</code></pre>"),
+    '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">text</ac:parameter>
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
   )
@@ -166,6 +177,7 @@ x < 1 & y > 1
     translate_to_confl_macro(html_text),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
+  <ac:parameter ac:name=\"language\">r</ac:parameter>
   <ac:plain-text-body><![CDATA[x < 1 & y > 1\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )
@@ -183,6 +195,7 @@ iris$Species
     translate_to_confl_macro(html_text),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
+  <ac:parameter ac:name=\"language\">r</ac:parameter>
   <ac:plain-text-body><![CDATA[iris$Species\n'$$'\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )

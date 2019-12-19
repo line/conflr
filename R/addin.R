@@ -59,6 +59,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   md_file <- rmarkdown::render(
     input = Rmd_file,
     output_format = rmarkdown::md_document(
+      variant = "commonmark",
       pandoc_args = "--wrap=none",
       md_extensions = "-tex_math_single_backslash-tex_math_dollars-raw_tex"
     ),

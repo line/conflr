@@ -64,16 +64,40 @@ restore_cdata <- function(x) {
 }
 
 replace_code_chunk <- function(x) {
-  stringi::stri_replace_all_regex(
+  locs <- stringi::stri_locate_all_regex(
     x,
     "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
-    '<ac:structured-macro ac:name="code">
-  <ac:plain-text-body><![CDATA[$1]]></ac:plain-text-body>
-</ac:structured-macro>',
-    dotall = TRUE
-  )
-}
+    dotall = TRUE,
+    omit_no_match = TRUE
+  )[[1]]
 
+  for (loc in rev(split(locs, row(locs)))) {
+    pre_tag <- stringi::stri_sub(x, loc[1], loc[2])
+    code_tag <- xml2::xml_find_first(xml2::read_xml(pre_tag), "/pre/code")
+
+    # code
+    code_text <- xml2::xml_text(code_tag)
+
+    # language attribute
+    class <- xml2::xml_attr(code_tag, "class")
+    if (!is.na(class)) {
+      lang <- stringi::stri_extract_first_regex(class, "(?<=language-)(.*)")
+    } else {
+      # TODO: where did I face this attribute...?
+      lang <- xml2::xml_attr(code_tag, "language")
+    }
+
+    if (is.na(lang)) lang <- "text"
+
+    stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
+      '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">{lang}</ac:parameter>
+  <ac:plain-text-body><![CDATA[{code_text}]]></ac:plain-text-body>
+</ac:structured-macro>'
+    )
+  }
+  x
+}
 
 mark_inline_math <- function(x) {
   # replace the left dallar (e.g. $\frac{1}{3}$)

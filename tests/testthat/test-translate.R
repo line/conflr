@@ -27,56 +27,37 @@ test_that("restore_cdata() works", {
 })
 
 test_that("replace_code_chunk() works", {
-  # without option: python should be supported by default
-  expect_equal(
-    replace_code_chunk("<pre><code class=\"language-python\">print(x)</code></pre>"),
-    '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">py</ac:parameter>
-  <ac:plain-text-body><![CDATA[print(x)]]></ac:plain-text-body>
-</ac:structured-macro>'
-  )
+  do_test_code_chunk <- function(code_tag_attr, expected_language) {
+    given <- as.character(glue::glue("<pre><code {code_tag_attr}>print(1)</code></pre>"))
 
-  # without option: R should not be supported by default
-  expect_equal(
-    replace_code_chunk("<pre><code class=\"language-r\">print(1)</code></pre>"),
-    '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">text</ac:parameter>
-  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
-</ac:structured-macro>'
-  )
-})
+    expected <- as.character(glue::glue(
+      '<ac:structured-macro ac:name="code">\n',
+      '  <ac:parameter ac:name="language">{expected_language}</ac:parameter>\n',
+      '  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>\n',
+      '</ac:structured-macro>'
+    ))
 
-test_that("replace_code_chunk() works when syntax highlighting of R is supported", {
+    expect_equal(replace_code_chunk(given), expected)
+  }
+
+  # by default Python and SQL are supported
+  do_test_code_chunk('class="language-python"', "py")
+  do_test_code_chunk('class="language-sql"', "sql")
+  # by default R is not supported
+  do_test_code_chunk('class="language-r"', "text")
+  # no atrribute
+  do_test_code_chunk('', "text")
+
   withr::local_options(list(conflr_supported_languages_extra = c(r = "r")))
+  # with options, r is supported
+  do_test_code_chunk('class="language-r"', "r")
+  do_test_code_chunk('language="r"', "r")
 
-  expect_equal(
-    replace_code_chunk("<pre><code class=\"language-r\">print(1)</code></pre>"),
-    '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">r</ac:parameter>
-  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
-</ac:structured-macro>'
-  )
   # w/ spaces
   expect_equal(
-    replace_code_chunk("<pre>\n<code class=\"language-r\">print(1)</code>  </pre>"),
+    replace_code_chunk('<pre>\n<code class="language-r">print(1)</code>  </pre>'),
     '<ac:structured-macro ac:name="code">
   <ac:parameter ac:name="language">r</ac:parameter>
-  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
-</ac:structured-macro>'
-  )
-  # w/ language attribute
-  expect_equal(
-    replace_code_chunk("<pre><code language='r'>print(1)</code></pre>"),
-    '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">r</ac:parameter>
-  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
-</ac:structured-macro>'
-  )
-  # w/o attribute
-  expect_equal(
-    replace_code_chunk("<pre><code>print(1)</code></pre>"),
-    '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">text</ac:parameter>
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
   )

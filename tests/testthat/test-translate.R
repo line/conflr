@@ -27,6 +27,28 @@ test_that("restore_cdata() works", {
 })
 
 test_that("replace_code_chunk() works", {
+  # without option: python should be supported by default
+  expect_equal(
+    replace_code_chunk("<pre><code class=\"language-python\">print(x)</code></pre>"),
+    '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">py</ac:parameter>
+  <ac:plain-text-body><![CDATA[print(x)]]></ac:plain-text-body>
+</ac:structured-macro>'
+  )
+
+  # without option: R should not be supported by default
+  expect_equal(
+    replace_code_chunk("<pre><code class=\"language-r\">print(1)</code></pre>"),
+    '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">text</ac:parameter>
+  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
+</ac:structured-macro>'
+  )
+})
+
+test_that("replace_code_chunk() works when syntax highlighting of R is supported", {
+  withr::local_options(list(conflr_supported_languages_extra = c(r = "r")))
+
   expect_equal(
     replace_code_chunk("<pre><code class=\"language-r\">print(1)</code></pre>"),
     '<ac:structured-macro ac:name="code">
@@ -177,7 +199,7 @@ x < 1 & y > 1
     translate_to_confl_macro(html_text),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
-  <ac:parameter ac:name=\"language\">r</ac:parameter>
+  <ac:parameter ac:name=\"language\">text</ac:parameter>
   <ac:plain-text-body><![CDATA[x < 1 & y > 1\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )
@@ -195,7 +217,7 @@ iris$Species
     translate_to_confl_macro(html_text),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
-  <ac:parameter ac:name=\"language\">r</ac:parameter>
+  <ac:parameter ac:name=\"language\">text</ac:parameter>
   <ac:plain-text-body><![CDATA[iris$Species\n'$$'\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )

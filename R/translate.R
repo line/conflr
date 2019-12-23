@@ -63,6 +63,13 @@ restore_cdata <- function(x) {
   x
 }
 
+# picking some popular languages from https://confluence.atlassian.com/doc/code-block-macro-139390.html
+supported_languages_default <- c(
+  sql = "sql",
+  cpp = "cpp",
+  python = "py"
+)
+
 replace_code_chunk <- function(x) {
   locs <- stringi::stri_locate_all_regex(
     x,
@@ -87,7 +94,16 @@ replace_code_chunk <- function(x) {
       lang <- xml2::xml_attr(code_tag, "language")
     }
 
-    if (is.na(lang)) lang <- "text"
+    supported_languages_extra <- getOption("conflr_supported_languages_extra")
+    if (is.null(names(supported_languages_extra))) {
+      names(supported_languages_extra) <- supported_languages_extra
+    }
+    supported_languages <- c(supported_languages_extra, supported_languages_default)
+
+    lang <- supported_languages[lang]
+    if (is.na(lang)) {
+      lang <- "text"
+    }
 
     stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
       '<ac:structured-macro ac:name="code">

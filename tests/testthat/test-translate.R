@@ -26,6 +26,26 @@ test_that("restore_cdata() works", {
   )
 })
 
+test_that("get_corresponding_lang() works", {
+  expect_equal(get_corresponding_lang("sql"), "sql")
+  expect_equal(get_corresponding_lang("cpp"), "cpp")
+  expect_equal(get_corresponding_lang("python"), "py")
+  expect_equal(get_corresponding_lang("r"), "text")
+  expect_equal(get_corresponding_lang(NA), "text")
+
+  # unnamed form
+  withr::with_options(
+    list(conflr_supported_languages_extra = "r"),
+    expect_equal(get_corresponding_lang("r"), "r")
+  )
+
+  # named form
+  withr::with_options(
+    list(conflr_supported_languages_extra = c(r = "r")),
+    expect_equal(get_corresponding_lang("r"), "r")
+  )
+})
+
 test_that("replace_code_chunk() works", {
   do_test_code_chunk <- function(code_tag_attr, expected_language) {
     given <- as.character(glue::glue("<pre><code {code_tag_attr}>print(1)</code></pre>"))

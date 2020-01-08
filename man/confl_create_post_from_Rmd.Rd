@@ -4,8 +4,13 @@
 \alias{confl_create_post_from_Rmd}
 \title{Publish R Markdown Document to 'Confluence'}
 \usage{
-confl_create_post_from_Rmd(Rmd_file = NULL, interactive = NULL,
-  title = NULL, params = NULL, ...)
+confl_create_post_from_Rmd(
+  Rmd_file = NULL,
+  interactive = NULL,
+  title = NULL,
+  params = NULL,
+  ...
+)
 }
 \arguments{
 \item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the active document.}

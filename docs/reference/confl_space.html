@@ -117,9 +117,16 @@
     <p>REST Wrapper for the SpaceService</p>
     </div>
 
-    <pre class="usage"><span class='fu'>confl_list_spaces</span>(<span class='kw'>spaceKey</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"global"</span>, <span class='st'>"personal"</span>),
-  <span class='kw'>status</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"current"</span>, <span class='st'>"archived"</span>), <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>favourite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>25</span>)
+    <pre class="usage"><span class='fu'>confl_list_spaces</span>(
+  <span class='kw'>spaceKey</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"global"</span>, <span class='st'>"personal"</span>),
+  <span class='kw'>status</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"current"</span>, <span class='st'>"archived"</span>),
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>favourite</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>25</span>
+)
 
 <span class='fu'>confl_get_space</span>(<span class='no'>spaceKey</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 

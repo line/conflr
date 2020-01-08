@@ -6,9 +6,16 @@
 \alias{confl_get_space}
 \title{REST Wrapper for the SpaceService}
 \usage{
-confl_list_spaces(spaceKey = NULL, type = c("global", "personal"),
-  status = c("current", "archived"), label = NULL, favourite = NULL,
-  expand = NULL, start = NULL, limit = 25)
+confl_list_spaces(
+  spaceKey = NULL,
+  type = c("global", "personal"),
+  status = c("current", "archived"),
+  label = NULL,
+  favourite = NULL,
+  expand = NULL,
+  start = NULL,
+  limit = 25
+)
 
 confl_get_space(spaceKey, expand = NULL)
 }
@@ -24,7 +31,7 @@ confl_get_space(spaceKey, expand = NULL)
 \item{favourite}{Filter the list of spaces returned by favourites.}
 
 \item{expand}{A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. \code{body.storage,history}).}
+contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{start}{The start point of the collection to return.}
 

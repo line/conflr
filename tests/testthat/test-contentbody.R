@@ -1,6 +1,6 @@
 context("contentbody")
 
-test_that("confl_post_page() works", {
+test_that("confl_contentbody_convert() works", {
   # cannot mock on CI
   skip_on_ci_or_cran()
 

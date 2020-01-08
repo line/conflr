@@ -22,6 +22,9 @@
 " conflr now accepts `confluence_settings` front-matter, which is useful for
   automation (#44, @kazutan).
 
+* A new function `confl_contentbody_convert()` converts the Confluence-related
+  formats by using the Confluence REST API (#58).
+
 # conflr 0.0.5
 
 * Initial release on GitHub

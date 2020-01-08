@@ -1,0 +1,37 @@
+# Copyright (C) 2019 LINE Corporation
+#
+# conflr is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, version 3.
+#
+# conflr is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
+
+
+#' Converts between content body representations
+#'
+#' @name confl_contentbody
+#' @param x
+#'   The content body to convert.
+#' @param from
+#'   The format to convert from.
+#' @param to
+#'   The format to convert to.
+#'
+#' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/>
+#'
+#' @export
+confl_contentbody_convert <- function(x,
+                                      from = c("wiki", "storage", "editor", "view", "export_view", "styled_view"),
+                                      to   = c("storage", "editor", "view", "export_view", "styled_view")) {
+  if (length(x) != 1) stop("`x` must be length 1", call. = FALSE)
+
+  from <- match.arg(from)
+  to <- match.arg(to)
+
+  res <- confl_verb("POST", glue::glue("/contentbody/convert/{to}"),
+    body = list(value = x, representation = from), encode = "json"
+  )
+  httr::content(res)$value
+}

@@ -19,7 +19,7 @@
 #' @param to
 #'   The format to convert to.
 #'
-#' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/>
+#' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/latest/>
 #'
 #' @export
 confl_contentbody_convert <- function(x,

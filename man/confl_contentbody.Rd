@@ -22,5 +22,5 @@ confl_contentbody_convert(
 Converts between content body representations
 }
 \seealso{
-\url{https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/}
+\url{https://docs.atlassian.com/ConfluenceServer/rest/latest/}
 }

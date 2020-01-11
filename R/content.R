@@ -60,16 +60,20 @@ confl_get_page <- function(id, expand = "body.storage") {
 #'   The page ID of the parent pages.
 #' @param image_size_default
 #'   The default width of images in pixel. If `NULL`, images are displayed in their original sizes.
+#' @param supported_syntax_highlighting
+#'   A named character vector of supported syntax highlight other than default (e.g. `c(r = "r")`).
 #' @export
 confl_post_page <- function(type = c("page", "blogpost"),
                             spaceKey,
                             title,
                             body,
                             ancestors = NULL,
-                            image_size_default = 600) {
+                            image_size_default = 600,
+                            supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")) {
   type <- match.arg(type)
 
-  body <- translate_to_confl_macro(body, image_size_default = image_size_default)
+  body <- translate_to_confl_macro(body, image_size_default = image_size_default,
+                                   supported_syntax_highlighting = supported_syntax_highlighting)
 
   req_body <- list(
     type = type,

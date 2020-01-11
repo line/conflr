@@ -9,14 +9,26 @@
 \alias{confl_delete_page}
 \title{REST Wrapper for the ContentService}
 \usage{
-confl_list_pages(type = c("page", "blogpost", "comment", "attachment"),
-  limit = 10, start = 0, spaceKey = NULL, title = NULL,
-  expand = NULL)
+confl_list_pages(
+  type = c("page", "blogpost", "comment", "attachment"),
+  limit = 10,
+  start = 0,
+  spaceKey = NULL,
+  title = NULL,
+  expand = NULL
+)
 
 confl_get_page(id, expand = "body.storage")
 
-confl_post_page(type = c("page", "blogpost"), spaceKey, title, body,
-  ancestors = NULL, image_size_default = 600)
+confl_post_page(
+  type = c("page", "blogpost"),
+  spaceKey,
+  title,
+  body,
+  ancestors = NULL,
+  image_size_default = 600,
+  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")
+)
 
 confl_update_page(id, title, body, image_size_default = 600)
 
@@ -34,7 +46,7 @@ confl_delete_page(id)
 \item{title}{The title of the page to find. Required for \code{page} type.}
 
 \item{expand}{A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. \code{body.storage,history}).}
+contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{id}{ID of the content.}
 
@@ -43,6 +55,8 @@ contents, use periods. (e.g. \code{body.storage,history}).}
 \item{ancestors}{The page ID of the parent pages.}
 
 \item{image_size_default}{The default width of images in pixel. If \code{NULL}, images are displayed in their original sizes.}
+
+\item{supported_syntax_highlighting}{A named character vector of supported syntax highlight other than default (e.g. \code{c(r = "r")}).}
 }
 \description{
 REST Wrapper for the ContentService

@@ -16,7 +16,7 @@ confl_get_current_user(expand = NULL)
 \item{username}{Username of the user to request from this resource.}
 
 \item{expand}{A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. \code{body.storage,history}).}
+contents, use periods. (e.g. \verb{body.storage,history}).}
 }
 \description{
 Non-admin User Operations

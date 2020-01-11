@@ -8,8 +8,25 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
+# picking some popular languages from https://confluence.atlassian.com/doc/code-block-macro-139390.html
+supported_syntax_highlighting_default <- c(
+  sql = "sql",
+  cpp = "cpp",
+  python = "py",
+  html = "html/xml",
+  css = "css",
+  bash = "bash",
+  yaml = "yaml"
+)
 
-translate_to_confl_macro <- function(html_text, image_size_default = 600) {
+translate_to_confl_macro <- function(html_text, image_size_default = 600, supported_syntax_highlighting = character(0)) {
+  # if supported_syntax_highlighting is provided as unnamed form, name it
+  if (!is.null(supported_syntax_highlighting) && is.null(names(supported_syntax_highlighting))) {
+    names(supported_syntax_highlighting) <- supported_syntax_highlighting
+  }
+
+  supported_syntax_highlighting <- c(supported_syntax_highlighting, supported_syntax_highlighting_default)
+
   html_text <- paste0("<body>", html_text, "</body>")
   html_doc <- xml2::read_xml(html_text, options = c("RECOVER", "NOERROR", "NOBLANKS"))
 
@@ -30,7 +47,7 @@ translate_to_confl_macro <- function(html_text, image_size_default = 600) {
   html_text <- paste(as.character(html_contents), collapse = "\n")
 
   # replace syntax with macros
-  html_text <- replace_code_chunk(html_text)
+  html_text <- replace_code_chunk(html_text, supported_syntax_highlighting = supported_syntax_highlighting)
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
   html_text <- replace_image(html_text, image_size_default = image_size_default)
@@ -63,33 +80,13 @@ restore_cdata <- function(x) {
   x
 }
 
-# picking some popular languages from https://confluence.atlassian.com/doc/code-block-macro-139390.html
-supported_languages_default <- c(
-  sql = "sql",
-  cpp = "cpp",
-  python = "py",
-  html = "html/xml",
-  css = "css",
-  bash = "bash",
-  yaml = "yaml"
-)
-
-get_corresponding_lang <- function(x) {
+get_corresponding_lang <- function(x, supported_syntax_highlighting = character(0)) {
   if (isTRUE(is.na(x)) || identical(x, "")) {
     # TODO: "text" seems work, but it's not documented on https://confluence.atlassian.com/doc/code-block-macro-139390.html
     return("none")
   }
 
-  supported_languages_extra <- getOption("conflr_supported_languages_extra")
-
-  # if supported_languages_extra is provided as unnamed form, name it
-  if (!is.null(supported_languages_extra) && is.null(names(supported_languages_extra))) {
-    names(supported_languages_extra) <- supported_languages_extra
-  }
-
-  supported_languages <- c(supported_languages_extra, supported_languages_default)
-
-  x <- supported_languages[x]
+  x <- supported_syntax_highlighting[x]
 
   if (is.na(x)) {
     "none"
@@ -98,7 +95,7 @@ get_corresponding_lang <- function(x) {
   }
 }
 
-replace_code_chunk <- function(x) {
+replace_code_chunk <- function(x, supported_syntax_highlighting = character(0)) {
   locs <- stringi::stri_locate_all_regex(
     x,
     "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
@@ -122,7 +119,7 @@ replace_code_chunk <- function(x) {
       lang <- xml2::xml_attr(code_tag, "language")
     }
 
-    lang <- get_corresponding_lang(lang)
+    lang <- get_corresponding_lang(lang, supported_syntax_highlighting)
 
     stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
       '<ac:structured-macro ac:name="code">

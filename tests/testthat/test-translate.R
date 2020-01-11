@@ -27,27 +27,23 @@ test_that("restore_cdata() works", {
 })
 
 test_that("get_corresponding_lang() works", {
-  expect_equal(get_corresponding_lang("sql"), "sql")
-  expect_equal(get_corresponding_lang("cpp"), "cpp")
-  expect_equal(get_corresponding_lang("python"), "py")
-  expect_equal(get_corresponding_lang("r"), "text")
-  expect_equal(get_corresponding_lang(NA), "text")
-
-  # unnamed form
-  withr::with_options(
-    list(conflr_supported_languages_extra = "r"),
-    expect_equal(get_corresponding_lang("r"), "r")
-  )
-
-  # named form
-  withr::with_options(
-    list(conflr_supported_languages_extra = c(r = "r")),
-    expect_equal(get_corresponding_lang("r"), "r")
-  )
+  # supported
+  expect_equal(get_corresponding_lang("sql", supported_syntax_highlighting_default), "sql")
+  expect_equal(get_corresponding_lang("cpp", supported_syntax_highlighting_default), "cpp")
+  expect_equal(get_corresponding_lang("python", supported_syntax_highlighting_default), "py")
+  expect_equal(get_corresponding_lang("html", supported_syntax_highlighting_default), "html/xml")
+  expect_equal(get_corresponding_lang("css", supported_syntax_highlighting_default), "css")
+  expect_equal(get_corresponding_lang("bash", supported_syntax_highlighting_default), "bash")
+  expect_equal(get_corresponding_lang("yaml", supported_syntax_highlighting_default), "yaml")
+  # unsupported
+  expect_equal(get_corresponding_lang("r", supported_syntax_highlighting_default), "none")
+  expect_equal(get_corresponding_lang(NA, supported_syntax_highlighting_default), "none")
+  # custom
+  expect_equal(get_corresponding_lang("r", c(r = "r")), "r")
 })
 
 test_that("replace_code_chunk() works", {
-  do_test_code_chunk <- function(code_tag_attr, expected_language) {
+  do_test_code_chunk <- function(code_tag_attr, expected_language, supported_syntax_highlighting = supported_syntax_highlighting_default) {
     given <- as.character(glue::glue("<pre><code {code_tag_attr}>print(1)</code></pre>"))
 
     expected <- as.character(glue::glue(
@@ -57,25 +53,24 @@ test_that("replace_code_chunk() works", {
       '</ac:structured-macro>'
     ))
 
-    expect_equal(replace_code_chunk(given), expected)
+    expect_equal(replace_code_chunk(given, supported_syntax_highlighting), expected)
   }
 
   # by default Python and SQL are supported
   do_test_code_chunk('class="language-python"', "py")
   do_test_code_chunk('class="language-sql"', "sql")
   # by default R is not supported
-  do_test_code_chunk('class="language-r"', "text")
+  do_test_code_chunk('class="language-r"', "none")
   # no atrribute
-  do_test_code_chunk('', "text")
+  do_test_code_chunk('', "none")
 
-  withr::local_options(list(conflr_supported_languages_extra = c(r = "r")))
   # with options, r is supported
-  do_test_code_chunk('class="language-r"', "r")
-  do_test_code_chunk('language="r"', "r")
+  do_test_code_chunk('class="language-r"', "r", c(r = "r"))
+  do_test_code_chunk('language="r"', "r", c(r = "r"))
 
   # w/ spaces
   expect_equal(
-    replace_code_chunk('<pre>\n<code class="language-r">print(1)</code>  </pre>'),
+    replace_code_chunk('<pre>\n<code class="language-r">print(1)</code>  </pre>', c(r = "r")),
     '<ac:structured-macro ac:name="code">
   <ac:parameter ac:name="language">r</ac:parameter>
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
@@ -197,10 +192,10 @@ x < 1 & y > 1
 "
   )
   expect_equal(
-    translate_to_confl_macro(html_text),
+    translate_to_confl_macro(html_text, supported_syntax_highlighting_default),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
-  <ac:parameter ac:name=\"language\">text</ac:parameter>
+  <ac:parameter ac:name=\"language\">none</ac:parameter>
   <ac:plain-text-body><![CDATA[x < 1 & y > 1\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )
@@ -215,10 +210,10 @@ iris$Species
 "
   )
   expect_equal(
-    translate_to_confl_macro(html_text),
+    translate_to_confl_macro(html_text, supported_syntax_highlighting_default),
     "<p>code:</p>
 <ac:structured-macro ac:name=\"code\">
-  <ac:parameter ac:name=\"language\">text</ac:parameter>
+  <ac:parameter ac:name=\"language\">none</ac:parameter>
   <ac:plain-text-body><![CDATA[iris$Species\n'$$'\n]]></ac:plain-text-body>
 </ac:structured-macro>"
   )

@@ -8,8 +8,14 @@
 \alias{confl_update_attachment_data}
 \title{CRUD Operations for Attachments on Content}
 \usage{
-confl_list_attachments(id, filename = NULL, mediaType = NULL,
-  start = 0, limit = 50, expand = NULL)
+confl_list_attachments(
+  id,
+  filename = NULL,
+  mediaType = NULL,
+  start = 0,
+  limit = 50,
+  expand = NULL
+)
 
 confl_post_attachment(id, path)
 
@@ -29,7 +35,7 @@ confl_update_attachment_data(id, attachmentId, path, ...)
 \item{limit}{The limit of the number of items to return, this may be restricted by fixed system limits.}
 
 \item{expand}{A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. \code{body.storage,history}).}
+contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{path}{Path to a file to upload.}
 

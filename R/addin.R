@@ -88,7 +88,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     if (is.null(confluence_settings$update)) {
       confluence_settings$update <- FALSE
     }
-    if (is.null(confluence_settings$use_origin_size)) {
+    if (is.null(confluence_settings$use_original_size)) {
       confluence_settings$use_original_size <- FALSE
     }
   }

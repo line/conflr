@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • conflr</title>
+<title>Converts between content body representations — confl_contentbody • conflr</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Converts between content body representations — confl_contentbody" />
+<meta property="og:description" content="Converts between content body representations" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -104,78 +106,52 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Converts between content body representations</h1>
+    <small class="dont-index">Source: <a href='https://github.com/line/conflr/blob/master/R/contentbody.R'><code>R/contentbody.R</code></a></small>
+    <div class="hidden name"><code>confl_contentbody.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Converts between content body representations</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>confl_contentbody_convert</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"wiki"</span>, <span class='st'>"storage"</span>, <span class='st'>"editor"</span>, <span class='st'>"view"</span>, <span class='st'>"export_view"</span>, <span class='st'>"styled_view"</span>),
+  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"storage"</span>, <span class='st'>"editor"</span>, <span class='st'>"view"</span>, <span class='st'>"export_view"</span>, <span class='st'>"styled_view"</span>)
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="confl_attachment.html">confl_list_attachments()</a></code> <code><a href="confl_attachment.html">confl_post_attachment()</a></code> <code><a href="confl_attachment.html">confl_update_attachment_metadata()</a></code> <code><a href="confl_attachment.html">confl_update_attachment_data()</a></code> </p>
-        </td>
-        <td><p>CRUD Operations for Attachments on Content</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="confl_content.html">confl_list_pages()</a></code> <code><a href="confl_content.html">confl_get_page()</a></code> <code><a href="confl_content.html">confl_post_page()</a></code> <code><a href="confl_content.html">confl_update_page()</a></code> <code><a href="confl_content.html">confl_delete_page()</a></code> </p>
-        </td>
-        <td><p>REST Wrapper for the ContentService</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="confl_contentbody.html">confl_contentbody_convert()</a></code> </p>
-        </td>
-        <td><p>Converts between content body representations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="confl_create_post_from_Rmd.html">confl_create_post_from_Rmd()</a></code> </p>
-        </td>
-        <td><p>Publish R Markdown Document to 'Confluence'</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="confl_space.html">confl_list_spaces()</a></code> <code><a href="confl_space.html">confl_get_space()</a></code> </p>
-        </td>
-        <td><p>REST Wrapper for the SpaceService</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="confl_user.html">confl_get_user()</a></code> <code><a href="confl_user.html">confl_get_current_user()</a></code> </p>
-        </td>
-        <td><p>Non-admin User Operations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="conflr.html">conflr</a></code> </p>
-        </td>
-        <td><p>R Client for 'Confluence' API</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>The content body to convert.</p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>The format to convert from.</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>The format to convert to.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://docs.atlassian.com/ConfluenceServer/rest/latest/'>https://docs.atlassian.com/ConfluenceServer/rest/latest/</a></p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
+
   </div>
 </div>
 

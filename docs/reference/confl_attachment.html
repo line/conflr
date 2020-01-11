@@ -117,8 +117,14 @@
     <p>CRUD Operations for Attachments on Content</p>
     </div>
 
-    <pre class="usage"><span class='fu'>confl_list_attachments</span>(<span class='no'>id</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mediaType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>confl_list_attachments</span>(
+  <span class='no'>id</span>,
+  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mediaType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='fu'>confl_post_attachment</span>(<span class='no'>id</span>, <span class='no'>path</span>)
 

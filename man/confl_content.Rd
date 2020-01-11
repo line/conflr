@@ -62,5 +62,5 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 REST Wrapper for the ContentService
 }
 \seealso{
-\url{https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/}
+\url{https://docs.atlassian.com/ConfluenceServer/rest/latest/}
 }

@@ -26,7 +26,7 @@
 #'   A comma separated list of properties to expand. To refer the nested
 #'   contents, use periods. (e.g. `body.storage,history`).
 #'
-#' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/6.10.1/>
+#' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/latest/>
 #'
 #' @export
 confl_list_pages <- function(type = c("page", "blogpost", "comment", "attachment"),

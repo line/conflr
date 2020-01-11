@@ -9,7 +9,7 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 confl_console_upload <- function(md_file, title, tags, space_key, type,
-                                 parent_id, update = FALSE, use_original_size) {
+                                 parent_id, update = FALSE, use_original_size = FALSE) {
 
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)

@@ -28,7 +28,7 @@ Imports:
     xml2
 Suggests: 
     mockery,
-    testthat,
+    testthat (>= 2.1.0),
     withr
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2

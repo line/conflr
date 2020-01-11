@@ -67,7 +67,11 @@ restore_cdata <- function(x) {
 supported_languages_default <- c(
   sql = "sql",
   cpp = "cpp",
-  python = "py"
+  python = "py",
+  html = "html/xml",
+  css = "css",
+  bash = "bash",
+  yaml = "yaml"
 )
 
 get_corresponding_lang <- function(x) {

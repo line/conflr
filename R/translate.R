@@ -76,7 +76,8 @@ supported_languages_default <- c(
 
 get_corresponding_lang <- function(x) {
   if (isTRUE(is.na(x)) || identical(x, "")) {
-    return("text")
+    # TODO: "text" seems work, but it's not documented on https://confluence.atlassian.com/doc/code-block-macro-139390.html
+    return("none")
   }
 
   supported_languages_extra <- getOption("conflr_supported_languages_extra")
@@ -91,7 +92,7 @@ get_corresponding_lang <- function(x) {
   x <- supported_languages[x]
 
   if (is.na(x)) {
-    "text"
+    "none"
   } else {
     unname(x)
   }

@@ -31,7 +31,7 @@ test_that("get_corresponding_lang() works", {
   expect_equal(get_corresponding_lang("sql", supported_syntax_highlighting_default), "sql")
   expect_equal(get_corresponding_lang("cpp", supported_syntax_highlighting_default), "cpp")
   expect_equal(get_corresponding_lang("python", supported_syntax_highlighting_default), "py")
-  expect_equal(get_corresponding_lang("html", supported_syntax_highlighting_default), "html/xml")
+  expect_equal(get_corresponding_lang("html", supported_syntax_highlighting_default), "xml")
   expect_equal(get_corresponding_lang("css", supported_syntax_highlighting_default), "css")
   expect_equal(get_corresponding_lang("bash", supported_syntax_highlighting_default), "bash")
   expect_equal(get_corresponding_lang("yaml", supported_syntax_highlighting_default), "yaml")

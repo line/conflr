@@ -13,7 +13,7 @@ supported_syntax_highlighting_default <- c(
   sql = "sql",
   cpp = "cpp",
   python = "py",
-  html = "html/xml",
+  html = "xml",
   css = "css",
   bash = "bash",
   yaml = "yaml"

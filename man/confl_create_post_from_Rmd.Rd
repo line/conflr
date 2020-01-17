@@ -5,7 +5,7 @@
 \title{Publish R Markdown Document to 'Confluence'}
 \usage{
 confl_create_post_from_Rmd(
-  Rmd_file = NULL,
+  Rmd_file,
   interactive = NULL,
   title = NULL,
   params = NULL,
@@ -13,7 +13,7 @@ confl_create_post_from_Rmd(
 )
 }
 \arguments{
-\item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the active document.}
+\item{Rmd_file}{Path to a .Rmd file.}
 
 \item{interactive}{If \code{FALSE} shiny interface is not launched.}
 

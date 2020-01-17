@@ -8,12 +8,25 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
+confl_create_post_from_Rmd_addin <- function() {
+  if (!rstudioapi::isAvailable()) {
+    stop("This function must be called on RStudio!", call. = FALSE)
+  }
+
+  Rmd_file <- rstudioapi::getSourceEditorContext()$path
+  if (identical(Rmd_file, "")) {
+    # Probably "UntitledX"
+    stop("Please save the .Rmd file first!", call. = FALSE)
+  }
+
+  confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
+}
 
 #' Publish R Markdown Document to 'Confluence'
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
+#' @param Rmd_file Path to a .Rmd file.
 #' @param interactive If `FALSE` shiny interface is not launched.
 #' @param title If provided this overwrites the YAML front matter title.
 #' @param params If provided, a list of named parameters that override custom
@@ -21,24 +34,11 @@
 #' @param ... Addtional arguments passed to `confl_console_upload()`.
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
+confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
                                        title = NULL, params = NULL, ...) {
 
   if (is.null(interactive)) {
     interactive <- interactive()
-  }
-
-  if (is.null(Rmd_file)) {
-    if (!interactive) {
-      stop("`Rmd_file` must be specified on non-interactive use!", call. = FALSE)
-    } else if (rstudioapi::isAvailable()) {
-      # if inside RStudio, use the active file
-      Rmd_file <- rstudioapi::getSourceEditorContext()$path
-      if (identical(Rmd_file, "")) {
-        # Probably "UntitledX"
-        stop("Please save the .Rmd file first!", call. = FALSE)
-      }
-    }
   }
 
   if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {

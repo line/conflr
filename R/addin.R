@@ -130,6 +130,9 @@ confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id 
   imgs <- extract_image_paths(html_text)
   imgs <- curl::curl_unescape(imgs)
 
+  # imgs might be absolute, relative to md_dir, or relative to the current dir.
+  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+
   # Shiny UI -----------------------------------------------------------
   ui <- conflr_addin_ui(
     title = title,
@@ -138,7 +141,7 @@ confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id 
     parent_id = parent_id,
     html_text = html_text,
     imgs = imgs,
-    md_dir = md_dir
+    imgs_realpath = imgs_realpath
   )
 
   # Shiny Server -------------------------------------------------------
@@ -152,6 +155,7 @@ confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id 
         session = session,
         html_text = html_text,
         imgs = imgs,
+        imgs_realpath = imgs_realpath,
         use_original_size = input$use_original_size
       )
     })
@@ -197,54 +201,44 @@ try_get_personal_space_key <- function(verbose = FALSE) {
   )
 }
 
-conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, md_dir) {
-  # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+wrap_with_column <- function(..., width = 2) {
+  shiny::column(width = width, ...)
+}
 
+conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, imgs_realpath) {
+  # title bar
+  title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+  title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
+
+  # type (page or blogpost)
+  type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = type)
+
+  # spaceKey
+  spaceKey <- spaceKey %||% try_get_personal_space_key()
+  spaceKey_input <- shiny::textInput(inputId = "spaceKey", label = "Space Key", value = spaceKey)
+
+  # parent page ID
+  ancestors_input <- shiny::textInput(inputId = "ancestors", label = "Parent page ID", value = parent_id)
+
+  # use the original size or not
+  use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = FALSE)
+
+  # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
+  preview_html <- shiny::HTML(html_text_for_preview)
 
   miniUI::miniPage(
-    miniUI::gadgetTitleBar("Preview",
-                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
-    ),
+    title_bar,
     miniUI::miniContentPanel(
       shiny::fluidRow(
-        shiny::column(
-          width = 2,
-          shiny::selectInput(
-            inputId = "type", label = "Type",
-            choices = type
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "spaceKey", label = "Space Key",
-            value = spaceKey %||% try_get_personal_space_key()
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "ancestors", label = "Parent page ID",
-            value = parent_id
-          )
-        ),
-        shiny::column(
-          width = 4,
-          shiny::checkboxInput(
-            inputId = "use_original_size", label = "Use original image sizes",
-            value = FALSE
-          )
-        )
+        wrap_with_column(type_input),
+        wrap_with_column(spaceKey_input),
+        wrap_with_column(ancestors_input),
+        wrap_with_column(use_original_size_input, width = 4)
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),
-      shiny::div(
-        shiny::HTML(
-          html_text_for_preview
-        )
-      )
+      shiny::div(preview_html)
     )
   )
 }

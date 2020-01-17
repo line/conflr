@@ -8,7 +8,8 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-confl_upload <- function(title, spaceKey, type, ancestors, html_text, imgs,
+confl_upload <- function(title, spaceKey, type, ancestors, html_text,
+                         imgs, imgs_realpath,
                          update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
   # check if there is an existing page

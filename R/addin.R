@@ -208,7 +208,7 @@ confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id
         id <- existing_pages$results[[1]]$id
       }
 
-      progress <- shiny::Progress$new(session, min = 0, max = 2)
+      progress <- new_progress(session, min = 0, max = 2)
       on.exit(progress$close())
 
       # Step 1) Upload Images

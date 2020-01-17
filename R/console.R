@@ -91,7 +91,7 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
 ConsoleProgress <- R6::R6Class(
   'ConsoleProgress',
   public = list(
-    initialize = function(session = NULL, min = 0, max = 1) {
+    initialize = function(...) {
       # All arguments are ignored
     },
     set = function(value = NULL, message = NULL) {
@@ -109,3 +109,11 @@ ConsoleProgress <- R6::R6Class(
 
   private = list()
 )
+
+new_progress <- function(session = NULL, min = 0, max = 1) {
+  if (!is.null(session)) {
+    shiny::Progress$new(session, min = min, max = max)
+  } else {
+    ConsoleProgress$new()
+  }
+}

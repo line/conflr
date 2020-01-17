@@ -173,7 +173,7 @@ confl_addin_upload <- function(title, spaceKey, type, parent_id, html_text, imgs
         title = title,
         spaceKey = input$spaceKey,
         type = input$type,
-        ancestors = input$ancestors,
+        parent_id = input$parent_id,
         session = session,
         html_text = html_text,
         imgs = imgs,
@@ -236,7 +236,7 @@ conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, i
   spaceKey_input <- shiny::textInput(inputId = "spaceKey", label = "Space Key", value = spaceKey)
 
   # parent page ID
-  ancestors_input <- shiny::textInput(inputId = "ancestors", label = "Parent page ID", value = parent_id)
+  parent_id_input <- shiny::textInput(inputId = "parent_id", label = "Parent page ID", value = parent_id)
 
   # use the original size or not
   use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = FALSE)
@@ -251,7 +251,7 @@ conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, i
       shiny::fluidRow(
         wrap_with_column(type_input),
         wrap_with_column(spaceKey_input),
-        wrap_with_column(ancestors_input),
+        wrap_with_column(parent_id_input),
         wrap_with_column(use_original_size_input, width = 4)
       ),
       shiny::hr(),

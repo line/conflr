@@ -25,7 +25,8 @@ Imports:
     rstudioapi,
     shiny,
     stringi,
-    xml2
+    xml2,
+    R6
 Suggests: 
     mockery,
     testthat (>= 2.1.0),

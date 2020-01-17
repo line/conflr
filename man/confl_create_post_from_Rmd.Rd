@@ -7,22 +7,37 @@
 confl_create_post_from_Rmd(
   Rmd_file,
   interactive = NULL,
-  title = NULL,
   params = NULL,
-  ...
+  ...,
+  title = NULL,
+  spaceKey = NULL,
+  type = NULL,
+  parent_id = NULL,
+  update = NULL,
+  use_original_size = FALSE
 )
 }
 \arguments{
 \item{Rmd_file}{Path to a .Rmd file.}
 
-\item{interactive}{If \code{FALSE} shiny interface is not launched.}
-
-\item{title}{If provided this overwrites the YAML front matter title.}
+\item{interactive}{If \code{FALSE}, shiny interface is not launched.}
 
 \item{params}{If provided, a list of named parameters that override custom
 params in the YAML front-matter.}
 
-\item{...}{Addtional arguments passed to \code{confl_console_upload()}.}
+\item{...}{Ignored.}
+
+\item{title}{If provided, this overwrites the YAML front matter title.}
+
+\item{spaceKey}{If provided, this overwrites the YAML front matter spaceKey.}
+
+\item{type}{If provided, this overwrites the YAML front matter type}
+
+\item{parent_id}{If provided, this overwrites the YAML front matter parent_id}
+
+\item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
+
+\item{use_original_size}{If \code{TRUE}, use the original image sizes.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.

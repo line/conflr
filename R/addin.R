@@ -27,15 +27,29 @@ confl_create_post_from_Rmd_addin <- function() {
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
 #' @param Rmd_file Path to a .Rmd file.
-#' @param interactive If `FALSE` shiny interface is not launched.
-#' @param title If provided this overwrites the YAML front matter title.
+#' @param interactive If `FALSE`, shiny interface is not launched.
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
-#' @param ... Addtional arguments passed to `confl_console_upload()`.
+#' @param ... Ignored.
+#' @param title If provided, this overwrites the YAML front matter title.
+#' @param spaceKey If provided, this overwrites the YAML front matter spaceKey.
+#' @param type If provided, this overwrites the YAML front matter type
+#' @param parent_id If provided, this overwrites the YAML front matter parent_id
+#' @param update If `TRUE`, overwrite the existing page (if it exists).
+#' @param use_original_size If `TRUE`, use the original image sizes.
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
-                                       title = NULL, params = NULL, ...) {
+confl_create_post_from_Rmd <- function(
+  Rmd_file,
+  interactive = NULL,
+  params = NULL,
+  ...,
+  title = NULL,
+  spaceKey = NULL,
+  type = NULL,
+  parent_id = NULL,
+  update = NULL,
+  use_original_size = FALSE) {
 
 
   # sanity checks -----------------------------------------------------------
@@ -88,26 +102,25 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
 
   # 1. Use confluence_settings on the front matter if it's available
   # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings <- purrr::list_modify(front_matter$confluence_settings %||% list(), ...)
+  confluence_settings_from_args <- list(
+    # title can be specified as a seperate item on front matter
+    # override title if it's specified as the argument of confl_create_post_from_Rmd
+    title = title %||% front_matter$title,
+    spaceKey = spaceKey,
+    type = type,
+    parent_id = parent_id,
+    update = update,
+    use_original_size = use_original_size
+  )
 
-  # title is specified as a seperate item on front matter
-  # override title if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings$title <- title %||% front_matter$title
+  confluence_settings <- purrr::list_modify(
+    front_matter$confluence_settings %||% list(),
+    !!!purrr::compact(confluence_settings_from_args)
+  )
 
   # On some Confluence, the key of a personal space can be guessed from the username
   if (is.null(confluence_settings$spaceKey)) {
     confluence_settings$spaceKey <- try_get_personal_space_key(username)
-  }
-
-  if (!interactive) {
-    # TODO: these arguments should be logical, so we need to check and fill it.
-    #       But, this should be done inside confl_addin_upload()...
-    if (is.null(confluence_settings$update)) {
-      confluence_settings$update <- FALSE
-    }
-    if (is.null(confluence_settings$use_original_size)) {
-      confluence_settings$use_original_size <- FALSE
-    }
   }
 
   # conflr doesn't insert a title in the content automatically

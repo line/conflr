@@ -15,7 +15,7 @@ ConsoleProgress <- R6::R6Class(
     initialize = function(...) {
       # All arguments are ignored
     },
-    set = function(value = NULL, message = NULL) {
+    set = function(value = NULL, message = NULL, detail = NULL) {
       # value is ignored
 
       # If message is set, show the message

@@ -39,7 +39,7 @@ confl_upload <- function(title, spaceKey, type, ancestors, html_text,
     # 5) non-interacitve, update is TRUE : proceed
     # 6) non-interactive, update is FALSE: abort
     if (interactive && is.null(update)) {
-      update <- confirm_upload()
+      update <- confirm_upload(title)
     }
 
     if (!isTRUE(update)) {
@@ -106,7 +106,7 @@ confl_upload <- function(title, spaceKey, type, ancestors, html_text,
   results_url
 }
 
-confirm_upload <- function() {
+confirm_upload <- function(title) {
   ans <- rstudioapi::showQuestion(
     "Update?",
     glue::glue(

@@ -28,21 +28,26 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     interactive <- interactive()
   }
 
-  if (is.null(Rmd_file) && rstudioapi::isAvailable()) {
-    Rmd_file <- rstudioapi::getSourceEditorContext()$path
-    if (identical(Rmd_file, "")) {
-      # Probably "UntitledX"
-      stop("Please save the .Rmd file first!", call. = FALSE)
+  if (is.null(Rmd_file)) {
+    if (!interactive) {
+      stop("`Rmd_file` must be specified on non-interactive use!", call. = FALSE)
+    } else if (rstudioapi::isAvailable()) {
+      # if inside RStudio, use the active file
+      Rmd_file <- rstudioapi::getSourceEditorContext()$path
+      if (identical(Rmd_file, "")) {
+        # Probably "UntitledX"
+        stop("Please save the .Rmd file first!", call. = FALSE)
+      }
     }
   }
 
-  if (tolower(tools::file_ext(Rmd_file)) != "rmd") {
+  if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {
     stop(glue::glue("{basename(Rmd_file)} is not .Rmd file!"), call. = FALSE)
   }
 
   # confirm the username and password are valid.
   tryCatch(
-    confl_get_current_user(),
+    username <- confl_get_current_user()$username,
     error = function(e) {
       if (stringi::stri_detect_fixed(as.character(e), "Unauthorized (HTTP 401)")) {
         stop("Invalid credentials!", call. = FALSE)
@@ -81,6 +86,11 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   # title is specified as a seperate item on front matter
   # override title if it's specified as the argument of confl_create_post_from_Rmd
   confluence_settings$title <- title %||% front_matter$title
+
+  # On some Confluence, the key of a personal space can be guessed from the username
+  if (is.null(confluence_settings$spaceKey)) {
+    confluence_settings$spaceKey <- try_get_personal_space_key(username)
+  }
 
   if (!interactive) {
     # TODO: these arguments should be logical, so we need to check and fill it.
@@ -177,28 +187,25 @@ extract_image_paths <- function(html_text) {
   img_paths[!is.na(img_paths) & !grepl("^https?://", img_paths)]
 }
 
-try_get_personal_space_key <- function(verbose = FALSE) {
-  tryCatch({
-    # get the current username
-    username <- confl_get_current_user()$username
-    if (is.null(username)) {
-      warning("Failed to get username", call. = FALSE)
-      return(NULL)
-    }
-
-    spaceKey <- paste0("~", username)
-    # check if the space really exists
-    space <- confl_get_space(spaceKey = spaceKey)
-    space$key
-  },
-  error = function(e) {
-    if (verbose) {
-      # by default, do not show the error, because the keys of personal spaces are often numeric (#30).
-      warning(e, call. = FALSE)
-    }
+try_get_personal_space_key <- function(username) {
+  if (is.null(username)) {
+    warning("Failed to get username", call. = FALSE)
     return(NULL)
   }
+
+  # check if the space really exists
+  tryCatch(
+    space <- confl_get_space(spaceKey = paste0("~", username)),
+    error = function(e) {
+      if (verbose) {
+        # by default, do not show the error, because the keys of personal spaces are often numeric (#30).
+        warning(e, call. = FALSE)
+      }
+      return(NULL)
+    }
   )
+
+  space$key
 }
 
 wrap_with_column <- function(..., width = 2) {
@@ -214,7 +221,6 @@ conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, i
   type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = type)
 
   # spaceKey
-  spaceKey <- spaceKey %||% try_get_personal_space_key()
   spaceKey_input <- shiny::textInput(inputId = "spaceKey", label = "Space Key", value = spaceKey)
 
   # parent page ID

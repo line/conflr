@@ -110,37 +110,6 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
     }
   }
 
-  # upload ------------------------------------------------------------------
-
-  if (interactive) {
-    confl_addin_upload(
-      md_file = md_file,
-      title = confluence_settings$title,
-      tags = confluence_settings$tags,
-      spaceKey = confluence_settings$spaceKey,
-      parent_id = confluence_settings$parent_id
-    )
-
-    # if the user doesn't want to store the password as envvar, clear it.
-    if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
-      message("unsetting CONFLUENCE_PASSWORD...")
-      Sys.unsetenv("CONFLUENCE_PASSWORD")
-    }
-  } else {
-    confl_console_upload(
-      md_file = md_file,
-      title = confluence_settings$title,
-      tags = confluence_settings$tags,
-      spaceKey = confluence_settings$spaceKey,
-      type = confluence_settings$type,
-      parent_id = confluence_settings$parent_id,
-      update = confluence_settings$update,
-      use_original_size = confluence_settings$use_original_size
-    )
-  }
-}
-
-confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id = NULL) {
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)
@@ -152,6 +121,40 @@ confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id 
   # imgs might be absolute, relative to md_dir, or relative to the current dir.
   imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
 
+  # upload ------------------------------------------------------------------
+
+  if (interactive) {
+    confl_addin_upload(
+      title = confluence_settings$title,
+      spaceKey = confluence_settings$spaceKey,
+      type = confluence_settings$type,
+      parent_id = confluence_settings$parent_id,
+      html_text = html_text,
+      imgs = imgs,
+      imgs_realpath = imgs_realpath
+    )
+
+    # if the user doesn't want to store the password as envvar, clear it.
+    if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
+      message("unsetting CONFLUENCE_PASSWORD...")
+      Sys.unsetenv("CONFLUENCE_PASSWORD")
+    }
+  } else {
+    confl_upload(
+      title = confluence_settings$title,
+      spaceKey = confluence_settings$spaceKey,
+      type = confluence_settings$type,
+      parent_id = confluence_settings$parent_id,
+      html_text = html_text,
+      imgs = imgs,
+      imgs_realpath = imgs_realpath,
+      update = confluence_settings$update,
+      use_original_size = confluence_settings$use_original_size
+    )
+  }
+}
+
+confl_addin_upload <- function(title, spaceKey, type, parent_id, html_text, imgs, imgs_realpath) {
   # Shiny UI -----------------------------------------------------------
   ui <- conflr_addin_ui(
     title = title,

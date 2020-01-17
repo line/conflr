@@ -86,34 +86,3 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
   message(paste0("Results at: ", results_url))
   results_url
 }
-
-# A mock of shiny::Progress() for console usages
-ConsoleProgress <- R6::R6Class(
-  'ConsoleProgress',
-  public = list(
-    initialize = function(...) {
-      # All arguments are ignored
-    },
-    set = function(value = NULL, message = NULL) {
-      # value is ignored
-
-      # If message is set, show the message
-      if (!is.null(message)) {
-        message(message)
-      }
-    },
-    close = function() {
-      # Do nothing
-    }
-  ),
-
-  private = list()
-)
-
-new_progress <- function(session = NULL, min = 0, max = 1) {
-  if (!is.null(session)) {
-    shiny::Progress$new(session, min = min, max = max)
-  } else {
-    ConsoleProgress$new()
-  }
-}

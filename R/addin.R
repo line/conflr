@@ -98,7 +98,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       md_file = md_file,
       title = confluence_settings$title,
       tags = confluence_settings$tags,
-      space_key = confluence_settings$space_key,
+      spaceKey = confluence_settings$spaceKey,
       parent_id = confluence_settings$parent_id
     )
 
@@ -112,7 +112,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       md_file = md_file,
       title = confluence_settings$title,
       tags = confluence_settings$tags,
-      space_key = confluence_settings$space_key,
+      spaceKey = confluence_settings$spaceKey,
       type = confluence_settings$type,
       parent_id = confluence_settings$parent_id,
       update = confluence_settings$update,
@@ -121,7 +121,7 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
   }
 }
 
-confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id = NULL) {
+confl_addin_upload <- function(md_file, title, tags, spaceKey = NULL, parent_id = NULL) {
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
   html_text <- commonmark::markdown_html(md_text)
@@ -129,130 +129,31 @@ confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id
   md_dir <- dirname(md_file)
   imgs <- extract_image_paths(html_text)
   imgs <- curl::curl_unescape(imgs)
-  # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
-
-  html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
 
   # Shiny UI -----------------------------------------------------------
-  ui <- miniUI::miniPage(
-    miniUI::gadgetTitleBar("Preview",
-                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
-    ),
-    miniUI::miniContentPanel(
-      shiny::fluidRow(
-        shiny::column(
-          width = 2,
-          shiny::selectInput(
-            inputId = "type", label = "Type",
-            choices = eval(formals(confl_post_page)$type)
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "spaceKey", label = "Space Key",
-            value = space_key %||% try_get_personal_space_key()
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "ancestors", label = "Parent page ID",
-            value = parent_id
-          )
-        ),
-        shiny::column(
-          width = 4,
-          shiny::checkboxInput(
-            inputId = "use_original_size", label = "Use original image sizes",
-            value = FALSE
-          )
-        )
-      ),
-      shiny::hr(),
-      shiny::h1(title, align = "center"),
-      shiny::div(
-        shiny::HTML(
-          html_text_for_preview
-        )
-      )
-    )
+  ui <- conflr_addin_ui(
+    title = title,
+    spaceKey = spaceKey,
+    type = eval(formals(confl_post_page)$type),
+    parent_id = parent_id,
+    html_text = html_text,
+    imgs = imgs,
+    md_dir = md_dir
   )
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
     shiny::observeEvent(input$done, {
-
-      # check if there is an existing page
-      existing_pages <- confl_list_pages(title = title, spaceKey = input$spaceKey)
-      if (existing_pages$size == 0) {
-        # if the page doesn't exist, create a blank page
-        blank_page <- confl_post_page(
-          type = input$type,
-          spaceKey = input$spaceKey,
-          title = title,
-          body = "",
-          ancestors = input$ancestors
-        )
-        id <- blank_page$id
-      } else {
-        ans <- rstudioapi::showQuestion(
-          "Update?",
-          glue::glue("There is already an existing page named '{title}'.
-                      Are you sure to overwrite it?"),
-          ok = "OK", cancel = "cancel"
-        )
-        if (!ans) stop("Cancel to upload.", call. = FALSE)
-
-        id <- existing_pages$results[[1]]$id
-      }
-
-      progress <- new_progress(session, min = 0, max = 2)
-      on.exit(progress$close())
-
-      # Step 1) Upload Images
-      progress$set(message = "Checking the existing images...")
-
-      # Check if the images already exist
-      imgs_exist <- confl_list_attachments(id)
-      imgs_exist_ids <- purrr::map_chr(imgs_exist$results, "id")
-      names(imgs_exist_ids) <- purrr::map_chr(imgs_exist$results, "title")
-
-      progress$set(message = "Uploading the images...")
-      num_imgs <- length(imgs)
-      for (i in seq_along(imgs)) {
-        progress$set(detail = imgs[i])
-
-        # attempt to avoid rate limits
-        Sys.sleep(0.2)
-
-        img_id <- imgs_exist_ids[basename(imgs[i])]
-        if (is.na(img_id)) {
-          confl_post_attachment(id, imgs_realpath[i])
-        } else {
-          confl_update_attachment_data(id, img_id, imgs_realpath[i])
-        }
-
-        progress$set(value = i / num_imgs)
-      }
-
-      # Step 2) Upload the document
-      progress$set(message = "Uploading the document...")
-
-      image_size_default <- if (!input$use_original_size) 600 else NULL
-      result <- confl_update_page(
-        id = id,
+      confl_upload(
         title = title,
-        body = html_text,
-        image_size_default = image_size_default
+        spaceKey = input$spaceKey,
+        type = input$type,
+        ancestors = input$ancestors,
+        session = session,
+        html_text = html_text,
+        imgs = imgs,
+        use_original_size = input$use_original_size
       )
-
-      progress$set(value = 2, message = "Done!")
-      Sys.sleep(2)
-
-      invisible(shiny::stopApp())
-      browseURL(paste0(result$`_links`$base, result$`_links`$webui))
     })
   }
 
@@ -293,5 +194,57 @@ try_get_personal_space_key <- function(verbose = FALSE) {
     }
     return(NULL)
   }
+  )
+}
+
+conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, md_dir) {
+  # imgs might be absolute, relative to md_dir, or relative to the current dir.
+  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+
+  html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
+
+  miniUI::miniPage(
+    miniUI::gadgetTitleBar("Preview",
+                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+    ),
+    miniUI::miniContentPanel(
+      shiny::fluidRow(
+        shiny::column(
+          width = 2,
+          shiny::selectInput(
+            inputId = "type", label = "Type",
+            choices = type
+          )
+        ),
+        shiny::column(
+          width = 2,
+          shiny::textInput(
+            inputId = "spaceKey", label = "Space Key",
+            value = spaceKey %||% try_get_personal_space_key()
+          )
+        ),
+        shiny::column(
+          width = 2,
+          shiny::textInput(
+            inputId = "ancestors", label = "Parent page ID",
+            value = parent_id
+          )
+        ),
+        shiny::column(
+          width = 4,
+          shiny::checkboxInput(
+            inputId = "use_original_size", label = "Use original image sizes",
+            value = FALSE
+          )
+        )
+      ),
+      shiny::hr(),
+      shiny::h1(title, align = "center"),
+      shiny::div(
+        shiny::HTML(
+          html_text_for_preview
+        )
+      )
+    )
   )
 }

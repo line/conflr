@@ -26,10 +26,17 @@ confl_post_page(
   title,
   body,
   ancestors = NULL,
-  image_size_default = 600
+  image_size_default = 600,
+  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")
 )
 
-confl_update_page(id, title, body, image_size_default = 600)
+confl_update_page(
+  id,
+  title,
+  body,
+  image_size_default = 600,
+  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")
+)
 
 confl_delete_page(id)
 }
@@ -54,6 +61,8 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 \item{ancestors}{The page ID of the parent pages.}
 
 \item{image_size_default}{The default width of images in pixel. If \code{NULL}, images are displayed in their original sizes.}
+
+\item{supported_syntax_highlighting}{A named character vector of supported syntax highlighting other than default (e.g. \code{c(r = "r")}).}
 }
 \description{
 REST Wrapper for the ContentService

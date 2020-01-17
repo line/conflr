@@ -8,8 +8,25 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
+# picking some popular languages from https://confluence.atlassian.com/doc/code-block-macro-139390.html
+supported_syntax_highlighting_default <- c(
+  sql = "sql",
+  cpp = "cpp",
+  python = "py",
+  html = "xml",
+  css = "css",
+  bash = "bash",
+  yaml = "yaml"
+)
 
-translate_to_confl_macro <- function(html_text, image_size_default = 600) {
+translate_to_confl_macro <- function(html_text, image_size_default = 600, supported_syntax_highlighting = character(0)) {
+  # if supported_syntax_highlighting is provided as unnamed form, name it
+  if (!is.null(supported_syntax_highlighting) && is.null(names(supported_syntax_highlighting))) {
+    names(supported_syntax_highlighting) <- supported_syntax_highlighting
+  }
+
+  supported_syntax_highlighting <- c(supported_syntax_highlighting, supported_syntax_highlighting_default)
+
   html_text <- paste0("<body>", html_text, "</body>")
   html_doc <- xml2::read_xml(html_text, options = c("RECOVER", "NOERROR", "NOBLANKS"))
 
@@ -30,7 +47,7 @@ translate_to_confl_macro <- function(html_text, image_size_default = 600) {
   html_text <- paste(as.character(html_contents), collapse = "\n")
 
   # replace syntax with macros
-  html_text <- replace_code_chunk(html_text)
+  html_text <- replace_code_chunk(html_text, supported_syntax_highlighting = supported_syntax_highlighting)
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
   html_text <- replace_image(html_text, image_size_default = image_size_default)
@@ -63,17 +80,56 @@ restore_cdata <- function(x) {
   x
 }
 
-replace_code_chunk <- function(x) {
-  stringi::stri_replace_all_regex(
-    x,
-    "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
-    '<ac:structured-macro ac:name="code">
-  <ac:plain-text-body><![CDATA[$1]]></ac:plain-text-body>
-</ac:structured-macro>',
-    dotall = TRUE
-  )
+get_corresponding_lang <- function(x, supported_syntax_highlighting = character(0)) {
+  if (isTRUE(is.na(x)) || identical(x, "")) {
+    # TODO: "text" seems work, but it's not documented on https://confluence.atlassian.com/doc/code-block-macro-139390.html
+    return("none")
+  }
+
+  x <- supported_syntax_highlighting[x]
+
+  if (is.na(x)) {
+    "none"
+  } else {
+    unname(x)
+  }
 }
 
+replace_code_chunk <- function(x, supported_syntax_highlighting = character(0)) {
+  locs <- stringi::stri_locate_all_regex(
+    x,
+    "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
+    dotall = TRUE,
+    omit_no_match = TRUE
+  )[[1]]
+
+  for (loc in rev(split(locs, row(locs)))) {
+    pre_tag <- stringi::stri_sub(x, loc[1], loc[2])
+    code_tag <- xml2::xml_find_first(xml2::read_xml(pre_tag), "/pre/code")
+
+    # code
+    code_text <- xml2::xml_text(code_tag)
+
+    # language attribute
+    class <- xml2::xml_attr(code_tag, "class")
+    if (!is.na(class)) {
+      lang <- stringi::stri_extract_first_regex(class, "(?<=language-)(.*)")
+    } else {
+      # TODO: where did I face this attribute...?
+      lang <- xml2::xml_attr(code_tag, "language")
+    }
+
+    lang <- get_corresponding_lang(lang, supported_syntax_highlighting)
+
+    stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
+      '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">{lang}</ac:parameter>
+  <ac:plain-text-body><![CDATA[{code_text}]]></ac:plain-text-body>
+</ac:structured-macro>'
+    )
+  }
+  x
+}
 
 mark_inline_math <- function(x) {
   # replace the left dallar (e.g. $\frac{1}{3}$)

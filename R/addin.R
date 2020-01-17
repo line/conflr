@@ -37,6 +37,9 @@ confl_create_post_from_Rmd_addin <- function() {
 confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
                                        title = NULL, params = NULL, ...) {
 
+
+  # sanity checks -----------------------------------------------------------
+
   if (is.null(interactive)) {
     interactive <- interactive()
   }
@@ -45,7 +48,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
     stop(glue::glue("{basename(Rmd_file)} is not .Rmd file!"), call. = FALSE)
   }
 
-  # confirm the username and password are valid.
+  # confirm the username and password are valid (and username will be useful later).
   tryCatch(
     username <- confl_get_current_user()$username,
     error = function(e) {
@@ -56,6 +59,8 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
       }
     }
   )
+
+  # knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
     collapse = TRUE,
@@ -75,6 +80,8 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
     #   assignInNamespace("cedta.pkgEvalsUserCode", c(data.table:::cedta.pkgEvalsUserCode, "conflr"), "data.table")
     env = globalenv()
   )
+
+  # combine settings --------------------------------------------------------------------
 
   # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
@@ -102,6 +109,8 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL,
       confluence_settings$use_original_size <- FALSE
     }
   }
+
+  # upload ------------------------------------------------------------------
 
   if (interactive) {
     confl_addin_upload(

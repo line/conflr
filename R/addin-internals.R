@@ -12,6 +12,10 @@ confl_upload <- function(title, spaceKey, type, ancestors, html_text,
                          imgs, imgs_realpath,
                          update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
+  if (is.null(interactive)) {
+    interactive <- interactive()
+  }
+
   # check if there is an existing page
   existing_pages <- confl_list_pages(title = title, spaceKey = spaceKey)
 
@@ -26,15 +30,22 @@ confl_upload <- function(title, spaceKey, type, ancestors, html_text,
     )
     id <- blank_page$id
   } else {
-    ans <- rstudioapi::showQuestion(
-      "Update?",
-      glue::glue(
-        "There is already an existing page named '{title}'.\n",
-        "Are you sure to overwrite it?"
-      ),
-      ok = "OK", cancel = "cancel"
-    )
-    if (!ans) stop("Cancel to upload.", call. = FALSE)
+    # Confirm if it's OK to update the existing page
+    #
+    # 1) interactive,     update is NULL : ask (default)
+    # 2) interactive,     update is TRUE : proceed
+    # 3) interactive,     update is FALSE: abort
+    # 4) non-interactive, update is NULL : abort (default)
+    # 5) non-interacitve, update is TRUE : proceed
+    # 6) non-interactive, update is FALSE: abort
+    if (interactive && is.null(update)) {
+      update <- confirm_upload()
+    }
+
+    if (!isTRUE(update)) {
+      stop("Page already exists. Re-run with `update = TRUE` to overwrite.",
+           call. = FALSE)
+    }
 
     id <- existing_pages$results[[1]]$id
   }
@@ -82,6 +93,31 @@ confl_upload <- function(title, spaceKey, type, ancestors, html_text,
   progress$set(value = 2, message = "Done!")
   Sys.sleep(2)
 
-  invisible(shiny::stopApp())
-  browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
+
+  # TOOD: use interactive here?
+  if (!is.null(session)) {
+    shiny::stopApp()
+    browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+  } else {
+    message(paste0("Results at: ", results_url))
+  }
+
+  results_url
+}
+
+confirm_upload <- function() {
+  ans <- rstudioapi::showQuestion(
+    "Update?",
+    glue::glue(
+      "There is already an existing page named '{title}'.\n",
+      "Are you sure to overwrite it?"
+    ),
+    ok = "OK", cancel = "cancel"
+  )
+  if (ans) {
+    TRUE
+  } else {
+    stop("Cancel to upload.", call. = FALSE)
+  }
 }

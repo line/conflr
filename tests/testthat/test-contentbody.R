@@ -2,7 +2,7 @@ context("contentbody")
 
 test_that("confl_contentbody_convert() works", {
   # cannot mock on CI
-  skip_on_ci_or_cran()
+  skip_on_cran()
 
   res <- structure(list(status_code = 200), class = "response")
   m <- mockery::mock(res)

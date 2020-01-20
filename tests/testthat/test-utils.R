@@ -1,5 +1,3 @@
-context("utils")
-
 test_that('%|""|% works', {
   expect_equal("a" %|""|% "b", "a")
   expect_equal("" %|""|% "b", "b")

@@ -1,5 +1,3 @@
-context("contentbody")
-
 test_that("confl_contentbody_convert() works", {
   skip_on_cran()
 

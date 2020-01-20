@@ -1,5 +1,3 @@
-context("content")
-
 test_that("confl_post_page() works", {
   skip_on_cran()
 

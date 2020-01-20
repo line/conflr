@@ -223,11 +223,6 @@ extract_image_paths <- function(html_text) {
 }
 
 try_get_personal_space_key <- function(username) {
-  if (is.null(username)) {
-    warning("Failed to get username", call. = FALSE)
-    return(NULL)
-  }
-
   # check if the space really exists
   tryCatch(
     space <- confl_get_space(spaceKey = paste0("~", username)),

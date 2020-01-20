@@ -51,6 +51,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   }
 
   progress <- new_progress(session, min = 0, max = 2)
+  on.exit(progress$close())
 
   # Step 1) Upload Images
   progress$set(message = "Checking the existing images...")

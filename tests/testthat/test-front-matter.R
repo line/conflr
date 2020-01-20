@@ -125,3 +125,26 @@ test_that("confluence_settings can be specified partially", {
     use_original_size = FALSE # use_original_size must not be NULL
   )
 })
+
+Rmd_without_space_key <- 'title: "title1"'
+
+test_that("confluence_settings raise an error when any of mandatory parameters are missing", {
+
+  # case: when space_key is neither in the front-matter or in the arguments, it fails
+  confl_upload_mock <- mockery::mock(NULL)
+  expect_error(
+    do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key)
+  )
+
+  # case: when space_key is not in the front-matter but in the arguments, it works
+  confl_upload_mock <- mockery::mock(NULL)
+  do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key, space_key = "space2")
+  expect_confluence_settings(
+    confl_upload_mock,
+    title = "title1",
+    space_key = "space2",
+    parent_id = NULL,
+    update = NULL,
+    use_original_size = FALSE # use_original_size must not be NULL
+  )
+})

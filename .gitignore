@@ -4,5 +4,3 @@
 .Ruserdata
 inst/doc
 
-# rendered Rmds
-tests/testthat/Rmd/*.md

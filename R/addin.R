@@ -17,12 +17,18 @@
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
 #' @param ... Ignored.
-#' @param title If provided, this overwrites the YAML front matter title.
-#' @param space_key If provided, this overwrites the YAML front matter space_key.
+#' @param title Title of the post.
 #' @param type If provided, this overwrites the YAML front matter type
-#' @param parent_id If provided, this overwrites the YAML front matter parent_id
+#' @param space_key The space key to find content under.
+#' @param parent_id The page ID of the parent pages.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size If `TRUE`, use the original image sizes.
+#'
+#' @details
+#' `title`, `type`, `space_key`, `parent_id`, `update`, and `use_original_size`
+#' can be specified as `confluence_settings` item in the front-matter of the
+#' Rmd file to knit. The arguments of `confl_create_post_from_Rmd()` overwrite
+#' these settings if provided.
 #'
 #' @export
 confl_create_post_from_Rmd <- function(

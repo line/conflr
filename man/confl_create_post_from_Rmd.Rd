@@ -27,13 +27,13 @@ params in the YAML front-matter.}
 
 \item{...}{Ignored.}
 
-\item{title}{If provided, this overwrites the YAML front matter title.}
+\item{title}{Title of the post.}
 
-\item{space_key}{If provided, this overwrites the YAML front matter space_key.}
+\item{space_key}{The space key to find content under.}
 
 \item{type}{If provided, this overwrites the YAML front matter type}
 
-\item{parent_id}{If provided, this overwrites the YAML front matter parent_id}
+\item{parent_id}{The page ID of the parent pages.}
 
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
 
@@ -41,4 +41,10 @@ params in the YAML front-matter.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.
+}
+\details{
+\code{title}, \code{type}, \code{space_key}, \code{parent_id}, \code{update}, and \code{use_original_size}
+can be specified as \code{confluence_settings} item in the front-matter of the
+Rmd file to knit. The arguments of \code{confl_create_post_from_Rmd()} overwrite
+these settings if provided.
 }

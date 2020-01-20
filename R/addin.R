@@ -192,6 +192,12 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
     shiny::observeEvent(input$done, {
+
+      # TODO: this warning cannot be shown to users. Consider using shinyFeedback
+      shiny::validate(
+        shiny::need(input$space_key != "", "Please provide a space key")
+      )
+
       confl_upload(
         title = title,
         space_key = input$space_key,

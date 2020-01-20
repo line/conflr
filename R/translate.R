@@ -82,7 +82,6 @@ restore_cdata <- function(x) {
 
 get_corresponding_lang <- function(x, supported_syntax_highlighting = character(0)) {
   if (isTRUE(is.na(x)) || identical(x, "")) {
-    # TODO: "text" seems work, but it's not documented on https://confluence.atlassian.com/doc/code-block-macro-139390.html
     return("none")
   }
 

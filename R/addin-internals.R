@@ -89,15 +89,16 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     body = html_text,
     image_size_default = image_size_default
   )
+  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
 
   progress$set(value = 2, message = "Done!")
   Sys.sleep(2)
 
-  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
-
-  # TOOD: use interactive here?
   if (!is.null(session)) {
     shiny::stopApp()
+  }
+
+  if (interactive) {
     browseURL(paste0(result$`_links`$base, result$`_links`$webui))
   } else {
     message(paste0("Results at: ", results_url))

@@ -31,6 +31,8 @@ confl_create_post_from_Rmd <- function(
   params = NULL,
   ...,
   title = NULL,
+  # Use snake case for user-facing functions and use the actual API parameter name
+  # in camel case for simple binding functions.
   space_key = NULL,
   type = NULL,
   parent_id = NULL,

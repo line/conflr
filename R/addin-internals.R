@@ -8,7 +8,7 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-confl_upload <- function(title, spaceKey, type, parent_id, html_text,
+confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
                          update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
@@ -17,13 +17,13 @@ confl_upload <- function(title, spaceKey, type, parent_id, html_text,
   }
 
   # check if there is an existing page
-  existing_pages <- confl_list_pages(title = title, spaceKey = spaceKey)
+  existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
 
   if (existing_pages$size == 0) {
     # if the page doesn't exist, create a blank page
     blank_page <- confl_post_page(
       type = type,
-      spaceKey = spaceKey,
+      spaceKey = space_key,
       title = title,
       body = "",
       ancestors = parent_id

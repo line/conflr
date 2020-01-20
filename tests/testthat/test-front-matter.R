@@ -1,20 +1,23 @@
 test_that("confluence_settings can be set from front-matter", {
-  m <- mockery::mock(NULL)
+  confl_upload_mock <- mockery::mock(NULL)
+  should_not_be_called <- function(...) {
+    stop(deparse(match.call()[[1]]), "() should not be called", call. = FALSE)
+  }
 
   with_mock(
-    "conflr:::confl_upload" = m,
+    "conflr:::confl_upload" = confl_upload_mock,
     "conflr:::confl_get_current_user" = function(...) list(username = "user"),
-    "conflr:::try_get_personal_space_key" = function(...) "user", {
+    "conflr:::try_get_personal_space_key" = should_not_be_called, {
       confl_create_post_from_Rmd("Rmd/front-matter.Rmd", interactive = FALSE)
     }
   )
 
-  cols_to_compare <- c("title", "spaceKey", "parent_id", "update", "use_original_size")
+  cols_to_compare <- c("title", "space_key", "parent_id", "update", "use_original_size")
   expect_equal(
-    mockery::mock_args(m)[[1]][cols_to_compare],
+    mockery::mock_args(confl_upload_mock)[[1]][cols_to_compare],
     list(
       title = "title1",
-      spaceKey = "space1",
+      space_key = "space1",
       parent_id = 1234,
       update = TRUE,
       use_original_size = FALSE

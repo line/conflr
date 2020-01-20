@@ -18,7 +18,7 @@
 #'   params in the YAML front-matter.
 #' @param ... Ignored.
 #' @param title If provided, this overwrites the YAML front matter title.
-#' @param spaceKey If provided, this overwrites the YAML front matter spaceKey.
+#' @param space_key If provided, this overwrites the YAML front matter space_key.
 #' @param type If provided, this overwrites the YAML front matter type
 #' @param parent_id If provided, this overwrites the YAML front matter parent_id
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
@@ -31,7 +31,7 @@ confl_create_post_from_Rmd <- function(
   params = NULL,
   ...,
   title = NULL,
-  spaceKey = NULL,
+  space_key = NULL,
   type = NULL,
   parent_id = NULL,
   update = NULL,
@@ -92,7 +92,7 @@ confl_create_post_from_Rmd <- function(
     # title can be specified as a seperate item on front matter
     # override title if it's specified as the argument of confl_create_post_from_Rmd
     title = title %||% front_matter$title,
-    spaceKey = spaceKey,
+    space_key = space_key,
     type = type,
     parent_id = parent_id,
     update = update,
@@ -105,8 +105,8 @@ confl_create_post_from_Rmd <- function(
   )
 
   # On some Confluence, the key of a personal space can be guessed from the username
-  if (is.null(confluence_settings$spaceKey)) {
-    confluence_settings$spaceKey <- try_get_personal_space_key(username)
+  if (is.null(confluence_settings$space_key)) {
+    confluence_settings$space_key <- try_get_personal_space_key(username)
   }
 
   # conflr doesn't insert a title in the content automatically
@@ -125,7 +125,7 @@ confl_create_post_from_Rmd <- function(
   if (interactive) {
     confl_addin_upload(
       title = confluence_settings$title,
-      spaceKey = confluence_settings$spaceKey,
+      space_key = confluence_settings$space_key,
       type = confluence_settings$type,
       parent_id = confluence_settings$parent_id,
       html_text = html_text,
@@ -141,7 +141,7 @@ confl_create_post_from_Rmd <- function(
   } else {
     confl_upload(
       title = confluence_settings$title,
-      spaceKey = confluence_settings$spaceKey,
+      space_key = confluence_settings$space_key,
       type = confluence_settings$type,
       parent_id = confluence_settings$parent_id,
       html_text = html_text,
@@ -167,11 +167,11 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_addin_upload <- function(title, spaceKey, type, parent_id, html_text, imgs, imgs_realpath) {
+confl_addin_upload <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
   # Shiny UI -----------------------------------------------------------
   ui <- conflr_addin_ui(
     title = title,
-    spaceKey = spaceKey,
+    space_key = space_key,
     type = eval(formals(confl_post_page)$type),
     parent_id = parent_id,
     html_text = html_text,
@@ -184,7 +184,7 @@ confl_addin_upload <- function(title, spaceKey, type, parent_id, html_text, imgs
     shiny::observeEvent(input$done, {
       confl_upload(
         title = title,
-        spaceKey = input$spaceKey,
+        space_key = input$space_key,
         type = input$type,
         parent_id = input$parent_id,
         session = session,
@@ -220,7 +220,7 @@ try_get_personal_space_key <- function(username) {
 
   # check if the space really exists
   tryCatch(
-    space <- confl_get_space(spaceKey = paste0("~", username)),
+    space <- confl_get_space(space_key = paste0("~", username)),
     error = function(e) {
       # Do not show even warnings because it's likely to happen as the keys of personal spaces are often numeric (#30).
       return(NULL)
@@ -234,7 +234,7 @@ wrap_with_column <- function(..., width = 2) {
   shiny::column(width = width, ...)
 }
 
-conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, imgs_realpath) {
+conflr_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
@@ -242,8 +242,8 @@ conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, i
   # type (page or blogpost)
   type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = type)
 
-  # spaceKey
-  spaceKey_input <- shiny::textInput(inputId = "spaceKey", label = "Space Key", value = spaceKey)
+  # space_key
+  space_key_input <- shiny::textInput(inputId = "space_key", label = "Space Key", value = space_key)
 
   # parent page ID
   parent_id_input <- shiny::textInput(inputId = "parent_id", label = "Parent page ID", value = parent_id)
@@ -260,7 +260,7 @@ conflr_addin_ui <- function(title, spaceKey, type, parent_id, html_text, imgs, i
     miniUI::miniContentPanel(
       shiny::fluidRow(
         wrap_with_column(type_input),
-        wrap_with_column(spaceKey_input),
+        wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
         wrap_with_column(use_original_size_input, width = 4)
       ),

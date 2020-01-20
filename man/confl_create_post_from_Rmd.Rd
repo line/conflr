@@ -10,7 +10,7 @@ confl_create_post_from_Rmd(
   params = NULL,
   ...,
   title = NULL,
-  spaceKey = NULL,
+  space_key = NULL,
   type = NULL,
   parent_id = NULL,
   update = NULL,
@@ -29,7 +29,7 @@ params in the YAML front-matter.}
 
 \item{title}{If provided, this overwrites the YAML front matter title.}
 
-\item{spaceKey}{If provided, this overwrites the YAML front matter spaceKey.}
+\item{space_key}{If provided, this overwrites the YAML front matter space_key.}
 
 \item{type}{If provided, this overwrites the YAML front matter type}
 

@@ -14,7 +14,7 @@ confl_create_post_from_Rmd(
   type = NULL,
   parent_id = NULL,
   update = NULL,
-  use_original_size = FALSE
+  use_original_size = NULL
 )
 }
 \arguments{

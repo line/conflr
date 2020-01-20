@@ -222,10 +222,7 @@ try_get_personal_space_key <- function(username) {
   tryCatch(
     space <- confl_get_space(spaceKey = paste0("~", username)),
     error = function(e) {
-      if (verbose) {
-        # by default, do not show the error, because the keys of personal spaces are often numeric (#30).
-        warning(e, call. = FALSE)
-      }
+      # Do not show even warnings because it's likely to happen as the keys of personal spaces are often numeric (#30).
       return(NULL)
     }
   )

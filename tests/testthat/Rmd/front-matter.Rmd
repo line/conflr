@@ -1,0 +1,10 @@
+---
+title: "title1"
+confluence_settings:
+  space_key: "space1"
+  parent_id: 1234
+  update: TRUE
+  use_original_size: TRUE
+---
+
+test

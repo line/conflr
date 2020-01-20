@@ -1,5 +1,3 @@
-context("translate")
-
 test_that("unescape_html() works", {
   expect_equal(unescape_html("evony &amp; ivory"), "evony & ivory")
   expect_equal(unescape_html("x &lt;&gt; &#39;foo&#39;"), "x <> 'foo'")

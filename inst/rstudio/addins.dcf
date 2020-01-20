@@ -1,4 +1,4 @@
 Name: Post to Confluence
 Description: Knit an R Markdown file and post the result Markdown file to Confluence
-Binding: confl_create_post_from_Rmd
+Binding: confl_create_post_from_Rmd_addin
 Interactive: true

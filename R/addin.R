@@ -8,41 +8,57 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-
 #' Publish R Markdown Document to 'Confluence'
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param Rmd_file path to a .Rmd file. If `NULL`, use the active document.
-#' @param interactive If `FALSE` shiny interface is not launched.
-#' @param title If provided this overwrites the YAML front matter title.
+#' @param Rmd_file Path to an .Rmd file.
+#' @param interactive If `FALSE`, shiny interface is not launched.
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
-#' @param ... Addtional arguments passed to `confl_console_upload()`.
+#' @param ... Ignored.
+#' @param title Title of the post.
+#' @param type If provided, this overwrites the YAML front matter type
+#' @param space_key The space key to find content under.
+#' @param parent_id The page ID of the parent pages.
+#' @param update If `TRUE`, overwrite the existing page (if it exists).
+#' @param use_original_size If `TRUE`, use the original image sizes.
+#'
+#' @details
+#' `title`, `type`, `space_key`, `parent_id`, `update`, and `use_original_size`
+#' can be specified as `confluence_settings` item in the front-matter of the
+#' Rmd file to knit. The arguments of `confl_create_post_from_Rmd()` overwrite
+#' these settings if provided.
 #'
 #' @export
-confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
-                                       title = NULL, params = NULL, ...) {
+confl_create_post_from_Rmd <- function(
+  Rmd_file,
+  interactive = NULL,
+  params = NULL,
+  ...,
+  title = NULL,
+  # Use snake case for user-facing functions and use the actual API parameter name
+  # in camel case for simple binding functions.
+  space_key = NULL,
+  type = NULL,
+  parent_id = NULL,
+  update = NULL,
+  use_original_size = NULL) {
+
+
+  # sanity checks -----------------------------------------------------------
 
   if (is.null(interactive)) {
     interactive <- interactive()
   }
 
-  if (is.null(Rmd_file) && rstudioapi::isAvailable()) {
-    Rmd_file <- rstudioapi::getSourceEditorContext()$path
-    if (identical(Rmd_file, "")) {
-      # Probably "UntitledX"
-      stop("Please save the .Rmd file first!", call. = FALSE)
-    }
-  }
-
-  if (tolower(tools::file_ext(Rmd_file)) != "rmd") {
+  if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {
     stop(glue::glue("{basename(Rmd_file)} is not .Rmd file!"), call. = FALSE)
   }
 
-  # confirm the username and password are valid.
+  # confirm the username and password are valid (and username will be useful later).
   tryCatch(
-    confl_get_current_user(),
+    username <- confl_get_current_user()$username,
     error = function(e) {
       if (stringi::stri_detect_fixed(as.character(e), "Unauthorized (HTTP 401)")) {
         stop("Invalid credentials!", call. = FALSE)
@@ -51,6 +67,8 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       }
     }
   )
+
+  # knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
     collapse = TRUE,
@@ -71,35 +89,58 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
     env = globalenv()
   )
 
-  # set confl setting
+  # combine settings --------------------------------------------------------------------
+
+  # Get confluence_settings
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
+  confluence_settings <- front_matter$confluence_settings %||% list()
+
+  # title can be specified as a seperate item on front matter
+  # override title if it's specified as the argument of confl_create_post_from_Rmd
+  confluence_settings$title <- confluence_settings$title %||% front_matter$title
 
   # 1. Use confluence_settings on the front matter if it's available
   # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings <- purrr::list_modify(front_matter$confluence_settings %||% list(), ...)
+  confluence_settings_from_args <- list(
+    title = title,
+    space_key = space_key,
+    type = type,
+    parent_id = parent_id,
+    update = update,
+    use_original_size = use_original_size
+  )
+  confluence_settings <- purrr::list_modify(
+    confluence_settings,
+    !!!purrr::compact(confluence_settings_from_args)
+  )
 
-  # title is specified as a seperate item on front matter
-  # override title if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings$title <- title %||% front_matter$title
-
-  if (!interactive) {
-    # TODO: these arguments should be logical, so we need to check and fill it.
-    #       But, this should be done inside confl_addin_upload()...
-    if (is.null(confluence_settings$update)) {
-      confluence_settings$update <- FALSE
-    }
-    if (is.null(confluence_settings$use_original_size)) {
-      confluence_settings$use_original_size <- FALSE
-    }
+  # On some Confluence, the key of a personal space can be guessed from the username
+  if (is.null(confluence_settings$space_key)) {
+    confluence_settings$space_key <- try_get_personal_space_key(username)
   }
 
+  # conflr doesn't insert a title in the content automatically
+  md_text <- read_utf8(md_file)
+  html_text <- commonmark::markdown_html(md_text)
+
+  md_dir <- dirname(md_file)
+  imgs <- extract_image_paths(html_text)
+  imgs <- curl::curl_unescape(imgs)
+
+  # imgs might be absolute, relative to md_dir, or relative to the current dir.
+  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+
+  # upload ------------------------------------------------------------------
+
   if (interactive) {
-    confl_addin_upload(
-      md_file = md_file,
+    confl_upload_interactively(
       title = confluence_settings$title,
-      tags = confluence_settings$tags,
       space_key = confluence_settings$space_key,
-      parent_id = confluence_settings$parent_id
+      type = confluence_settings$type,
+      parent_id = confluence_settings$parent_id,
+      html_text = html_text,
+      imgs = imgs,
+      imgs_realpath = imgs_realpath
     )
 
     # if the user doesn't want to store the password as envvar, clear it.
@@ -108,151 +149,66 @@ confl_create_post_from_Rmd <- function(Rmd_file = NULL, interactive = NULL,
       Sys.unsetenv("CONFLUENCE_PASSWORD")
     }
   } else {
-    confl_console_upload(
-      md_file = md_file,
+    confl_upload(
       title = confluence_settings$title,
-      tags = confluence_settings$tags,
       space_key = confluence_settings$space_key,
       type = confluence_settings$type,
       parent_id = confluence_settings$parent_id,
+      html_text = html_text,
+      imgs = imgs,
+      imgs_realpath = imgs_realpath,
       update = confluence_settings$update,
-      use_original_size = confluence_settings$use_original_size
+      use_original_size = confluence_settings$use_original_size %||% FALSE
     )
   }
 }
 
-confl_addin_upload <- function(md_file, title, tags, space_key = NULL, parent_id = NULL) {
-  # conflr doesn't insert a title in the content automatically
-  md_text <- read_utf8(md_file)
-  html_text <- commonmark::markdown_html(md_text)
+confl_create_post_from_Rmd_addin <- function() {
+  if (!rstudioapi::isAvailable()) {
+    stop("This function must be called on RStudio!", call. = FALSE)
+  }
 
-  md_dir <- dirname(md_file)
-  imgs <- extract_image_paths(html_text)
-  imgs <- curl::curl_unescape(imgs)
-  # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+  Rmd_file <- rstudioapi::getSourceEditorContext()$path
+  if (identical(Rmd_file, "")) {
+    # Probably "UntitledX"
+    stop("Please save the .Rmd file first!", call. = FALSE)
+  }
 
-  html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
+  confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
+}
 
+confl_upload_interactively <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
   # Shiny UI -----------------------------------------------------------
-  ui <- miniUI::miniPage(
-    miniUI::gadgetTitleBar("Preview",
-                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
-    ),
-    miniUI::miniContentPanel(
-      shiny::fluidRow(
-        shiny::column(
-          width = 2,
-          shiny::selectInput(
-            inputId = "type", label = "Type",
-            choices = eval(formals(confl_post_page)$type)
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "spaceKey", label = "Space Key",
-            value = space_key %||% try_get_personal_space_key()
-          )
-        ),
-        shiny::column(
-          width = 2,
-          shiny::textInput(
-            inputId = "ancestors", label = "Parent page ID",
-            value = parent_id
-          )
-        ),
-        shiny::column(
-          width = 4,
-          shiny::checkboxInput(
-            inputId = "use_original_size", label = "Use original image sizes",
-            value = FALSE
-          )
-        )
-      ),
-      shiny::hr(),
-      shiny::h1(title, align = "center"),
-      shiny::div(
-        shiny::HTML(
-          html_text_for_preview
-        )
-      )
-    )
+  ui <- confl_addin_ui(
+    title = title,
+    space_key = space_key,
+    type = eval(formals(confl_post_page)$type),
+    parent_id = parent_id,
+    html_text = html_text,
+    imgs = imgs,
+    imgs_realpath = imgs_realpath
   )
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
     shiny::observeEvent(input$done, {
 
-      # check if there is an existing page
-      existing_pages <- confl_list_pages(title = title, spaceKey = input$spaceKey)
-      if (existing_pages$size == 0) {
-        # if the page doesn't exist, create a blank page
-        blank_page <- confl_post_page(
-          type = input$type,
-          spaceKey = input$spaceKey,
-          title = title,
-          body = "",
-          ancestors = input$ancestors
-        )
-        id <- blank_page$id
-      } else {
-        ans <- rstudioapi::showQuestion(
-          "Update?",
-          glue::glue("There is already an existing page named '{title}'.
-                      Are you sure to overwrite it?"),
-          ok = "OK", cancel = "cancel"
-        )
-        if (!ans) stop("Cancel to upload.", call. = FALSE)
-
-        id <- existing_pages$results[[1]]$id
-      }
-
-      progress <- shiny::Progress$new(session, min = 0, max = 2)
-      on.exit(progress$close())
-
-      # Step 1) Upload Images
-      progress$set(message = "Checking the existing images...")
-
-      # Check if the images already exist
-      imgs_exist <- confl_list_attachments(id)
-      imgs_exist_ids <- purrr::map_chr(imgs_exist$results, "id")
-      names(imgs_exist_ids) <- purrr::map_chr(imgs_exist$results, "title")
-
-      progress$set(message = "Uploading the images...")
-      num_imgs <- length(imgs)
-      for (i in seq_along(imgs)) {
-        progress$set(detail = imgs[i])
-
-        # attempt to avoid rate limits
-        Sys.sleep(0.2)
-
-        img_id <- imgs_exist_ids[basename(imgs[i])]
-        if (is.na(img_id)) {
-          confl_post_attachment(id, imgs_realpath[i])
-        } else {
-          confl_update_attachment_data(id, img_id, imgs_realpath[i])
-        }
-
-        progress$set(value = i / num_imgs)
-      }
-
-      # Step 2) Upload the document
-      progress$set(message = "Uploading the document...")
-
-      image_size_default <- if (!input$use_original_size) 600 else NULL
-      result <- confl_update_page(
-        id = id,
-        title = title,
-        body = html_text,
-        image_size_default = image_size_default
+      # TODO: this warning cannot be shown to users. Consider using shinyFeedback
+      shiny::validate(
+        shiny::need(input$space_key != "", "Please provide a space key")
       )
 
-      progress$set(value = 2, message = "Done!")
-      Sys.sleep(2)
-
-      invisible(shiny::stopApp())
-      browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+      confl_upload(
+        title = title,
+        space_key = input$space_key,
+        type = input$type,
+        parent_id = input$parent_id,
+        session = session,
+        html_text = html_text,
+        imgs = imgs,
+        imgs_realpath = imgs_realpath,
+        use_original_size = input$use_original_size
+      )
     })
   }
 
@@ -272,26 +228,56 @@ extract_image_paths <- function(html_text) {
   img_paths[!is.na(img_paths) & !grepl("^https?://", img_paths)]
 }
 
-try_get_personal_space_key <- function(verbose = FALSE) {
-  tryCatch({
-    # get the current username
-    username <- confl_get_current_user()$username
-    if (is.null(username)) {
-      warning("Failed to get username", call. = FALSE)
+try_get_personal_space_key <- function(username) {
+  # check if the space really exists
+  tryCatch(
+    space <- confl_get_space(spaceKey = paste0("~", username)),
+    error = function(e) {
+      # Do not show even warnings because it's likely to happen as the keys of personal spaces are often numeric (#30).
       return(NULL)
     }
+  )
 
-    spaceKey <- paste0("~", username)
-    # check if the space really exists
-    space <- confl_get_space(spaceKey = spaceKey)
-    space$key
-  },
-  error = function(e) {
-    if (verbose) {
-      # by default, do not show the error, because the keys of personal spaces are often numeric (#30).
-      warning(e, call. = FALSE)
-    }
-    return(NULL)
-  }
+  space$key
+}
+
+wrap_with_column <- function(..., width = 2) {
+  shiny::column(width = width, ...)
+}
+
+confl_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
+  # title bar
+  title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+  title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
+
+  # type (page or blogpost)
+  type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = type)
+
+  # space_key
+  space_key_input <- shiny::textInput(inputId = "space_key", label = "Space Key", value = space_key)
+
+  # parent page ID
+  parent_id_input <- shiny::textInput(inputId = "parent_id", label = "Parent page ID", value = parent_id)
+
+  # use the original size or not
+  use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = FALSE)
+
+  # Preview
+  html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
+  preview_html <- shiny::HTML(html_text_for_preview)
+
+  miniUI::miniPage(
+    title_bar,
+    miniUI::miniContentPanel(
+      shiny::fluidRow(
+        wrap_with_column(type_input),
+        wrap_with_column(space_key_input),
+        wrap_with_column(parent_id_input),
+        wrap_with_column(use_original_size_input, width = 4)
+      ),
+      shiny::hr(),
+      shiny::h1(title, align = "center"),
+      shiny::div(preview_html)
+    )
   )
 }

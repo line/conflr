@@ -8,24 +8,17 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-confl_console_upload <- function(md_file, title, tags, space_key, type,
-                                 parent_id, update = FALSE, use_original_size = FALSE) {
+confl_upload <- function(title, space_key, type, parent_id, html_text,
+                         imgs, imgs_realpath,
+                         update = NULL, use_original_size = FALSE,
+                         interactive = NULL, session = NULL) {
+  if (is.null(interactive)) {
+    interactive <- interactive()
+  }
 
-  # conflr doesn't insert a title in the content automatically
-  md_text <- read_utf8(md_file)
-  html_text <- commonmark::markdown_html(md_text)
-
-  md_dir <- dirname(md_file)
-  imgs <- extract_image_paths(html_text)
-  imgs <- curl::curl_unescape(imgs)
-  # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
-
-  html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
-
-  # Extracted Shiny Code
   # check if there is an existing page
   existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
+
   if (existing_pages$size == 0) {
     # if the page doesn't exist, create a blank page
     blank_page <- confl_post_page(
@@ -37,7 +30,19 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
     )
     id <- blank_page$id
   } else {
-    if (!update) {
+    # Confirm if it's OK to update the existing page
+    #
+    # 1) interactive,     update is NULL : ask (default)
+    # 2) interactive,     update is TRUE : proceed
+    # 3) interactive,     update is FALSE: abort
+    # 4) non-interactive, update is NULL : abort (default)
+    # 5) non-interacitve, update is TRUE : proceed
+    # 6) non-interactive, update is FALSE: abort
+    if (interactive && is.null(update)) {
+      update <- confirm_upload(title)
+    }
+
+    if (!isTRUE(update)) {
       stop("Page already exists. Re-run with `update = TRUE` to overwrite.",
            call. = FALSE)
     }
@@ -45,17 +50,21 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
     id <- existing_pages$results[[1]]$id
   }
 
+  progress <- new_progress(session, min = 0, max = 2)
+  on.exit(progress$close())
+
   # Step 1) Upload Images
-  message("Checking the existing images...")
+  progress$set(message = "Checking the existing images...")
 
   # Check if the images already exist
   imgs_exist <- confl_list_attachments(id)
   imgs_exist_ids <- purrr::map_chr(imgs_exist$results, "id")
   names(imgs_exist_ids) <- purrr::map_chr(imgs_exist$results, "title")
 
-  message("Uploading the images...")
+  progress$set(message = "Uploading the images...")
   num_imgs <- length(imgs)
   for (i in seq_along(imgs)) {
+    progress$set(detail = imgs[i])
 
     # attempt to avoid rate limits
     Sys.sleep(0.2)
@@ -66,10 +75,12 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
     } else {
       confl_update_attachment_data(id, img_id, imgs_realpath[i])
     }
+
+    progress$set(value = i / num_imgs)
   }
 
   # Step 2) Upload the document
-  message("Uploading the document...")
+  progress$set(message = "Uploading the document...")
 
   image_size_default <- if (!use_original_size) 600 else NULL
   result <- confl_update_page(
@@ -78,11 +89,36 @@ confl_console_upload <- function(md_file, title, tags, space_key, type,
     body = html_text,
     image_size_default = image_size_default
   )
+  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
 
-  message("Done!")
+  progress$set(value = 2, message = "Done!")
   Sys.sleep(2)
 
-  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
-  message(paste0("Results at: ", results_url))
+  if (!is.null(session)) {
+    shiny::stopApp()
+  }
+
+  if (interactive) {
+    browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+  } else {
+    message(paste0("Results at: ", results_url))
+  }
+
   results_url
+}
+
+confirm_upload <- function(title) {
+  ans <- rstudioapi::showQuestion(
+    "Update?",
+    glue::glue(
+      "There is already an existing page named '{title}'.\n",
+      "Are you sure to overwrite it?"
+    ),
+    ok = "OK", cancel = "cancel"
+  )
+  if (ans) {
+    TRUE
+  } else {
+    stop("Cancel to upload.", call. = FALSE)
+  }
 }

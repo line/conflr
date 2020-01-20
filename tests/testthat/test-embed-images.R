@@ -1,5 +1,3 @@
-context("test-embed-images")
-
 base64_img <- knitr::image_uri("plot1.png")
 
 test_that("embed_images() works for current dir", {

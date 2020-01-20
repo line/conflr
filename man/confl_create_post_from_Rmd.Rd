@@ -5,25 +5,46 @@
 \title{Publish R Markdown Document to 'Confluence'}
 \usage{
 confl_create_post_from_Rmd(
-  Rmd_file = NULL,
+  Rmd_file,
   interactive = NULL,
-  title = NULL,
   params = NULL,
-  ...
+  ...,
+  title = NULL,
+  space_key = NULL,
+  type = NULL,
+  parent_id = NULL,
+  update = NULL,
+  use_original_size = NULL
 )
 }
 \arguments{
-\item{Rmd_file}{path to a .Rmd file. If \code{NULL}, use the active document.}
+\item{Rmd_file}{Path to an .Rmd file.}
 
-\item{interactive}{If \code{FALSE} shiny interface is not launched.}
-
-\item{title}{If provided this overwrites the YAML front matter title.}
+\item{interactive}{If \code{FALSE}, shiny interface is not launched.}
 
 \item{params}{If provided, a list of named parameters that override custom
 params in the YAML front-matter.}
 
-\item{...}{Addtional arguments passed to \code{confl_console_upload()}.}
+\item{...}{Ignored.}
+
+\item{title}{Title of the post.}
+
+\item{space_key}{The space key to find content under.}
+
+\item{type}{If provided, this overwrites the YAML front matter type}
+
+\item{parent_id}{The page ID of the parent pages.}
+
+\item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
+
+\item{use_original_size}{If \code{TRUE}, use the original image sizes.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.
+}
+\details{
+\code{title}, \code{type}, \code{space_key}, \code{parent_id}, \code{update}, and \code{use_original_size}
+can be specified as \code{confluence_settings} item in the front-matter of the
+Rmd file to knit. The arguments of \code{confl_create_post_from_Rmd()} overwrite
+these settings if provided.
 }

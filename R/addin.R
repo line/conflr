@@ -158,7 +158,7 @@ confl_create_post_from_Rmd <- function(
       imgs = imgs,
       imgs_realpath = imgs_realpath,
       update = confluence_settings$update,
-      use_original_size = confluence_settings$use_original_size
+      use_original_size = confluence_settings$use_original_size %||% FALSE
     )
   }
 }

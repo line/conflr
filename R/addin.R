@@ -43,7 +43,7 @@ confl_create_post_from_Rmd <- function(
   type = NULL,
   parent_id = NULL,
   update = NULL,
-  use_original_size = FALSE) {
+  use_original_size = NULL) {
 
 
   # sanity checks -----------------------------------------------------------
@@ -93,22 +93,24 @@ confl_create_post_from_Rmd <- function(
 
   # set confl setting
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
+  confluence_settings <- front_matter$confluence_settings %||% list()
+
+  # title can be specified as a seperate item on front matter
+  # override title if it's specified as the argument of confl_create_post_from_Rmd
+  confluence_settings$title <- confluence_settings$title %||% front_matter$title
 
   # 1. Use confluence_settings on the front matter if it's available
   # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
   confluence_settings_from_args <- list(
-    # title can be specified as a seperate item on front matter
-    # override title if it's specified as the argument of confl_create_post_from_Rmd
-    title = title %||% front_matter$title,
+    title = title,
     space_key = space_key,
     type = type,
     parent_id = parent_id,
     update = update,
     use_original_size = use_original_size
   )
-
   confluence_settings <- purrr::list_modify(
-    front_matter$confluence_settings %||% list(),
+    confluence_settings,
     !!!purrr::compact(confluence_settings_from_args)
   )
 

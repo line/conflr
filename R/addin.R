@@ -133,7 +133,7 @@ confl_create_post_from_Rmd <- function(
   # upload ------------------------------------------------------------------
 
   if (interactive) {
-    confl_addin_upload(
+    confl_upload_interactively(
       title = confluence_settings$title,
       space_key = confluence_settings$space_key,
       type = confluence_settings$type,
@@ -177,9 +177,9 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_addin_upload <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
+confl_upload_interactively <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
   # Shiny UI -----------------------------------------------------------
-  ui <- conflr_addin_ui(
+  ui <- confl_addin_ui(
     title = title,
     space_key = space_key,
     type = eval(formals(confl_post_page)$type),
@@ -239,7 +239,7 @@ wrap_with_column <- function(..., width = 2) {
   shiny::column(width = width, ...)
 }
 
-conflr_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
+confl_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)

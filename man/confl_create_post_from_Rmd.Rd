@@ -18,7 +18,7 @@ confl_create_post_from_Rmd(
 )
 }
 \arguments{
-\item{Rmd_file}{Path to a .Rmd file.}
+\item{Rmd_file}{Path to an .Rmd file.}
 
 \item{interactive}{If \code{FALSE}, shiny interface is not launched.}
 

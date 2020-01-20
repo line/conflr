@@ -12,7 +12,7 @@
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param Rmd_file Path to a .Rmd file.
+#' @param Rmd_file Path to an .Rmd file.
 #' @param interactive If `FALSE`, shiny interface is not launched.
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
@@ -91,7 +91,7 @@ confl_create_post_from_Rmd <- function(
 
   # combine settings --------------------------------------------------------------------
 
-  # set confl setting
+  # Get confluence_settings
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
   confluence_settings <- front_matter$confluence_settings %||% list()
 

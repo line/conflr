@@ -8,8 +8,6 @@ test_that('%|""|% works', {
 })
 
 test_that("confl_verb() asks for credentials if it is not set", {
-
-  # cannot mock on CI
   skip_on_cran()
 
   # If the request succeeds, the provided credential is stored as an envvar

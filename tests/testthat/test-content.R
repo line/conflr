@@ -30,7 +30,6 @@ test_that("confl_post_page() works", {
 })
 
 test_that("confl_update_page() works", {
-  # cannot mock on CI
   skip_on_cran()
 
   res <- structure(list(status_code = 200), class = "response")

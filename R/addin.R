@@ -8,20 +8,6 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-confl_create_post_from_Rmd_addin <- function() {
-  if (!rstudioapi::isAvailable()) {
-    stop("This function must be called on RStudio!", call. = FALSE)
-  }
-
-  Rmd_file <- rstudioapi::getSourceEditorContext()$path
-  if (identical(Rmd_file, "")) {
-    # Probably "UntitledX"
-    stop("Please save the .Rmd file first!", call. = FALSE)
-  }
-
-  confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
-}
-
 #' Publish R Markdown Document to 'Confluence'
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
@@ -165,6 +151,20 @@ confl_create_post_from_Rmd <- function(
       use_original_size = confluence_settings$use_original_size
     )
   }
+}
+
+confl_create_post_from_Rmd_addin <- function() {
+  if (!rstudioapi::isAvailable()) {
+    stop("This function must be called on RStudio!", call. = FALSE)
+  }
+
+  Rmd_file <- rstudioapi::getSourceEditorContext()$path
+  if (identical(Rmd_file, "")) {
+    # Probably "UntitledX"
+    stop("Please save the .Rmd file first!", call. = FALSE)
+  }
+
+  confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
 confl_addin_upload <- function(title, spaceKey, type, parent_id, html_text, imgs, imgs_realpath) {

@@ -25,7 +25,7 @@
 * A new function `confl_contentbody_convert()` converts the Confluence-related
   formats by using the Confluence REST API (#58).
 
-* `confl_create_post_from_Rmd()` gets `interactive` argument. When it's `TRUE`,
+* `confl_create_post_from_Rmd()` gets `toc` argument. When it's `TRUE`,
   TOC is added at the top of the document (#64)
 
 # conflr 0.0.5

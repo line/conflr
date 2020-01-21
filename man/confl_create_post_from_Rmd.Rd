@@ -13,6 +13,7 @@ confl_create_post_from_Rmd(
   space_key = NULL,
   type = NULL,
   parent_id = NULL,
+  toc = NULL,
   update = NULL,
   use_original_size = NULL
 )
@@ -35,6 +36,8 @@ params in the YAML front-matter.}
 
 \item{parent_id}{The page ID of the parent pages.}
 
+\item{toc}{If \code{TRUE}, add TOC.}
+
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
 
 \item{use_original_size}{If \code{TRUE}, use the original image sizes.}
@@ -43,8 +46,8 @@ params in the YAML front-matter.}
 Knit and post a given R Markdown file to 'Confluence'.
 }
 \details{
-\code{title}, \code{type}, \code{space_key}, \code{parent_id}, \code{update}, and \code{use_original_size}
-can be specified as \code{confluence_settings} item in the front-matter of the
-Rmd file to knit. The arguments of \code{confl_create_post_from_Rmd()} overwrite
-these settings if provided.
+\code{title}, \code{type}, \code{space_key}, \code{parent_id}, \code{toc}, \code{update}, and
+\code{use_original_size} can be specified as \code{confluence_settings} item in the
+front-matter of the Rmd file to knit. The arguments of
+\code{confl_create_post_from_Rmd()} overwrite these settings if provided.
 }

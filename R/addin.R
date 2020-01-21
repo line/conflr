@@ -21,14 +21,15 @@
 #' @param type If provided, this overwrites the YAML front matter type
 #' @param space_key The space key to find content under.
 #' @param parent_id The page ID of the parent pages.
+#' @param toc If `TRUE`, add TOC.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size If `TRUE`, use the original image sizes.
 #'
 #' @details
-#' `title`, `type`, `space_key`, `parent_id`, `update`, and `use_original_size`
-#' can be specified as `confluence_settings` item in the front-matter of the
-#' Rmd file to knit. The arguments of `confl_create_post_from_Rmd()` overwrite
-#' these settings if provided.
+#' `title`, `type`, `space_key`, `parent_id`, `toc`, `update`, and
+#' `use_original_size` can be specified as `confluence_settings` item in the
+#' front-matter of the Rmd file to knit. The arguments of
+#' `confl_create_post_from_Rmd()` overwrite these settings if provided.
 #'
 #' @export
 confl_create_post_from_Rmd <- function(
@@ -42,6 +43,7 @@ confl_create_post_from_Rmd <- function(
   space_key = NULL,
   type = NULL,
   parent_id = NULL,
+  toc = NULL,
   update = NULL,
   use_original_size = NULL) {
 
@@ -106,6 +108,7 @@ confl_create_post_from_Rmd <- function(
     space_key = space_key,
     type = type,
     parent_id = parent_id,
+    toc = toc,
     update = update,
     use_original_size = use_original_size
   )
@@ -140,7 +143,9 @@ confl_create_post_from_Rmd <- function(
       parent_id = confluence_settings$parent_id,
       html_text = html_text,
       imgs = imgs,
-      imgs_realpath = imgs_realpath
+      imgs_realpath = imgs_realpath,
+      toc = confluence_settings$toc %||% FALSE,
+      use_original_size = confluence_settings$use_original_size %||% FALSE
     )
 
     # if the user doesn't want to store the password as envvar, clear it.
@@ -157,8 +162,10 @@ confl_create_post_from_Rmd <- function(
       html_text = html_text,
       imgs = imgs,
       imgs_realpath = imgs_realpath,
+      toc = confluence_settings$toc %||% FALSE,
       update = confluence_settings$update,
-      use_original_size = confluence_settings$use_original_size %||% FALSE
+      use_original_size = confluence_settings$use_original_size %||% FALSE,
+      interactive = interactive
     )
   }
 }
@@ -177,7 +184,10 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_upload_interactively <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
+confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
+                                       imgs, imgs_realpath,
+                                       toc = FALSE, use_original_size = FALSE) {
+
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
     title = title,
@@ -186,7 +196,9 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
     parent_id = parent_id,
     html_text = html_text,
     imgs = imgs,
-    imgs_realpath = imgs_realpath
+    imgs_realpath = imgs_realpath,
+    toc = toc,
+    use_original_size = use_original_size
   )
 
   # Shiny Server -------------------------------------------------------
@@ -207,6 +219,7 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath,
+        toc = input$toc,
         use_original_size = input$use_original_size
       )
     })
@@ -245,7 +258,9 @@ wrap_with_column <- function(..., width = 2) {
   shiny::column(width = width, ...)
 }
 
-confl_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, imgs_realpath) {
+confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
+                           imgs, imgs_realpath,
+                           toc = FALSE, use_original_size = FALSE) {
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
@@ -260,7 +275,10 @@ confl_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, i
   parent_id_input <- shiny::textInput(inputId = "parent_id", label = "Parent page ID", value = parent_id)
 
   # use the original size or not
-  use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = FALSE)
+  use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = use_original_size)
+
+  # add TOC or not
+  toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
 
   # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
@@ -273,7 +291,7 @@ confl_addin_ui <- function(title, space_key, type, parent_id, html_text, imgs, i
         wrap_with_column(type_input),
         wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
-        wrap_with_column(use_original_size_input, width = 4)
+        wrap_with_column(use_original_size_input, toc_input, width = 4)
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),

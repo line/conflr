@@ -10,7 +10,7 @@
 
 confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
-                         update = NULL, use_original_size = FALSE,
+                         toc = FALSE, update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
   if (is.null(interactive)) {
     interactive <- interactive()
@@ -81,6 +81,10 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
   # Step 2) Upload the document
   progress$set(message = "Uploading the document...")
+
+  if (toc) {
+    html_text <- paste0('<p><ac:structured-macro ac:name="toc" /></p>\n', html_text)
+  }
 
   image_size_default <- if (!use_original_size) 600 else NULL
   result <- confl_update_page(

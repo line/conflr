@@ -30,6 +30,7 @@ Rmd_with_all_defaults <-
 confluence_settings:
   space_key: "space1"
   parent_id: 1234
+  toc: TRUE
   update: TRUE
   use_original_size: TRUE'
 
@@ -44,6 +45,7 @@ test_that("confluence_settings can be set from front-matter", {
     title = "title1",
     space_key = "space1",
     parent_id = 1234,
+    toc = TRUE,
     update = TRUE,
     use_original_size = TRUE
   )
@@ -52,7 +54,7 @@ test_that("confluence_settings can be set from front-matter", {
   confl_upload_mock <- mockery::mock(NULL)
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_with_all_defaults,
     title = "title2", space_key = "space2", parent_id = 9999,
-    update = FALSE, use_original_size = FALSE
+    toc = FALSE, update = FALSE, use_original_size = FALSE
   )
 
   expect_confluence_settings(
@@ -60,6 +62,7 @@ test_that("confluence_settings can be set from front-matter", {
     title = "title2",
     space_key = "space2",
     parent_id = 9999,
+    toc = FALSE,
     update = FALSE,
     use_original_size = FALSE
   )
@@ -71,6 +74,7 @@ confluence_settings:
   title: "title2"
   space_key: "space1"
   parent_id: 1234
+  toc: TRUE
   update: TRUE
   use_original_size: TRUE'
 
@@ -85,6 +89,7 @@ test_that("confluence_settings$title is prior to title", {
     title = "title2",
     space_key = "space1",
     parent_id = 1234,
+    toc = TRUE,
     update = TRUE,
     use_original_size = TRUE
   )
@@ -100,6 +105,7 @@ test_that("confluence_settings$title is prior to title", {
     title = "title3",
     space_key = "space1",
     parent_id = 1234,
+    toc = TRUE,
     update = TRUE,
     use_original_size = TRUE
   )
@@ -121,6 +127,7 @@ test_that("confluence_settings can be specified partially", {
     title = "title1",
     space_key = "space1",
     parent_id = NULL,
+    toc = FALSE, # toc must not be NULL
     update = NULL,
     use_original_size = FALSE # use_original_size must not be NULL
   )
@@ -144,6 +151,7 @@ test_that("confluence_settings raise an error when any of mandatory parameters a
     title = "title1",
     space_key = "space2",
     parent_id = NULL,
+    toc = FALSE, # toc must not be NULL
     update = NULL,
     use_original_size = FALSE # use_original_size must not be NULL
   )

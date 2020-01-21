@@ -108,6 +108,7 @@ confl_create_post_from_Rmd <- function(
     space_key = space_key,
     type = type,
     parent_id = parent_id,
+    toc = toc,
     update = update,
     use_original_size = use_original_size
   )

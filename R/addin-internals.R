@@ -83,7 +83,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   progress$set(message = "Uploading the document...")
 
   if (toc) {
-    html_text <- paste0('<p><ac:structured-macro ac:name="toc" /></p>', html_text)
+    html_text <- paste0('<p><ac:structured-macro ac:name="toc" /></p>\n', html_text)
   }
 
   image_size_default <- if (!use_original_size) 600 else NULL

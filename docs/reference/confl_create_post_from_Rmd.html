@@ -118,11 +118,17 @@
     </div>
 
     <pre class="usage"><span class='fu'>confl_create_post_from_Rmd</span>(
-  <span class='kw'>Rmd_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>Rmd_file</span>,
   <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='no'>...</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>space_key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parent_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>toc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>update</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_original_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -130,15 +136,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Rmd_file</th>
-      <td><p>path to a .Rmd file. If <code>NULL</code>, use the active document.</p></td>
+      <td><p>Path to an .Rmd file.</p></td>
     </tr>
     <tr>
       <th>interactive</th>
-      <td><p>If <code>FALSE</code> shiny interface is not launched.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>If provided this overwrites the YAML front matter title.</p></td>
+      <td><p>If <code>FALSE</code>, shiny interface is not launched.</p></td>
     </tr>
     <tr>
       <th>params</th>
@@ -147,16 +149,51 @@ params in the YAML front-matter.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Addtional arguments passed to <code>confl_console_upload()</code>.</p></td>
+      <td><p>Ignored.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>Title of the post.</p></td>
+    </tr>
+    <tr>
+      <th>space_key</th>
+      <td><p>The space key to find content under.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>If provided, this overwrites the YAML front matter type</p></td>
+    </tr>
+    <tr>
+      <th>parent_id</th>
+      <td><p>The page ID of the parent pages.</p></td>
+    </tr>
+    <tr>
+      <th>toc</th>
+      <td><p>If <code>TRUE</code>, add TOC.</p></td>
+    </tr>
+    <tr>
+      <th>update</th>
+      <td><p>If <code>TRUE</code>, overwrite the existing page (if it exists).</p></td>
+    </tr>
+    <tr>
+      <th>use_original_size</th>
+      <td><p>If <code>TRUE</code>, use the original image sizes.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>title</code>, <code>type</code>, <code>space_key</code>, <code>parent_id</code>, <code>toc</code>, <code>update</code>, and
+<code>use_original_size</code> can be specified as <code>confluence_settings</code> item in the
+front-matter of the Rmd file to knit. The arguments of
+<code>confl_create_post_from_Rmd()</code> overwrite these settings if provided.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

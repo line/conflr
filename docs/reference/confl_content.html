@@ -134,10 +134,17 @@
   <span class='no'>title</span>,
   <span class='no'>body</span>,
   <span class='kw'>ancestors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>
+  <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>,
+  <span class='kw'>supported_syntax_highlighting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"conflr_supported_syntax_highlighting"</span>)
 )
 
-<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>, <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>)
+<span class='fu'>confl_update_page</span>(
+  <span class='no'>id</span>,
+  <span class='no'>title</span>,
+  <span class='no'>body</span>,
+  <span class='kw'>image_size_default</span> <span class='kw'>=</span> <span class='fl'>600</span>,
+  <span class='kw'>supported_syntax_highlighting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"conflr_supported_syntax_highlighting"</span>)
+)
 
 <span class='fu'>confl_delete_page</span>(<span class='no'>id</span>)</pre>
 
@@ -184,6 +191,10 @@ contents, use periods. (e.g. <code>body.storage,history</code>).</p></td>
     <tr>
       <th>image_size_default</th>
       <td><p>The default width of images in pixel. If <code>NULL</code>, images are displayed in their original sizes.</p></td>
+    </tr>
+    <tr>
+      <th>supported_syntax_highlighting</th>
+      <td><p>A named character vector of supported syntax highlighting other than default (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(r = "r")</a></code>).</p></td>
     </tr>
     </table>
 

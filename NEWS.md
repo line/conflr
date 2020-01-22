@@ -25,8 +25,9 @@
 * A new function `confl_contentbody_convert()` converts the Confluence-related
   formats by using the Confluence REST API (#58).
 
-* `confl_create_post_from_Rmd()` gets `toc` argument. When it's `TRUE`,
-  TOC is added at the top of the document (#64)
+* `confl_create_post_from_Rmd()` gets `toc` and `toc_depth` argument. When
+  `toc = TRUE`, TOC is added at the top of the document (#64). The depth of the
+  TOC can be specified via `toc_depth` argument (#67).
 
 # conflr 0.0.5
 

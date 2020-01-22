@@ -28,6 +28,9 @@ confluence_settings:
   parent_id: 1234
   toc: TRUE
   toc_depth: 4
+  supported_syntax_highlighting:
+    r: r
+    foo: bar
   update: TRUE
   use_original_size: TRUE'
 
@@ -44,6 +47,7 @@ test_that("confluence_settings can be set from front-matter", {
     parent_id = 1234,
     toc = TRUE,
     toc_depth = 4,
+    supported_syntax_highlighting = list(r = "r", foo = "bar"),
     update = TRUE,
     use_original_size = TRUE
   )
@@ -52,7 +56,8 @@ test_that("confluence_settings can be set from front-matter", {
   confl_upload_mock <- mockery::mock(NULL)
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_with_all_defaults,
     title = "title2", space_key = "space2", parent_id = 9999,
-    toc = FALSE, toc_depth = 2, update = FALSE, use_original_size = FALSE
+    toc = FALSE, toc_depth = 2, supported_syntax_highlighting = c(two_plus_two = "five"),
+     update = FALSE, use_original_size = FALSE
   )
 
   expect_confluence_settings(
@@ -62,6 +67,7 @@ test_that("confluence_settings can be set from front-matter", {
     parent_id = 9999,
     toc = FALSE,
     toc_depth = 2,
+    supported_syntax_highlighting = c(two_plus_two = "five"),
     update = FALSE,
     use_original_size = FALSE
   )
@@ -75,6 +81,9 @@ confluence_settings:
   parent_id: 1234
   toc: TRUE
   toc_depth: 4
+  supported_syntax_highlighting:
+    r: r
+    foo: bar
   update: TRUE
   use_original_size: TRUE'
 
@@ -91,6 +100,7 @@ test_that("confluence_settings$title is prior to title", {
     parent_id = 1234,
     toc = TRUE,
     toc_depth = 4,
+    supported_syntax_highlighting = list(r = "r", foo = "bar"),
     update = TRUE,
     use_original_size = TRUE
   )
@@ -108,6 +118,7 @@ test_that("confluence_settings$title is prior to title", {
     parent_id = 1234,
     toc = TRUE,
     toc_depth = 4,
+    supported_syntax_highlighting = list(r = "r", foo = "bar"),
     update = TRUE,
     use_original_size = TRUE
   )
@@ -131,10 +142,28 @@ test_that("confluence_settings can be specified partially", {
     parent_id = NULL,
     toc = FALSE, # toc must not be NULL
     toc_depth = 7,
+    supported_syntax_highlighting = NULL,
     update = NULL,
     use_original_size = FALSE # use_original_size must not be NULL
   )
 })
+
+test_that("supported_syntax_highlighting can be set via option", {
+
+  # case: confluence_settings$title is prior to title
+  confl_upload_mock <- mockery::mock(NULL)
+
+  withr::with_options(
+    list(conflr_supported_syntax_highlighting = "r"),
+    do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_with_some_settings)
+  )
+
+  expect_confluence_settings(
+    confl_upload_mock,
+    supported_syntax_highlighting = "r"
+  )
+})
+
 
 Rmd_without_space_key <- 'title: "title1"'
 
@@ -156,6 +185,7 @@ test_that("confluence_settings raise an error when any of mandatory parameters a
     parent_id = NULL,
     toc = FALSE, # toc must not be NULL
     toc_depth = 7,
+    supported_syntax_highlighting = NULL,
     update = NULL,
     use_original_size = FALSE # use_original_size must not be NULL
   )

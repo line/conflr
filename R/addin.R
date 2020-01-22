@@ -274,6 +274,9 @@ wrap_with_column <- function(..., width = 2) {
   shiny::column(width = width, ...)
 }
 
+# NOTE: conflr_supported_syntax_highlighting cannot be set via GUI because
+#       it's not a feature frequently used and is a bit difficult to input
+#       via Shiny interface.
 confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
                            imgs, imgs_realpath,
                            toc = FALSE, toc_depth = 7,

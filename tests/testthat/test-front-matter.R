@@ -26,13 +26,13 @@ Rmd_with_all_defaults <-
 confluence_settings:
   space_key: "space1"
   parent_id: 1234
-  toc: TRUE
+  toc: true
   toc_depth: 4
   supported_syntax_highlighting:
     r: r
     foo: bar
-  update: TRUE
-  use_original_size: TRUE'
+  update: true
+  use_original_size: true'
 
 test_that("confluence_settings can be set from front-matter", {
 
@@ -84,8 +84,8 @@ confluence_settings:
   supported_syntax_highlighting:
     r: r
     foo: bar
-  update: TRUE
-  use_original_size: TRUE'
+  update: true
+  use_original_size: true'
 
 test_that("confluence_settings$title is prior to title", {
 

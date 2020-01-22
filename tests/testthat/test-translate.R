@@ -180,6 +180,14 @@ test_that("replace_image() works", {
   )
 })
 
+test_that("normalise_supported_syntax_highlighting() works", {
+  expect_equal(normalise_supported_syntax_highlighting(NULL), NULL)
+  expect_equal(normalise_supported_syntax_highlighting("r"), c(r = "r"))
+  expect_equal(normalise_supported_syntax_highlighting(c(foo = "bar")), c(foo = "bar"))
+  expect_equal(normalise_supported_syntax_highlighting(list("r")), c(r = "r"))
+  expect_equal(normalise_supported_syntax_highlighting(list(foo = "bar")), c(foo = "bar"))
+})
+
 test_that("translate_to_confl_macro() works", {
   # code chunk
   html_text <- commonmark::markdown_html(

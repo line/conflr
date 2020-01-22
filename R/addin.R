@@ -22,11 +22,12 @@
 #' @param space_key The space key to find content under.
 #' @param parent_id The page ID of the parent pages.
 #' @param toc If `TRUE`, add TOC.
+#' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size If `TRUE`, use the original image sizes.
 #'
 #' @details
-#' `title`, `type`, `space_key`, `parent_id`, `toc`, `update`, and
+#' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
 #' `use_original_size` can be specified as `confluence_settings` item in the
 #' front-matter of the Rmd file to knit. The arguments of
 #' `confl_create_post_from_Rmd()` overwrite these settings if provided.
@@ -44,6 +45,7 @@ confl_create_post_from_Rmd <- function(
   type = NULL,
   parent_id = NULL,
   toc = NULL,
+  toc_depth = NULL,
   update = NULL,
   use_original_size = NULL) {
 
@@ -109,6 +111,7 @@ confl_create_post_from_Rmd <- function(
     type = type,
     parent_id = parent_id,
     toc = toc,
+    toc_depth = toc_depth,
     update = update,
     use_original_size = use_original_size
   )
@@ -145,6 +148,7 @@ confl_create_post_from_Rmd <- function(
       imgs = imgs,
       imgs_realpath = imgs_realpath,
       toc = confluence_settings$toc %||% FALSE,
+      toc_depth = confluence_settings$toc_depth %||% 7,
       use_original_size = confluence_settings$use_original_size %||% FALSE
     )
 
@@ -163,6 +167,7 @@ confl_create_post_from_Rmd <- function(
       imgs = imgs,
       imgs_realpath = imgs_realpath,
       toc = confluence_settings$toc %||% FALSE,
+      toc_depth = confluence_settings$toc_depth %||% 7,
       update = confluence_settings$update,
       use_original_size = confluence_settings$use_original_size %||% FALSE,
       interactive = interactive
@@ -186,7 +191,8 @@ confl_create_post_from_Rmd_addin <- function() {
 
 confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
                                        imgs, imgs_realpath,
-                                       toc = FALSE, use_original_size = FALSE) {
+                                       toc = FALSE, toc_depth = 7,
+                                       use_original_size = FALSE) {
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
@@ -198,6 +204,7 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
     imgs = imgs,
     imgs_realpath = imgs_realpath,
     toc = toc,
+    toc_depth = toc_depth,
     use_original_size = use_original_size
   )
 
@@ -220,6 +227,7 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
         imgs = imgs,
         imgs_realpath = imgs_realpath,
         toc = input$toc,
+        toc_depth = input$toc_depth,
         use_original_size = input$use_original_size
       )
     })
@@ -260,7 +268,8 @@ wrap_with_column <- function(..., width = 2) {
 
 confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
                            imgs, imgs_realpath,
-                           toc = FALSE, use_original_size = FALSE) {
+                           toc = FALSE, toc_depth = 7,
+                           use_original_size = FALSE) {
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
@@ -279,6 +288,7 @@ confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
 
   # add TOC or not
   toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
+  toc_depth_input <- shiny::numericInput(inputId = "toc_depth", label = "TOC depth", value = toc_depth)
 
   # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
@@ -291,7 +301,7 @@ confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
         wrap_with_column(type_input),
         wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
-        wrap_with_column(use_original_size_input, toc_input, width = 4)
+        wrap_with_column(use_original_size_input, toc_input, toc_depth_input, width = 4)
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),

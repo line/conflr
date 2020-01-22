@@ -10,8 +10,7 @@
 
 confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
-                         toc = FALSE, toc_depth = 7,
-                         update = NULL, use_original_size = FALSE,
+                         toc = FALSE, update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
   if (is.null(interactive)) {
     interactive <- interactive()
@@ -84,16 +83,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   progress$set(message = "Uploading the document...")
 
   if (toc) {
-    html_text <- paste(
-      '<p>',
-      '  <ac:structured-macro ac:name="toc">',
-      glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
-      '  </ac:structured-macro>',
-      '</p>',
-      '',
-      html_text,
-      sep = "\n"
-    )
+    html_text <- paste0('<p><ac:structured-macro ac:name="toc" /></p>\n', html_text)
   }
 
   image_size_default <- if (!use_original_size) 600 else NULL

@@ -26,15 +26,7 @@ confluence_settings:
 
   expect_equal(
     mockery::mock_args(mock)[[1]]$body,
-'<p>
-  <ac:structured-macro ac:name="toc">
-    <ac:parameter ac:name="maxLevel">7</ac:parameter>
-  </ac:structured-macro>
-</p>
-
-<h1>h1</h1>
-<h2>h2</h2>
-'
+    '<p><ac:structured-macro ac:name="toc" /></p>\n<h1>h1</h1>\n<h2>h2</h2>\n'
   )
 })
 
@@ -48,7 +40,6 @@ title: title1
 confluence_settings:
   space_key: space1
   toc: true
-  toc_depth: 3
 ---
 
 # h1
@@ -69,15 +60,7 @@ confluence_settings:
 
   expect_equal(
     mockery::mock_args(mock)[[1]]$body,
-'<p>
-  <ac:structured-macro ac:name="toc">
-    <ac:parameter ac:name="maxLevel">3</ac:parameter>
-  </ac:structured-macro>
-</p>
-
-<h1>h1</h1>
-<h2>h2</h2>
-'
+    '<p><ac:structured-macro ac:name="toc" /></p>\n<h1>h1</h1>\n<h2>h2</h2>\n'
   )
 
   expect_equal(

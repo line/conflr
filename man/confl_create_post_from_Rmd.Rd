@@ -14,7 +14,6 @@ confl_create_post_from_Rmd(
   type = NULL,
   parent_id = NULL,
   toc = NULL,
-  toc_depth = NULL,
   update = NULL,
   use_original_size = NULL
 )
@@ -38,8 +37,6 @@ params in the YAML front-matter.}
 \item{parent_id}{The page ID of the parent pages.}
 
 \item{toc}{If \code{TRUE}, add TOC.}
-
-\item{toc_depth}{The depth of the TOC. Ignored when \code{toc} is \code{FALSE}.}
 
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
 

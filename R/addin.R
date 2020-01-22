@@ -27,7 +27,7 @@
 #' @param use_original_size If `TRUE`, use the original image sizes.
 #'
 #' @details
-#' `title`, `type`, `space_key`, `parent_id`, `toc`, `update`, and
+#' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
 #' `use_original_size` can be specified as `confluence_settings` item in the
 #' front-matter of the Rmd file to knit. The arguments of
 #' `confl_create_post_from_Rmd()` overwrite these settings if provided.
@@ -191,7 +191,8 @@ confl_create_post_from_Rmd_addin <- function() {
 
 confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
                                        imgs, imgs_realpath,
-                                       toc = FALSE, use_original_size = FALSE) {
+                                       toc = FALSE, toc_depth = 7,
+                                       use_original_size = FALSE) {
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(

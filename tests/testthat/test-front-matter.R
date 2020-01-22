@@ -57,7 +57,7 @@ test_that("confluence_settings can be set from front-matter", {
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_with_all_defaults,
     title = "title2", space_key = "space2", parent_id = 9999,
     toc = FALSE, toc_depth = 2, supported_syntax_highlighting = c(two_plus_two = "five"),
-     update = FALSE, use_original_size = FALSE
+    update = FALSE, use_original_size = FALSE
   )
 
   expect_confluence_settings(

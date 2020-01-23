@@ -131,10 +131,10 @@ confl_create_post_from_Rmd <- function(
 
   md_dir <- dirname(md_file)
   imgs <- extract_image_paths(html_text)
-  imgs <- curl::curl_unescape(imgs)
+  imgs_escaped <- curl::curl_unescape(imgs)
 
   # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs), imgs, file.path(md_dir, imgs))
+  imgs_realpath <- ifelse(file.exists(imgs_escaped), imgs, file.path(md_dir, imgs_escaped))
 
   # upload ------------------------------------------------------------------
 

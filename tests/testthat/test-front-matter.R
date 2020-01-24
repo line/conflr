@@ -1,17 +1,3 @@
-do_confl_create_post_from_Rmd <- function(mock, text, ...) {
-  tmp <- tempfile(fileext = ".Rmd")
-  on.exit(unlink(tmp))
-
-  writeLines(c("---\n", text, "---\n\ntest\n"), tmp)
-  with_mock(
-    "conflr:::confl_upload" = mock,
-    "conflr:::confl_get_current_user" = function(...) list(username = "user"),
-    "conflr:::try_get_personal_space_key" = should_not_be_called, {
-      confl_create_post_from_Rmd(tmp, interactive = FALSE, ...)
-    }
-  )
-}
-
 expect_confluence_settings <- function(mock, ...) {
   expected <- list(...)
   cols_to_compare <- names(expected)

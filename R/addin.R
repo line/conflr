@@ -49,6 +49,7 @@ confl_create_post_from_Rmd <- function(
   update = NULL,
   use_original_size = NULL) {
 
+  ellipsis::check_dots_used()
 
   # sanity checks -----------------------------------------------------------
 

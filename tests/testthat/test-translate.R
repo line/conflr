@@ -272,6 +272,10 @@ test_that("mark_confluence_namespaces() works", {
     '<confl-ac-foo confl-ac-bar="baz">'
   )
   expect_equal(
+    mark_confluence_namespaces('<ac:foo\nac:bar="baz">'),
+    '<confl-ac-foo\nconfl-ac-bar="baz">'
+  )
+  expect_equal(
     mark_confluence_namespaces('<ac:image><ri:attachment ri:filename="1.png" /></ac:image>'),
     '<confl-ac-image><confl-ri-attachment confl-ri-filename="1.png" /></confl-ac-image>'
   )
@@ -284,6 +288,10 @@ test_that("restore_confluence_namespaces() works", {
   expect_equal(
     restore_confluence_namespaces('<confl-ac-foo confl-ac-bar="baz">'),
     '<ac:foo ac:bar="baz">'
+  )
+  expect_equal(
+    restore_confluence_namespaces('<confl-ac-foo\nconfl-ac-bar="baz">'),
+    '<ac:foo\nac:bar="baz">'
   )
   expect_equal(
     restore_confluence_namespaces('<confl-ac-image><confl-ri-attachment confl-ri-filename="1.png" /></confl-ac-image>'),

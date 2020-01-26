@@ -24,9 +24,10 @@
 #' @param toc If `TRUE`, add TOC.
 #' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
-#' @param use_original_size If `TRUE`, use the original image sizes.
-#'
-#' @inheritParams confl_content
+#' @param use_original_size
+#'   If `TRUE`, use the original image sizes.
+#' @param supported_syntax_highlighting
+#'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #'
 #' @details
 #' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
@@ -132,6 +133,13 @@ confl_create_post_from_Rmd <- function(
 
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
+
+  # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
+  # by commonmark and accordingly get escaped. We need to replace the namespace
+  # to bypass the unwanted conversions. The tags will be restored later in
+  # confl_upload().
+  md_text <- mark_confluence_namespaces(md_text)
+
   html_text <- commonmark::markdown_html(md_text)
 
   md_dir <- dirname(md_file)

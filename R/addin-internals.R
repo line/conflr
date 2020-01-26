@@ -84,25 +84,33 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   progress$set(message = "Uploading the document...")
 
   if (toc) {
-    html_text <- paste(
+    toc_html <- paste(
       '<p>',
       '  <ac:structured-macro ac:name="toc">',
       glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
       '  </ac:structured-macro>',
       '</p>',
-      '',
-      html_text,
       sep = "\n"
     )
+
+    # html_text is already replaced <ac:...> and <ri:...>
+    toc_html <- mark_confluence_namespaces(toc_html)
+    html_text <- paste(toc_html, html_text, sep = "\n")
   }
 
-  image_size_default <- if (!use_original_size) 600 else NULL
+  html_text <- translate_to_confl_macro(
+    html_text,
+    image_size_default = if (!use_original_size) 600 else NULL,
+    supported_syntax_highlighting = supported_syntax_highlighting
+  )
+
+  # Restore <ac:...> and <ri:...> tags before actually posting to Confluence
+  html_text <- restore_confluence_namespaces(html_text)
+
   result <- confl_update_page(
     id = id,
     title = title,
-    body = html_text,
-    image_size_default = image_size_default,
-    supported_syntax_highlighting = supported_syntax_highlighting
+    body = html_text
   )
   results_url <- paste0(result$`_links`$base, result$`_links`$webui)
 

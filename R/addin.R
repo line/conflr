@@ -24,7 +24,10 @@
 #' @param toc If `TRUE`, add TOC.
 #' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
-#' @param use_original_size If `TRUE`, use the original image sizes.
+#' @param image_size_default
+#'   The default width of images in pixel. If `NULL`, images are displayed in their original sizes.
+#' @param supported_syntax_highlighting
+#'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #'
 #' @inheritParams confl_content
 #'
@@ -132,6 +135,9 @@ confl_create_post_from_Rmd <- function(
 
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
+  # replace ac: and ri: namespaces to bypass the conversion
+  md_text <- mark_confluence_namespaces(md_text)
+
   html_text <- commonmark::markdown_html(md_text)
 
   md_dir <- dirname(md_file)

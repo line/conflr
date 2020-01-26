@@ -46,7 +46,7 @@ params in the YAML front-matter.}
 
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
 
-\item{use_original_size}{If \code{TRUE}, use the original image sizes.}
+\item{image_size_default}{The default width of images in pixel. If \code{NULL}, images are displayed in their original sizes.}
 }
 \description{
 Knit and post a given R Markdown file to 'Confluence'.

@@ -96,13 +96,16 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     )
   }
 
-  image_size_default <- if (!use_original_size) 600 else NULL
+  html_text <- translate_to_confl_macro(
+    html_text,
+    image_size_default = if (!use_original_size) 600 else NULL,
+    supported_syntax_highlighting = supported_syntax_highlighting
+  )
+
   result <- confl_update_page(
     id = id,
     title = title,
-    body = html_text,
-    image_size_default = image_size_default,
-    supported_syntax_highlighting = supported_syntax_highlighting
+    body = html_text
   )
   results_url <- paste0(result$`_links`$base, result$`_links`$webui)
 

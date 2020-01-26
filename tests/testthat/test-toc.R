@@ -31,10 +31,8 @@ confluence_settings:
     <ac:parameter ac:name="maxLevel">7</ac:parameter>
   </ac:structured-macro>
 </p>
-
 <h1>h1</h1>
-<h2>h2</h2>
-'
+<h2>h2</h2>'
   )
 })
 
@@ -74,15 +72,13 @@ confluence_settings:
     <ac:parameter ac:name="maxLevel">3</ac:parameter>
   </ac:structured-macro>
 </p>
-
 <h1>h1</h1>
-<h2>h2</h2>
-'
+<h2>h2</h2>'
   )
 
   expect_equal(
     mockery::mock_args(mock)[[2]]$body,
-    '<h1>h1</h1>\n<h2>h2</h2>\n'
+    '<h1>h1</h1>\n<h2>h2</h2>'
   )
 })
 

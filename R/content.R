@@ -58,22 +58,13 @@ confl_get_page <- function(id, expand = "body.storage") {
 #'   The HTML source of the page.
 #' @param ancestors
 #'   The page ID of the parent pages.
-#' @param image_size_default
-#'   The default width of images in pixel. If `NULL`, images are displayed in their original sizes.
-#' @param supported_syntax_highlighting
-#'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #' @export
 confl_post_page <- function(type = c("page", "blogpost"),
                             spaceKey,
                             title,
                             body,
-                            ancestors = NULL,
-                            image_size_default = 600,
-                            supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")) {
+                            ancestors = NULL) {
   type <- arg_match(type)
-
-  body <- translate_to_confl_macro(body, image_size_default = image_size_default,
-                                   supported_syntax_highlighting = supported_syntax_highlighting)
 
   req_body <- list(
     type = type,
@@ -96,14 +87,9 @@ confl_post_page <- function(type = c("page", "blogpost"),
 #' @export
 confl_update_page <- function(id,
                               title,
-                              body,
-                              image_size_default = 600,
-                              supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")) {
+                              body) {
   id <- as.character(id)
   page_info <- confl_get_page(id, expand = "version")
-
-  body <- translate_to_confl_macro(body, image_size_default = image_size_default,
-                                   supported_syntax_highlighting = supported_syntax_highlighting)
 
   res <- confl_verb("PUT", glue::glue("/content/{id}"),
     body = list(

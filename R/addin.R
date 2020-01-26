@@ -24,8 +24,8 @@
 #' @param toc If `TRUE`, add TOC.
 #' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
-#' @param image_size_default
-#'   The default width of images in pixel. If `NULL`, images are displayed in their original sizes.
+#' @param use_original_size
+#'   If `TRUE`, use the original image sizes.
 #' @param supported_syntax_highlighting
 #'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #'

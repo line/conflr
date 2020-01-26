@@ -113,12 +113,7 @@ test_that("confluence_settings can be specified partially", {
   expect_confluence_settings(
     confl_upload_mock,
     title = "title1",
-    space_key = "space1",
-    parent_id = NULL,
-    toc = FALSE, # toc must not be NULL
-    toc_depth = 7,
-    update = NULL,
-    use_original_size = FALSE # use_original_size must not be NULL
+    space_key = "space1"
   )
 })
 
@@ -138,11 +133,6 @@ test_that("confluence_settings raise an error when any of mandatory parameters a
   expect_confluence_settings(
     confl_upload_mock,
     title = "title1",
-    space_key = "space2",
-    parent_id = NULL,
-    toc = FALSE, # toc must not be NULL
-    toc_depth = 7,
-    update = NULL,
-    use_original_size = FALSE # use_original_size must not be NULL
+    space_key = "space2"
   )
 })

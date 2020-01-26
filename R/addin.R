@@ -140,17 +140,12 @@ confl_create_post_from_Rmd <- function(
   # upload ------------------------------------------------------------------
 
   if (interactive) {
-    confl_upload_interactively(
-      title = confluence_settings$title,
-      space_key = confluence_settings$space_key,
-      type = confluence_settings$type,
-      parent_id = confluence_settings$parent_id,
+    exec(
+      confl_upload_interactively,
+      !!! confluence_settings,
       html_text = html_text,
       imgs = imgs,
-      imgs_realpath = imgs_realpath,
-      toc = confluence_settings$toc %||% FALSE,
-      toc_depth = confluence_settings$toc_depth %||% 7,
-      use_original_size = confluence_settings$use_original_size %||% FALSE
+      imgs_realpath = imgs_realpath
     )
 
     # if the user doesn't want to store the password as envvar, clear it.
@@ -159,18 +154,12 @@ confl_create_post_from_Rmd <- function(
       Sys.unsetenv("CONFLUENCE_PASSWORD")
     }
   } else {
-    confl_upload(
-      title = confluence_settings$title,
-      space_key = confluence_settings$space_key,
-      type = confluence_settings$type,
-      parent_id = confluence_settings$parent_id,
+    exec(
+      confl_upload,
+      !!! confluence_settings,
       html_text = html_text,
       imgs = imgs,
       imgs_realpath = imgs_realpath,
-      toc = confluence_settings$toc %||% FALSE,
-      toc_depth = confluence_settings$toc_depth %||% 7,
-      update = confluence_settings$update,
-      use_original_size = confluence_settings$use_original_size %||% FALSE,
       interactive = interactive
     )
   }

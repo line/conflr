@@ -249,10 +249,10 @@ replace_image <- function(x, image_size_default = 600) {
   x
 }
 
-escape_confluence_namespaces <- function(x) {
-  x
+mark_confluence_namespaces <- function(x) {
+
 }
 
-unescape_confluence_namespaces <- function(x) {
+restore_confluence_namespaces <- function(x) {
   x
 }

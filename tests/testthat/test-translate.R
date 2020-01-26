@@ -266,30 +266,30 @@ $$"
 })
 
 
-test_that("escape_confluence_namespaces() works", {
+test_that("mark_confluence_namespaces() works", {
   expect_equal(
-    escape_confluence_namespaces('<ac:foo ac:bar="baz">'),
+    mark_confluence_namespaces('<ac:foo ac:bar="baz">'),
     '<confl-ac-foo confl-ac-bar="baz">'
   )
   expect_equal(
-    escape_confluence_namespaces('<ac:image><ri:attachment ri:filename="1.png" /></ac:image>'),
+    mark_confluence_namespaces('<ac:image><ri:attachment ri:filename="1.png" /></ac:image>'),
     '<confl-ac-image><confl-ri-attachment confl-ri-filename="1.png" /></confl-ac-image>'
   )
 
   # do not convert ac: outside of the tags
-  expect_equal(escape_confluence_namespaces('<p>ac:</p>'), '<p>ac:</p>')
+  expect_equal(mark_confluence_namespaces('<p>ac:</p>'), '<p>ac:</p>')
 })
 
-test_that("unescape_confluence_namespaces() works", {
+test_that("restore_confluence_namespaces() works", {
   expect_equal(
-    escape_confluence_namespaces('<confl-ac-foo confl-ac-bar="baz">'),
+    restore_confluence_namespaces('<confl-ac-foo confl-ac-bar="baz">'),
     '<ac:foo ac:bar="baz">'
   )
   expect_equal(
-    escape_confluence_namespaces('<confl-ac-image><confl-ri-attachment confl-ri-filename="1.png" /></confl-ac-image>'),
+    restore_confluence_namespaces('<confl-ac-image><confl-ri-attachment confl-ri-filename="1.png" /></confl-ac-image>'),
     '<ac:image><ri:attachment ri:filename="1.png" /></ac:image>'
   )
 
   # do not convert cobfl-ac- outside of the tags
-  expect_equal(escape_confluence_namespaces('<p>confl-ac-</p>'), '<p>confl-ac-</p>')
+  expect_equal(restore_confluence_namespaces('<p>confl-ac-</p>'), '<p>confl-ac-</p>')
 })

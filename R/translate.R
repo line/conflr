@@ -250,9 +250,37 @@ replace_image <- function(x, image_size_default = 600) {
 }
 
 mark_confluence_namespaces <- function(x) {
+  locs <- stringi::stri_locate_all_regex(
+    x,
+    "</?(ac|ri):[^<>]*?>",
+    omit_no_match = TRUE
+  )[[1]]
 
+  for (loc in rev(split(locs, row(locs)))) {
+    orig <- stringi::stri_sub(x, loc[1], loc[2])
+    marked <- stringi::stri_replace_all_regex(orig,
+                                              pattern = "(?<=<|\\s|^)(/?)(ac|ri):",
+                                              replacement = "$1confl-$2-")
+    stringi::stri_sub(x, loc[1], loc[2]) <- marked
+  }
+
+  x
 }
 
 restore_confluence_namespaces <- function(x) {
+  locs <- stringi::stri_locate_all_regex(
+    x,
+    "</?confl-(ac|ri)-[^<>]*?>",
+    omit_no_match = TRUE
+  )[[1]]
+
+  for (loc in rev(split(locs, row(locs)))) {
+    orig <- stringi::stri_sub(x, loc[1], loc[2])
+    restored <- stringi::stri_replace_all_regex(orig,
+                                                pattern = "(?<=<|\\s|^)(/?)confl-(ac|ri)-",
+                                                replacement = "$1$2:")
+    stringi::stri_sub(x, loc[1], loc[2]) <- restored
+  }
+
   x
 }

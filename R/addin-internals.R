@@ -44,8 +44,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     }
 
     if (!isTRUE(update)) {
-      stop("Page already exists. Re-run with `update = TRUE` to overwrite.",
-           call. = FALSE)
+      abort("Page already exists. Re-run with `update = TRUE` to overwrite.")
     }
 
     id <- existing_pages$results[[1]]$id
@@ -133,6 +132,6 @@ confirm_upload <- function(title) {
   if (ans) {
     TRUE
   } else {
-    stop("Cancel to upload.", call. = FALSE)
+    abort("Cancel to upload.")
   }
 }

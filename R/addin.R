@@ -58,7 +58,7 @@ confl_create_post_from_Rmd <- function(
   }
 
   if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {
-    stop(glue::glue("{basename(Rmd_file)} is not .Rmd file!"), call. = FALSE)
+    abort(glue::glue("{basename(Rmd_file)} is not .Rmd file!"))
   }
 
   # confirm the username and password are valid (and username will be useful later).
@@ -66,9 +66,9 @@ confl_create_post_from_Rmd <- function(
     username <- confl_get_current_user()$username,
     error = function(e) {
       if (stringi::stri_detect_fixed(as.character(e), "Unauthorized (HTTP 401)")) {
-        stop("Invalid credentials!", call. = FALSE)
+        abort("Invalid credentials!")
       } else {
-        stop(e, call. = FALSE)
+        cnd_signal(e)
       }
     }
   )
@@ -178,13 +178,13 @@ confl_create_post_from_Rmd <- function(
 
 confl_create_post_from_Rmd_addin <- function() {
   if (!rstudioapi::isAvailable()) {
-    stop("This function must be called on RStudio!", call. = FALSE)
+    abort("This function must be called on RStudio!")
   }
 
   Rmd_file <- rstudioapi::getSourceEditorContext()$path
   if (identical(Rmd_file, "")) {
     # Probably "UntitledX"
-    stop("Please save the .Rmd file first!", call. = FALSE)
+    abort("Please save the .Rmd file first!")
   }
 
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)

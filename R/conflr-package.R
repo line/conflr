@@ -13,4 +13,5 @@
 #'
 #' @name conflr
 #' @importFrom utils browseURL
+#' @import rlang
 "_PACKAGE"

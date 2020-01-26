@@ -32,8 +32,8 @@ confl_list_spaces <- function(spaceKey = NULL,
                               expand = NULL,
                               start = NULL,
                               limit = 25) {
-  type <- match.arg(type)
-  status <- match.arg(status)
+  type <- arg_match(type)
+  status <- arg_match(status)
   query <- list(
     type = type, status = status, label = label, favourite = favourite,
     expand = expand, start = start, limit = limit

@@ -35,7 +35,7 @@ confl_list_pages <- function(type = c("page", "blogpost", "comment", "attachment
                              spaceKey = NULL,
                              title = NULL,
                              expand = NULL) {
-  type <- match.arg(type)
+  type <- arg_match(type)
   query <- list(type = type, limit = limit, start = start, spaceKey = spaceKey, title = title, expand = expand)
   res <- confl_verb("GET", "/content/", query = purrr::compact(query))
   httr::content(res)
@@ -70,7 +70,7 @@ confl_post_page <- function(type = c("page", "blogpost"),
                             ancestors = NULL,
                             image_size_default = 600,
                             supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting")) {
-  type <- match.arg(type)
+  type <- arg_match(type)
 
   body <- translate_to_confl_macro(body, image_size_default = image_size_default,
                                    supported_syntax_highlighting = supported_syntax_highlighting)

@@ -29,8 +29,6 @@
 #' @param supported_syntax_highlighting
 #'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #'
-#' @inheritParams confl_content
-#'
 #' @details
 #' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
 #' `use_original_size` can be specified as `confluence_settings` item in the

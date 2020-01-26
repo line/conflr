@@ -135,7 +135,11 @@ confl_create_post_from_Rmd <- function(
 
   # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
-  # replace ac: and ri: namespaces to bypass the conversion
+
+  # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
+  # by commonmark and accordingly get escaped. We need to replace the namespace
+  # to bypass the unwanted conversions. The tags will be restored later in
+  # confl_upload().
   md_text <- mark_confluence_namespaces(md_text)
 
   html_text <- commonmark::markdown_html(md_text)

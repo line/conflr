@@ -11,6 +11,7 @@
 confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
                          toc = FALSE, toc_depth = 7,
+                         supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = NULL, use_original_size = FALSE,
                          interactive = NULL, session = NULL) {
   if (is.null(interactive)) {
@@ -101,7 +102,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     id = id,
     title = title,
     body = html_text,
-    image_size_default = image_size_default
+    image_size_default = image_size_default,
+    supported_syntax_highlighting = supported_syntax_highlighting
   )
   results_url <- paste0(result$`_links`$base, result$`_links`$webui)
 

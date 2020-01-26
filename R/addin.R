@@ -26,6 +26,8 @@
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size If `TRUE`, use the original image sizes.
 #'
+#' @inheritParams confl_content
+#'
 #' @details
 #' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
 #' `use_original_size` can be specified as `confluence_settings` item in the
@@ -46,6 +48,7 @@ confl_create_post_from_Rmd <- function(
   parent_id = NULL,
   toc = NULL,
   toc_depth = NULL,
+  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
   update = NULL,
   use_original_size = NULL) {
 
@@ -113,6 +116,7 @@ confl_create_post_from_Rmd <- function(
     parent_id = parent_id,
     toc = toc,
     toc_depth = toc_depth,
+    supported_syntax_highlighting = supported_syntax_highlighting,
     update = update,
     use_original_size = use_original_size
   )
@@ -150,6 +154,7 @@ confl_create_post_from_Rmd <- function(
       imgs_realpath = imgs_realpath,
       toc = confluence_settings$toc %||% FALSE,
       toc_depth = confluence_settings$toc_depth %||% 7,
+      supported_syntax_highlighting = confluence_settings$supported_syntax_highlighting,
       use_original_size = confluence_settings$use_original_size %||% FALSE
     )
 
@@ -169,6 +174,7 @@ confl_create_post_from_Rmd <- function(
       imgs_realpath = imgs_realpath,
       toc = confluence_settings$toc %||% FALSE,
       toc_depth = confluence_settings$toc_depth %||% 7,
+      supported_syntax_highlighting = confluence_settings$supported_syntax_highlighting,
       update = confluence_settings$update,
       use_original_size = confluence_settings$use_original_size %||% FALSE,
       interactive = interactive
@@ -193,6 +199,7 @@ confl_create_post_from_Rmd_addin <- function() {
 confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
                                        imgs, imgs_realpath,
                                        toc = FALSE, toc_depth = 7,
+                                       supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
 
   # Shiny UI -----------------------------------------------------------
@@ -229,6 +236,7 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
         imgs_realpath = imgs_realpath,
         toc = input$toc,
         toc_depth = input$toc_depth,
+        supported_syntax_highlighting = supported_syntax_highlighting,
         use_original_size = input$use_original_size
       )
     })
@@ -267,6 +275,9 @@ wrap_with_column <- function(..., width = 2) {
   shiny::column(width = width, ...)
 }
 
+# NOTE: conflr_supported_syntax_highlighting cannot be set via GUI because
+#       it's not a feature frequently used and is a bit difficult to input
+#       via Shiny interface.
 confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
                            imgs, imgs_realpath,
                            toc = FALSE, toc_depth = 7,

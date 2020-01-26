@@ -19,12 +19,33 @@ supported_syntax_highlighting_default <- c(
   yaml = "yaml"
 )
 
-translate_to_confl_macro <- function(html_text, image_size_default = 600, supported_syntax_highlighting = character(0)) {
-  # if supported_syntax_highlighting is provided as unnamed form, name it
-  if (!is.null(supported_syntax_highlighting) && is.null(names(supported_syntax_highlighting))) {
-    names(supported_syntax_highlighting) <- supported_syntax_highlighting
+normalise_supported_syntax_highlighting <- function(x) {
+  # supported_syntax_highlighting can be
+  # 1) a named character vector
+  # 2) an unnamed character vector
+  # 3) a named list of characters
+  # 4) an unnamed list of characters
+  # 5) NULL
+
+  if (is.null(x)) {
+    return(NULL)
   }
 
+  # if supported_syntax_highlighting is a list, flatten it (TODO: use vctrs?)
+  if (is.list(x)) {
+    x <- unlist(x, recursive = FALSE)
+  }
+
+  # if supported_syntax_highlighting is provided as unnamed form, name it
+  if (is.character(x) && is.null(names(x))) {
+    names(x) <- x
+  }
+
+  x
+}
+
+translate_to_confl_macro <- function(html_text, image_size_default = 600, supported_syntax_highlighting = NULL) {
+  supported_syntax_highlighting <- normalise_supported_syntax_highlighting(supported_syntax_highlighting)
   supported_syntax_highlighting <- c(supported_syntax_highlighting, supported_syntax_highlighting_default)
 
   html_text <- paste0("<body>", html_text, "</body>")

@@ -25,10 +25,12 @@
 confl_contentbody_convert <- function(x,
                                       from = c("wiki", "storage", "editor", "view", "export_view", "styled_view"),
                                       to   = c("storage", "editor", "view", "export_view", "styled_view")) {
-  if (length(x) != 1) stop("`x` must be length 1", call. = FALSE)
+  if (length(x) != 1) {
+    abort("`x` must be length 1")
+  }
 
-  from <- match.arg(from)
-  to <- match.arg(to)
+  from <- arg_match(from)
+  to <- arg_match(to)
 
   res <- confl_verb("POST", glue::glue("/contentbody/convert/{to}"),
     body = list(value = x, representation = from), encode = "json"

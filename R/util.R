@@ -20,7 +20,7 @@
 
 ask_secret <- function(message) {
   if (!interactive()) {
-    stop("Please set up environmental variables before running non-interactive session.", call. = FALSE)
+    abort("Please set up environmental variables before running non-interactive session.")
   }
 
   askpass::askpass(message)
@@ -28,7 +28,7 @@ ask_secret <- function(message) {
 
 ask_non_secret <- function(title, message, default = NULL) {
   if (!interactive()) {
-    stop("Please set up environmental variables before running non-interactive session.", call. = FALSE)
+    abort("Please set up environmental variables before running non-interactive session.")
   }
 
   if (rstudioapi::isAvailable()) {
@@ -61,10 +61,10 @@ confl_verb <- function(verb, path, ...) {
   )
 
   if (httr::status_code(res) >= 300) {
-    stop(
+    abort(paste(
       httr::http_condition(res, type = "error"),
       httr::content(res)
-    )
+    ))
   }
 
   Sys.setenv(CONFLUENCE_URL = base_url)

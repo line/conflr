@@ -218,7 +218,7 @@ replace_image <- function(x, image_size_default = 600) {
 
     src <- img_attrs$src
     if (is.null(src)) {
-      warning(img_tag, " doesn't contain src attribute.", call. = FALSE)
+      warn(img_tag, " doesn't contain src attribute.")
       next()
     }
 

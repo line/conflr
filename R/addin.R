@@ -85,11 +85,7 @@ confl_create_post_from_Rmd <- function(
   )
   md_file <- rmarkdown::render(
     input = Rmd_file,
-    output_format = rmarkdown::md_document(
-      variant = "commonmark",
-      pandoc_args = "--wrap=none",
-      md_extensions = "-tex_math_single_backslash-tex_math_dollars-raw_tex"
-    ),
+    output_format = confluence_document(),
     encoding = "UTF-8",
     params = params,
     # TODO: I'm not fully sure the global env is always the right place to knit, but this is needed to avoid
@@ -131,15 +127,7 @@ confl_create_post_from_Rmd <- function(
     confluence_settings$space_key <- try_get_personal_space_key(username)
   }
 
-  # conflr doesn't insert a title in the content automatically
   md_text <- read_utf8(md_file)
-
-  # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
-  # by commonmark and accordingly get escaped. We need to replace the namespace
-  # to bypass the unwanted conversions. The tags will be restored later in
-  # confl_upload().
-  md_text <- mark_confluence_namespaces(md_text)
-
   html_text <- commonmark::markdown_html(md_text)
 
   md_dir <- dirname(md_file)

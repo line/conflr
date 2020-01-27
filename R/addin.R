@@ -8,6 +8,11 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
+#' @param Rmd_file Path to an .Rmd file.
+#' @param params If provided, a list of named parameters that override custom
+#'   params in the YAML front-matter.
+#' @param ... Ignored.
+#' 
 #' @rdname confluence_document
 #' 
 #' @export

@@ -12,11 +12,7 @@
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param Rmd_file Path to an .Rmd file.
 #' @param interactive If `FALSE`, shiny interface is not launched.
-#' @param params If provided, a list of named parameters that override custom
-#'   params in the YAML front-matter.
-#' @param ... Ignored.
 #' @param title Title of the post.
 #' @param type If provided, this overwrites the YAML front matter type
 #' @param space_key The space key to find content under.

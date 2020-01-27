@@ -92,6 +92,18 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   # Restore <ac:...> and <ri:...> tags before actually posting to Confluence
   html_text <- restore_confluence_namespaces(html_text)
 
+  if (toc) {
+    toc_tag <- paste(
+      '<p>',
+      '  <ac:structured-macro ac:name="toc">',
+      glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
+      '  </ac:structured-macro>',
+      '</p>',
+      sep = "\n"
+    )
+    html_text <- paste(toc_tag, html_text, sep = "\n")
+  }
+
   result <- confl_update_page(
     id = id,
     title = title,

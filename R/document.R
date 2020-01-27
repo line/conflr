@@ -34,7 +34,7 @@
 #' @rdname confluence_document
 #'
 #' @export
-confluence_document <- function(...,
+confluence_document <- function(interactive = FALSE,
                                 title = NULL,
                                 # Use snake case for user-facing functions and use the actual API parameter name
                                 # in camel case for simple binding functions.
@@ -55,35 +55,9 @@ confluence_document <- function(...,
 
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
 
-    # combine settings --------------------------------------------------------------------
-
-    confluence_settings <- front_matter$confluence_settings %||% list()
-
-    # title can be specified as a seperate item on front matter
-    # override title if it's specified as the argument of confl_create_post_from_Rmd
-    confluence_settings$title <- confluence_settings$title %||% front_matter$title
-
-    # 1. Use confluence_settings on the front matter if it's available
-    # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
-    confluence_settings_from_args <- list(
-      title = title,
-      space_key = space_key,
-      type = type,
-      parent_id = parent_id,
-      toc = toc,
-      toc_depth = toc_depth,
-      supported_syntax_highlighting = supported_syntax_highlighting,
-      update = update,
-      use_original_size = use_original_size
-    )
-    confluence_settings <- purrr::list_modify(
-      confluence_settings,
-      !!!purrr::compact(confluence_settings_from_args)
-    )
-
     # On some Confluence, the key of a personal space can be guessed from the username
-    if (is.null(confluence_settings$space_key)) {
-      confluence_settings$space_key <- try_get_personal_space_key(username)
+    if (is.null(space_key)) {
+      space_key <- try_get_personal_space_key(username)
     }
 
     md_text <- read_utf8(input_file)
@@ -106,9 +80,16 @@ confluence_document <- function(...,
     # upload ------------------------------------------------------------------
 
     if (interactive) {
-      exec(
-        confl_upload_interactively,
-        !!!confluence_settings,
+      confl_upload_interactively(
+        title = title,
+        space_key = space_key,
+        type = type,
+        parent_id = parent_id,
+        toc = toc,
+        toc_depth = toc_depth,
+        supported_syntax_highlighting = supported_syntax_highlighting,
+        update = update,
+        use_original_size = use_original_size,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath
@@ -120,9 +101,14 @@ confluence_document <- function(...,
         Sys.unsetenv("CONFLUENCE_PASSWORD")
       }
     } else {
-      exec(
-        confl_upload,
-        !!!confluence_settings,
+      confl_upload_interactively(
+        title = title,
+        space_key = space_key,
+        type = type,
+        parent_id = parent_id,
+        toc = toc,
+        toc_depth = toc_depth,
+        use_original_size = use_original_size,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath,

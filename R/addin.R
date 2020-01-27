@@ -11,16 +11,12 @@
 #' @param Rmd_file Path to an .Rmd file.
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
-#' @param ... Ignored.
+#' @param ... Arguments passed to `confluence_documents()`.
 #' 
 #' @rdname confluence_document
 #' 
 #' @export
-confl_create_post_from_Rmd <- function(
-  Rmd_file,
-  interactive = NULL,
-  params = NULL,
-  ...) {
+confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NULL, ...) {
 
   ellipsis::check_dots_used()
 
@@ -55,7 +51,7 @@ confl_create_post_from_Rmd <- function(
 
   rmarkdown::render(
     input = Rmd_file,
-    output_format = confluence_document(...),
+    output_format = confluence_document(interactive = interactive, ...),
     encoding = "UTF-8",
     params = params,
     # TODO: I'm not fully sure the global env is always the right place to knit, but this is needed to avoid

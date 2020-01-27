@@ -5,24 +5,10 @@
 \alias{confluence_document}
 \title{Publish R Markdown Document to 'Confluence'}
 \usage{
-confl_create_post_from_Rmd(
-  Rmd_file,
-  interactive = NULL,
-  params = NULL,
-  ...,
-  title = NULL,
-  space_key = NULL,
-  type = NULL,
-  parent_id = NULL,
-  toc = NULL,
-  toc_depth = NULL,
-  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
-  update = NULL,
-  use_original_size = NULL
-)
+confl_create_post_from_Rmd(Rmd_file, interactive = NULL, params = NULL, ...)
 
 confluence_document(
-  ...,
+  interactive = FALSE,
   title = NULL,
   space_key = NULL,
   type = NULL,
@@ -42,7 +28,7 @@ confluence_document(
 \item{params}{If provided, a list of named parameters that override custom
 params in the YAML front-matter.}
 
-\item{...}{Ignored.}
+\item{...}{Arguments passed to \code{confluence_documents()}.}
 
 \item{title}{Title of the post.}
 

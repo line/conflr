@@ -8,33 +8,8 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-#' Publish R Markdown Document to 'Confluence'
-#'
-#' Knit and post a given R Markdown file to 'Confluence'.
-#'
-#' @param Rmd_file Path to an .Rmd file.
-#' @param interactive If `FALSE`, shiny interface is not launched.
-#' @param params If provided, a list of named parameters that override custom
-#'   params in the YAML front-matter.
-#' @param ... Ignored.
-#' @param title Title of the post.
-#' @param type If provided, this overwrites the YAML front matter type
-#' @param space_key The space key to find content under.
-#' @param parent_id The page ID of the parent pages.
-#' @param toc If `TRUE`, add TOC.
-#' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
-#' @param update If `TRUE`, overwrite the existing page (if it exists).
-#' @param use_original_size
-#'   If `TRUE`, use the original image sizes.
-#' @param supported_syntax_highlighting
-#'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
-#'
-#' @details
-#' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
-#' `use_original_size` can be specified as `confluence_settings` item in the
-#' front-matter of the Rmd file to knit. The arguments of
-#' `confl_create_post_from_Rmd()` overwrite these settings if provided.
-#'
+#' @rdname confluence_document
+#' 
 #' @export
 confl_create_post_from_Rmd <- function(
   Rmd_file,

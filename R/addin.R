@@ -20,18 +20,7 @@ confl_create_post_from_Rmd <- function(
   Rmd_file,
   interactive = NULL,
   params = NULL,
-  ...,
-  title = NULL,
-  # Use snake case for user-facing functions and use the actual API parameter name
-  # in camel case for simple binding functions.
-  space_key = NULL,
-  type = NULL,
-  parent_id = NULL,
-  toc = NULL,
-  toc_depth = NULL,
-  supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
-  update = NULL,
-  use_original_size = NULL) {
+  ...) {
 
   ellipsis::check_dots_used()
 
@@ -63,9 +52,10 @@ confl_create_post_from_Rmd <- function(
     collapse = TRUE,
     comment = "#>"
   )
-  md_file <- rmarkdown::render(
+
+  rmarkdown::render(
     input = Rmd_file,
-    output_format = confluence_document(),
+    output_format = confluence_document(...),
     encoding = "UTF-8",
     params = params,
     # TODO: I'm not fully sure the global env is always the right place to knit, but this is needed to avoid
@@ -73,83 +63,6 @@ confl_create_post_from_Rmd <- function(
     #   assignInNamespace("cedta.pkgEvalsUserCode", c(data.table:::cedta.pkgEvalsUserCode, "conflr"), "data.table")
     env = globalenv()
   )
-
-  # combine settings --------------------------------------------------------------------
-
-  # Get confluence_settings
-  front_matter <- rmarkdown::yaml_front_matter(Rmd_file, "UTF-8")
-  confluence_settings <- front_matter$confluence_settings %||% list()
-
-  # title can be specified as a seperate item on front matter
-  # override title if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings$title <- confluence_settings$title %||% front_matter$title
-
-  # 1. Use confluence_settings on the front matter if it's available
-  # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
-  confluence_settings_from_args <- list(
-    title = title,
-    space_key = space_key,
-    type = type,
-    parent_id = parent_id,
-    toc = toc,
-    toc_depth = toc_depth,
-    supported_syntax_highlighting = supported_syntax_highlighting,
-    update = update,
-    use_original_size = use_original_size
-  )
-  confluence_settings <- purrr::list_modify(
-    confluence_settings,
-    !!!purrr::compact(confluence_settings_from_args)
-  )
-
-  # On some Confluence, the key of a personal space can be guessed from the username
-  if (is.null(confluence_settings$space_key)) {
-    confluence_settings$space_key <- try_get_personal_space_key(username)
-  }
-
-  md_text <- read_utf8(md_file)
-
-  # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
-  # by commonmark and accordingly get escaped. We need to replace the namespace
-  # to bypass the unwanted conversions. The tags will be restored later in
-  # confl_upload().
-  md_text <- mark_confluence_namespaces(md_text)
-
-  html_text <- commonmark::markdown_html(md_text)
-
-  md_dir <- dirname(md_file)
-  imgs <- extract_image_paths(html_text)
-  imgs_unescaped <- curl::curl_unescape(imgs)
-
-  # imgs might be absolute, relative to md_dir, or relative to the current dir.
-  imgs_realpath <- ifelse(file.exists(imgs_unescaped), imgs, file.path(md_dir, imgs_unescaped))
-
-  # upload ------------------------------------------------------------------
-
-  if (interactive) {
-    exec(
-      confl_upload_interactively,
-      !!! confluence_settings,
-      html_text = html_text,
-      imgs = imgs,
-      imgs_realpath = imgs_realpath
-    )
-
-    # if the user doesn't want to store the password as envvar, clear it.
-    if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
-      message("unsetting CONFLUENCE_PASSWORD...")
-      Sys.unsetenv("CONFLUENCE_PASSWORD")
-    }
-  } else {
-    exec(
-      confl_upload,
-      !!! confluence_settings,
-      html_text = html_text,
-      imgs = imgs,
-      imgs_realpath = imgs_realpath,
-      interactive = interactive
-    )
-  }
 }
 
 confl_create_post_from_Rmd_addin <- function() {

@@ -32,7 +32,7 @@
 #' `confl_create_post_from_Rmd()` overwrite these settings if provided.
 #'
 #' @rdname confluence_document
-#' 
+#'
 #' @export
 confluence_document <- function(...,
                                 title = NULL,
@@ -53,8 +53,83 @@ confluence_document <- function(...,
     preserve_yaml = FALSE
   )
 
-  format$post_processor <- function() {
+  format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
 
+    # combine settings --------------------------------------------------------------------
+
+    confluence_settings <- front_matter$confluence_settings %||% list()
+
+    # title can be specified as a seperate item on front matter
+    # override title if it's specified as the argument of confl_create_post_from_Rmd
+    confluence_settings$title <- confluence_settings$title %||% front_matter$title
+
+    # 1. Use confluence_settings on the front matter if it's available
+    # 2. Override the option if it's specified as the argument of confl_create_post_from_Rmd
+    confluence_settings_from_args <- list(
+      title = title,
+      space_key = space_key,
+      type = type,
+      parent_id = parent_id,
+      toc = toc,
+      toc_depth = toc_depth,
+      supported_syntax_highlighting = supported_syntax_highlighting,
+      update = update,
+      use_original_size = use_original_size
+    )
+    confluence_settings <- purrr::list_modify(
+      confluence_settings,
+      !!!purrr::compact(confluence_settings_from_args)
+    )
+
+    # On some Confluence, the key of a personal space can be guessed from the username
+    if (is.null(confluence_settings$space_key)) {
+      confluence_settings$space_key <- try_get_personal_space_key(username)
+    }
+
+    md_text <- read_utf8(input_file)
+
+    # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
+    # by commonmark and accordingly get escaped. We need to replace the namespace
+    # to bypass the unwanted conversions. The tags will be restored later in
+    # confl_upload().
+    md_text <- mark_confluence_namespaces(md_text)
+
+    html_text <- commonmark::markdown_html(md_text)
+
+    md_dir <- dirname(input_file)
+    imgs <- extract_image_paths(html_text)
+    imgs_unescaped <- curl::curl_unescape(imgs)
+
+    # imgs might be absolute, relative to md_dir, or relative to the current dir.
+    imgs_realpath <- ifelse(file.exists(imgs_unescaped), imgs, file.path(md_dir, imgs_unescaped))
+
+    # upload ------------------------------------------------------------------
+
+    if (interactive) {
+      exec(
+        confl_upload_interactively,
+        !!!confluence_settings,
+        html_text = html_text,
+        imgs = imgs,
+        imgs_realpath = imgs_realpath
+      )
+
+      # if the user doesn't want to store the password as envvar, clear it.
+      if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
+        message("unsetting CONFLUENCE_PASSWORD...")
+        Sys.unsetenv("CONFLUENCE_PASSWORD")
+      }
+    } else {
+      exec(
+        confl_upload,
+        !!!confluence_settings,
+        html_text = html_text,
+        imgs = imgs,
+        imgs_realpath = imgs_realpath,
+        interactive = interactive
+      )
+    }
   }
+
   format
 }

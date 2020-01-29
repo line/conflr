@@ -115,12 +115,6 @@ confluence_document <- function(interactive = FALSE,
         imgs = imgs,
         imgs_realpath = imgs_realpath
       )
-
-      # if the user doesn't want to store the password as envvar, clear it.
-      if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
-        message("unsetting CONFLUENCE_PASSWORD...")
-        Sys.unsetenv("CONFLUENCE_PASSWORD")
-      }
     } else {
       exec(
         confl_upload,

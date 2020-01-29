@@ -118,11 +118,21 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
         supported_syntax_highlighting = supported_syntax_highlighting,
         use_original_size = input$use_original_size
       )
+
+      unset_password_if_special_envvar_is_set()
     })
   }
 
   viewer <- shiny::dialogViewer("Preview", width = 1000, height = 800)
   shiny::runGadget(ui, server, viewer = viewer)
+}
+
+# if the user doesn't want to store the password as envvar, clear it.
+unset_password_if_special_envvar_is_set <- function() {
+  if (isTRUE(getOption("conflr_addin_clear_password_after_success"))) {
+    message("unsetting CONFLUENCE_PASSWORD...")
+    Sys.unsetenv("CONFLUENCE_PASSWORD")
+  }
 }
 
 read_utf8 <- function(x) {

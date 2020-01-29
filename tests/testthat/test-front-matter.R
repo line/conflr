@@ -9,16 +9,17 @@ expect_confluence_settings <- function(mock, ...) {
 
 Rmd_with_all_defaults <-
 'title: "title1"
-confluence_settings:
-  space_key: "space1"
-  parent_id: 1234
-  toc: true
-  toc_depth: 4
-  supported_syntax_highlighting:
-    r: r
-    foo: bar
-  update: true
-  use_original_size: true'
+output:
+  conflr::confluence_document:
+    space_key: "space1"
+    parent_id: 1234
+    toc: true
+    toc_depth: 4
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true'
 
 test_that("confluence_settings can be set from front-matter", {
 
@@ -61,17 +62,18 @@ test_that("confluence_settings can be set from front-matter", {
 
 Rmd_with_two_titles <-
 'title: "title1"
-confluence_settings:
-  title: "title2"
-  space_key: "space1"
-  parent_id: 1234
-  toc: TRUE
-  toc_depth: 4
-  supported_syntax_highlighting:
-    r: r
-    foo: bar
-  update: true
-  use_original_size: true'
+output:
+  conflr::confluence_document:
+    title: "title2"
+    space_key: "space1"
+    parent_id: 1234
+    toc: TRUE
+    toc_depth: 4
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true'
 
 test_that("confluence_settings$title is prior to title", {
 
@@ -112,8 +114,9 @@ test_that("confluence_settings$title is prior to title", {
 
 Rmd_with_some_settings <-
 'title: "title1"
-confluence_settings:
-  space_key: "space1"'
+output:
+  conflr::confluence_document:
+    space_key: "space1"'
 
 test_that("confluence_settings can be specified partially", {
 

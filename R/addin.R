@@ -20,23 +20,28 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
 
   # ellipsis::check_dots_used()
 
-  # sanity checks -----------------------------------------------------------
-
   if (is.null(interactive)) {
     interactive <- interactive()
   }
+
+  # Sanity checks -----------------------------------------------------------
 
   if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {
     abort(glue::glue("{basename(Rmd_file)} is not .Rmd file!"))
   }
 
-  # knit --------------------------------------------------------------------
+  # Combine options from arguments and front matter -------------------------
 
+  # Get options on the front matter
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file)
   output_options <- front_matter$output$`conflr::confluence_document` %||% list()
-  # Always ignore option on front matter
+
+  # Override the options by those via arguments
   output_options <- purrr::list_modify(output_options, ..., interactive = interactive)
+
   output_format <- exec(confluence_document, !!!output_options)
+
+  # Knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
     collapse = TRUE,

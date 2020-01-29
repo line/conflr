@@ -5,8 +5,10 @@ test_that("TOC is added when set via argument", {
   writeLines(
 '---
 title: title1
-confluence_settings:
-  space_key: space1
+output:
+  conflr::confluence_document:
+    toc: false
+    space_key: space1
 ---
 
 # h1
@@ -43,10 +45,11 @@ test_that("TOC is added when set via front-matter", {
   writeLines(
 '---
 title: title1
-confluence_settings:
-  space_key: space1
-  toc: true
-  toc_depth: 3
+output:
+  conflr::confluence_document:
+    space_key: space1
+    toc: true
+    toc_depth: 3
 ---
 
 # h1

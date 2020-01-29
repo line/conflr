@@ -58,6 +58,8 @@ confluence_document <- function(interactive = FALSE,
     update = update,
     use_original_size = use_original_size
   )
+  # TODO: Should explicitly-specified NULL be preserved to unset the optuons?
+  confluence_settings_from_args <- purrr::compact(confluence_settings_from_args)
 
   format <- rmarkdown::md_document(
     variant = "commonmark",

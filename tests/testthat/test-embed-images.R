@@ -34,8 +34,9 @@ test_that("embed_images() works for non-ASCII dir", {
   # integrated test
   Rmd_with_some_settings <-
 'title: "title1"
-confluence_settings:
-  space_key: "space1"'
+output:
+  conflr::confluence_document:
+    space_key: "space1"'
   confl_upload_mock <- mockery::mock(NULL)
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_with_some_settings, body = md_text)
   result2 <- mockery::mock_args(confl_upload_mock)[[1]]

@@ -46,6 +46,19 @@ confluence_document <- function(interactive = FALSE,
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
                                 use_original_size = NULL) {
+  # This will be refered in post_processor()
+  confluence_settings_from_args <- list(
+    title = title,
+    space_key = space_key,
+    type = type,
+    parent_id = parent_id,
+    toc = toc,
+    toc_depth = toc_depth,
+    supported_syntax_highlighting = supported_syntax_highlighting,
+    update = update,
+    use_original_size = use_original_size
+  )
+
   format <- rmarkdown::md_document(
     variant = "commonmark",
     pandoc_args = "--wrap=none",
@@ -54,6 +67,21 @@ confluence_document <- function(interactive = FALSE,
   )
 
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
+    # For backward-compatibility
+    if (has_name(front_matter, "confluence_settings")) {
+      warn(paste0("Set options via `confluence_settings` front-matter is deprecated.\n",
+                  "Please use `confluence_document` instead."))
+
+      confluence_settings <- front_matter$confluence_settings
+      confluence_settings$title <- confluence_settings$title %||% front_matter$title
+
+      confluence_settings <- purrr::list_modify(
+        confluence_settings,
+        !!!purrr::compact(confluence_settings_from_args)
+      )
+    } else {
+      confluence_settings <- confluence_settings_from_args
+    }
 
     # On some Confluence, the key of a personal space can be guessed from the username
     if (is.null(space_key)) {
@@ -80,16 +108,9 @@ confluence_document <- function(interactive = FALSE,
     # upload ------------------------------------------------------------------
 
     if (interactive) {
-      confl_upload_interactively(
-        title = title,
-        space_key = space_key,
-        type = type,
-        parent_id = parent_id,
-        toc = toc,
-        toc_depth = toc_depth,
-        supported_syntax_highlighting = supported_syntax_highlighting,
-        update = update,
-        use_original_size = use_original_size,
+      exec(
+        confl_upload_interactively,
+        !!! confluence_settings,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath
@@ -101,14 +122,9 @@ confluence_document <- function(interactive = FALSE,
         Sys.unsetenv("CONFLUENCE_PASSWORD")
       }
     } else {
-      confl_upload_interactively(
-        title = title,
-        space_key = space_key,
-        type = type,
-        parent_id = parent_id,
-        toc = toc,
-        toc_depth = toc_depth,
-        use_original_size = use_original_size,
+      exec(
+        confl_upload,
+        !!! confluence_settings,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath,

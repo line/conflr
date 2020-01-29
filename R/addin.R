@@ -80,6 +80,10 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
                                        toc = FALSE, toc_depth = 7,
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
+  # On some Confluence, the key of a personal space can be guessed from the username
+  if (is.null(space_key)) {
+    space_key <- try_get_personal_space_key(username)
+  }
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(

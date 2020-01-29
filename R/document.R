@@ -83,11 +83,6 @@ confluence_document <- function(interactive = FALSE,
       confluence_settings <- confluence_settings_from_args
     }
 
-    # On some Confluence, the key of a personal space can be guessed from the username
-    if (is.null(space_key)) {
-      space_key <- try_get_personal_space_key(username)
-    }
-
     md_text <- read_utf8(input_file)
 
     # Replace <ac:...> and <ri:...> because they are not recognized as proper tags

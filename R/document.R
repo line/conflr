@@ -66,6 +66,22 @@ confluence_document <- function(interactive = FALSE,
     preserve_yaml = FALSE
   )
 
+  username <- NULL
+
+  format$pre_knit <- function(input_file) {
+    # confirm the username and password are valid (and username will be useful later).
+    tryCatch(
+      username <<- confl_get_current_user()$username,
+      error = function(e) {
+        if (stringi::stri_detect_fixed(as.character(e), "Unauthorized (HTTP 401)")) {
+          abort("Invalid credentials!")
+        } else {
+          cnd_signal(e)
+        }
+      }
+    )
+  }
+  
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
     # For backward-compatibility
     if (has_name(front_matter, "confluence_settings")) {
@@ -101,6 +117,11 @@ confluence_document <- function(interactive = FALSE,
     # upload ------------------------------------------------------------------
 
     if (interactive) {
+      # On some Confluence, the key of a personal space can be guessed from the username
+      if (is.null(confluence_settings$space_key)) {
+        confluence_settings$space_key <- try_get_personal_space_key(username)
+      }
+
       exec(
         confl_upload_interactively,
         !!! confluence_settings,

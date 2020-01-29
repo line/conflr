@@ -30,18 +30,6 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
     abort(glue::glue("{basename(Rmd_file)} is not .Rmd file!"))
   }
 
-  # confirm the username and password are valid (and username will be useful later).
-  tryCatch(
-    username <- confl_get_current_user()$username,
-    error = function(e) {
-      if (stringi::stri_detect_fixed(as.character(e), "Unauthorized (HTTP 401)")) {
-        abort("Invalid credentials!")
-      } else {
-        cnd_signal(e)
-      }
-    }
-  )
-
   # knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
@@ -80,11 +68,6 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
                                        toc = FALSE, toc_depth = 7,
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
-  # On some Confluence, the key of a personal space can be guessed from the username
-  if (missing(space_key) || is.null(space_key)) {
-    space_key <- try_get_personal_space_key(username)
-  }
-
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
     title = title,

@@ -120,6 +120,8 @@ confluence_document <- function(interactive = FALSE,
         interactive = interactive
       )
     }
+
+    output_file
   }
 
   format

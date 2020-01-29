@@ -73,7 +73,6 @@ confluence_document <- function(interactive = FALSE,
                   "Please use `confluence_document` instead."))
 
       confluence_settings <- front_matter$confluence_settings
-      confluence_settings$title <- confluence_settings$title %||% front_matter$title
 
       confluence_settings <- purrr::list_modify(
         confluence_settings,
@@ -82,6 +81,9 @@ confluence_document <- function(interactive = FALSE,
     } else {
       confluence_settings <- confluence_settings_from_args
     }
+
+    # title can be specified as a seperate item on front matter
+    confluence_settings$title <- confluence_settings$title %||% front_matter$title
 
     md_text <- read_utf8(output_file)
 

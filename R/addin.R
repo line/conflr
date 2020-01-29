@@ -89,7 +89,7 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
   ui <- confl_addin_ui(
     title = title,
     space_key = space_key,
-    type = eval(formals(confl_post_page)$type),
+    type = type,
     parent_id = parent_id,
     html_text = html_text,
     imgs = imgs,
@@ -180,7 +180,7 @@ confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
 
   # type (page or blogpost)
-  type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = type)
+  type_input <- shiny::selectInput(inputId = "type", label = "Type", choices = c("page", "blogpost"), selected = type)
 
   # space_key
   space_key_input <- shiny::textInput(inputId = "space_key", label = "Space Key", value = space_key)

@@ -75,8 +75,8 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
-                                       imgs, imgs_realpath,
+confl_upload_interactively <- function(title, type, parent_id, html_text,
+                                       imgs, imgs_realpath, space_key = NULL,
                                        toc = FALSE, toc_depth = 7,
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {

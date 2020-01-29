@@ -149,12 +149,6 @@ Rmd_without_space_key <- 'title: "title1"'
 
 test_that("confluence_settings raise an error when any of mandatory parameters are missing", {
 
-  # case: when space_key is neither in the front-matter or in the arguments, it fails
-  confl_upload_mock <- mockery::mock(NULL)
-  expect_error(
-    do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key)
-  )
-
   # case: when space_key is not in the front-matter but in the arguments, it works
   confl_upload_mock <- mockery::mock(NULL)
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key, space_key = "space2")

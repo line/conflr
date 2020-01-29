@@ -75,13 +75,13 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_upload_interactively <- function(title, type, parent_id, html_text,
-                                       imgs, imgs_realpath, space_key = NULL,
+confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
+                                       imgs, imgs_realpath,
                                        toc = FALSE, toc_depth = 7,
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
   # On some Confluence, the key of a personal space can be guessed from the username
-  if (is.null(space_key)) {
+  if (missing(space_key) || is.null(space_key)) {
     space_key <- try_get_personal_space_key(username)
   }
 

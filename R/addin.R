@@ -36,7 +36,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file)
   output_options <- front_matter$output$`conflr::confluence_document` %||% list()
 
-  # Override the options by those via arguments
+  # Override the options by those via arguments (title will be handled in post_processor())
   output_options <- purrr::list_modify(output_options, ..., interactive = interactive)
 
   output_format <- exec(confluence_document, !!!output_options)

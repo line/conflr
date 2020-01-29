@@ -95,12 +95,8 @@ confluence_document <- function(interactive = FALSE,
 
     html_text <- commonmark::markdown_html(md_text)
 
-    md_dir <- dirname(output_file)
     imgs <- extract_image_paths(html_text)
-    imgs_unescaped <- curl::curl_unescape(imgs)
-
-    # imgs might be absolute, relative to md_dir, or relative to the current dir.
-    imgs_realpath <- ifelse(file.exists(imgs_unescaped), imgs, file.path(md_dir, imgs_unescaped))
+    imgs_realpath <- curl::curl_unescape(imgs)
 
     # upload ------------------------------------------------------------------
 

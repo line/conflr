@@ -12,13 +12,13 @@
 #' @param params If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
 #' @param ... Arguments passed to `confluence_documents()`.
-#' 
+#'
 #' @rdname confluence_document
-#' 
+#'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NULL, ...) {
 
-  ellipsis::check_dots_used()
+  # ellipsis::check_dots_used()
 
   # sanity checks -----------------------------------------------------------
 
@@ -32,6 +32,12 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
 
   # knit --------------------------------------------------------------------
 
+  front_matter <- rmarkdown::yaml_front_matter(Rmd_file)
+  output_options <- front_matter$output$`conflr::confluence_document` %||% list()
+  # Always ignore option on front matter
+  output_options <- purrr::list_modify(output_options, ..., interactive = interactive)
+  output_format <- exec(confluence_document, !!!output_options)
+
   knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
@@ -39,7 +45,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
 
   rmarkdown::render(
     input = Rmd_file,
-    output_format = confluence_document(interactive = interactive, ...),
+    output_format = output_format,
     encoding = "UTF-8",
     params = params,
     # TODO: I'm not fully sure the global env is always the right place to knit, but this is needed to avoid

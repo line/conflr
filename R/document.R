@@ -81,7 +81,7 @@ confluence_document <- function(interactive = FALSE,
       }
     )
   }
-  
+
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
     # For backward-compatibility
     if (has_name(front_matter, "confluence_settings")) {

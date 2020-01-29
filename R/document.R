@@ -83,7 +83,7 @@ confluence_document <- function(interactive = FALSE,
       confluence_settings <- confluence_settings_from_args
     }
 
-    md_text <- read_utf8(input_file)
+    md_text <- read_utf8(output_file)
 
     # Replace <ac:...> and <ri:...> because they are not recognized as proper tags
     # by commonmark and accordingly get escaped. We need to replace the namespace
@@ -93,7 +93,7 @@ confluence_document <- function(interactive = FALSE,
 
     html_text <- commonmark::markdown_html(md_text)
 
-    md_dir <- dirname(input_file)
+    md_dir <- dirname(output_file)
     imgs <- extract_image_paths(html_text)
     imgs_unescaped <- curl::curl_unescape(imgs)
 

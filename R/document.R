@@ -88,19 +88,17 @@ confluence_document <- function(interactive = FALSE,
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
     # For backward-compatibility
     if (has_name(front_matter, "confluence_settings")) {
-      warn(paste0("Set options via `confluence_settings` front-matter is deprecated.\n",
+      warn(paste0("Set options via `confluence_settings` front-matter is deprecated and not fully supported.\n",
                   "Please use `confluence_document` instead."))
 
-      # Dirty tweak to detect the explicitly specified arguments
+      # Dirty tweak to pass the default values. Note that, we no longer have
+      # track on which arguments are defaults and which are supplied here. So,
+      # The arguments are simply ignored for simplicity.
       defaults <- purrr::map(formals(confluence_document), eval_bare)
-      nm <- names(confluence_settings)
-      idx <- purrr::map2_lgl(confluence_settings[nm], defaults[nm], identical)
-      confluence_settings_from_args <- confluence_settings[nm[!idx]]
 
       confluence_settings <- purrr::list_modify(
         defaults,
-        !!!front_matter$confluence_settings, # Overwrite the defaults by confluence_settings
-        !!!confluence_settings_from_args     # Overwrite further by the arguments
+        !!!front_matter$confluence_settings # Overwrite the defaults by confluence_settings
       )
     }
 

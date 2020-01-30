@@ -12,12 +12,12 @@ confluence_document(
   title = NULL,
   space_key = NULL,
   parent_id = NULL,
-  type = NULL,
-  toc = NULL,
-  toc_depth = NULL,
+  type = c("page", "blogpost"),
+  toc = FALSE,
+  toc_depth = 7,
   supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
   update = NULL,
-  use_original_size = NULL
+  use_original_size = FALSE
 )
 }
 \arguments{

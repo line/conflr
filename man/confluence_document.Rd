@@ -36,11 +36,11 @@ params in the YAML front-matter.}
 
 \item{parent_id}{The page ID of the parent pages.}
 
-\item{type}{If provided, this overwrites the YAML front matter type.}
+\item{type}{The content type to return. Default value: \code{page}. Valid values: \code{page}, \code{blogpost}.}
 
-\item{toc}{If \code{TRUE}, add TOC.}
+\item{toc}{If \code{TRUE}, include a table of contents in the output.}
 
-\item{toc_depth}{The depth of the TOC. Ignored when \code{toc} is \code{FALSE}.}
+\item{toc_depth}{The max level of headers to include in the table of contents.}
 
 \item{supported_syntax_highlighting}{A named character vector of supported syntax highlighting other than default (e.g. \code{c(r = "r")}).}
 

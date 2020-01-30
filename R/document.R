@@ -12,18 +12,26 @@
 #'
 #' Knit and post a given R Markdown file to 'Confluence'.
 #'
-#' @param interactive If `FALSE`, shiny interface is not launched.
-#' @param title Title of the post.
-#' @param space_key The space key to find content under.
-#' @param parent_id The page ID of the parent pages.
-#' @param type If provided, this overwrites the YAML front matter type.
-#' @param toc If `TRUE`, add TOC.
-#' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
-#' @param update If `TRUE`, overwrite the existing page (if it exists).
+#' @param interactive
+#'   If `FALSE`, shiny interface is not launched.
+#' @param title
+#'   Title of the post.
+#' @param space_key
+#'   The space key to find content under.
+#' @param parent_id
+#'   The page ID of the parent pages.
+#' @param toc
+#'   If `TRUE`, include a table of contents in the output.
+#' @param toc_depth
+#'   The max level of headers to include in the table of contents.
+#' @param update
+#'   If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size
 #'   If `TRUE`, use the original image sizes.
 #' @param supported_syntax_highlighting
 #'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
+#'
+#' @inheritParams confl_content
 #'
 #' @details
 #' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and

@@ -40,14 +40,17 @@ confluence_document <- function(interactive = FALSE,
                                 # in camel case for simple binding functions.
                                 space_key = NULL,
                                 parent_id = NULL,
-                                type = NULL,
-                                toc = NULL,
-                                toc_depth = NULL,
+                                type = c("page", "blogpost"),
+                                toc = FALSE,
+                                toc_depth = 7,
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
-                                use_original_size = NULL) {
+                                use_original_size = FALSE) {
+
+  type <- arg_match(type)
+
   # This will be refered in post_processor()
-  confluence_settings_from_args <- list(
+  confluence_settings <- list(
     title = title,
     space_key = space_key,
     parent_id = parent_id,
@@ -58,8 +61,6 @@ confluence_document <- function(interactive = FALSE,
     update = update,
     use_original_size = use_original_size
   )
-  # TODO: Should explicitly-specified NULL be preserved to unset the optuons?
-  confluence_settings_from_args <- purrr::compact(confluence_settings_from_args)
 
   format <- rmarkdown::md_document(
     variant = "commonmark",
@@ -90,14 +91,17 @@ confluence_document <- function(interactive = FALSE,
       warn(paste0("Set options via `confluence_settings` front-matter is deprecated.\n",
                   "Please use `confluence_document` instead."))
 
-      confluence_settings <- front_matter$confluence_settings
+      # Dirty tweak to detect the explicitly specified arguments
+      defaults <- purrr::map(formals(confluence_document), eval_bare)
+      nm <- names(confluence_settings)
+      idx <- purrr::map2_lgl(confluence_settings[nm], defaults[nm], identical)
+      confluence_settings_from_args <- confluence_settings[nm[!idx]]
 
       confluence_settings <- purrr::list_modify(
-        confluence_settings,
-        !!!purrr::compact(confluence_settings_from_args)
+        defaults,
+        !!!front_matter$confluence_settings, # Overwrite the defaults by confluence_settings
+        !!!confluence_settings_from_args     # Overwrite further by the arguments
       )
-    } else {
-      confluence_settings <- confluence_settings_from_args
     }
 
     # title can be specified as a seperate item on front matter

@@ -95,6 +95,8 @@ confluence_document <- function(interactive = FALSE,
       # track on which arguments are defaults and which are supplied here. So,
       # the arguments are simply ignored for simplicity.
       defaults <- purrr::map(formals(confluence_document), eval_bare)
+      # type needs to be arg_match()ed, but let's shortcut.
+      defaults$type <- "page"
 
       confluence_settings <- purrr::list_modify(
         defaults,

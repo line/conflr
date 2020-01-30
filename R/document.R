@@ -93,7 +93,7 @@ confluence_document <- function(interactive = FALSE,
 
       # Dirty tweak to pass the default values. Note that, we no longer have
       # track on which arguments are defaults and which are supplied here. So,
-      # The arguments are simply ignored for simplicity.
+      # the arguments are simply ignored for simplicity.
       defaults <- purrr::map(formals(confluence_document), eval_bare)
 
       confluence_settings <- purrr::list_modify(

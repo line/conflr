@@ -11,8 +11,8 @@ confluence_document(
   interactive = FALSE,
   title = NULL,
   space_key = NULL,
-  type = NULL,
   parent_id = NULL,
+  type = NULL,
   toc = NULL,
   toc_depth = NULL,
   supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
@@ -34,9 +34,9 @@ params in the YAML front-matter.}
 
 \item{space_key}{The space key to find content under.}
 
-\item{type}{If provided, this overwrites the YAML front matter type}
-
 \item{parent_id}{The page ID of the parent pages.}
+
+\item{type}{If provided, this overwrites the YAML front matter type.}
 
 \item{toc}{If \code{TRUE}, add TOC.}
 

@@ -74,20 +74,24 @@ confl_create_post_from_Rmd_addin <- function() {
   confl_create_post_from_Rmd(Rmd_file, interactive = TRUE)
 }
 
-confl_upload_interactively <- function(title, space_key, type, parent_id, html_text,
-                                       imgs, imgs_realpath,
+confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
+                                       space_key = NULL,
+                                       parent_id = NULL,
+                                       type = c("page", "blogpost"),
                                        toc = FALSE, toc_depth = 7,
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
+  type <- arg_match(type)
+
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
     title = title,
-    space_key = space_key,
-    type = type,
-    parent_id = parent_id,
     html_text = html_text,
     imgs = imgs,
     imgs_realpath = imgs_realpath,
+    space_key = space_key,
+    parent_id = parent_id,
+    type = type,
     toc = toc,
     toc_depth = toc_depth,
     use_original_size = use_original_size
@@ -104,13 +108,13 @@ confl_upload_interactively <- function(title, space_key, type, parent_id, html_t
 
       confl_upload(
         title = title,
-        space_key = input$space_key,
-        type = input$type,
-        parent_id = input$parent_id,
-        session = session,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath,
+        space_key = input$space_key,
+        parent_id = input$parent_id,
+        type = input$type,
+        session = session,
         toc = input$toc,
         toc_depth = input$toc_depth,
         supported_syntax_highlighting = supported_syntax_highlighting,
@@ -165,10 +169,12 @@ wrap_with_column <- function(..., width = 2) {
 # NOTE: conflr_supported_syntax_highlighting cannot be set via GUI because
 #       it's not a feature frequently used and is a bit difficult to input
 #       via Shiny interface.
-confl_addin_ui <- function(title, space_key, type, parent_id, html_text,
-                           imgs, imgs_realpath,
+confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
+                           space_key = NULL, parent_id = NULL, type = c("page", "blogpost"),
                            toc = FALSE, toc_depth = 7,
                            use_original_size = FALSE) {
+  type <- arg_match(type)
+
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)

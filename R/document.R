@@ -14,9 +14,9 @@
 #'
 #' @param interactive If `FALSE`, shiny interface is not launched.
 #' @param title Title of the post.
-#' @param type If provided, this overwrites the YAML front matter type
 #' @param space_key The space key to find content under.
 #' @param parent_id The page ID of the parent pages.
+#' @param type If provided, this overwrites the YAML front matter type.
 #' @param toc If `TRUE`, add TOC.
 #' @param toc_depth The depth of the TOC. Ignored when `toc` is `FALSE`.
 #' @param update If `TRUE`, overwrite the existing page (if it exists).
@@ -39,8 +39,8 @@ confluence_document <- function(interactive = FALSE,
                                 # Use snake case for user-facing functions and use the actual API parameter name
                                 # in camel case for simple binding functions.
                                 space_key = NULL,
-                                type = NULL,
                                 parent_id = NULL,
+                                type = NULL,
                                 toc = NULL,
                                 toc_depth = NULL,
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
@@ -50,8 +50,8 @@ confluence_document <- function(interactive = FALSE,
   confluence_settings_from_args <- list(
     title = title,
     space_key = space_key,
-    type = type,
     parent_id = parent_id,
+    type = type,
     toc = toc,
     toc_depth = toc_depth,
     supported_syntax_highlighting = supported_syntax_highlighting,

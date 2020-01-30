@@ -196,7 +196,7 @@ test_that("confluence_settings are accepted for backward-compatibility", {
   )
 
   # case: args overwrite settings in the Rmd
-  # Note: toc doesn't work
+  # Note: toc and use_original_size aren't overwritten because it is the same as the default
   confl_upload_mock <- mockery::mock(NULL)
   expect_warning(
     do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_deprecated,
@@ -212,7 +212,6 @@ test_that("confluence_settings are accepted for backward-compatibility", {
     parent_id = 9999,
     toc_depth = 2,
     supported_syntax_highlighting = c(two_plus_two = "five"),
-    update = FALSE,
-    use_original_size = FALSE
+    update = FALSE
   )
 })

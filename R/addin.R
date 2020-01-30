@@ -18,6 +18,7 @@
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NULL, ...) {
 
+  # FIXME: uncomment this when r-lib/ellipsis#32 is fixed
   # ellipsis::check_dots_used()
 
   if (is.null(interactive)) {

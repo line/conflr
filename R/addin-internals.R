@@ -10,15 +10,34 @@
 
 confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
+                         id = NULL,
                          toc = FALSE, toc_depth = 7,
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
-                         update = NULL, use_original_size = FALSE,
-                         interactive = FALSE, session = NULL) {
-  # check if there is an existing page
-  existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
+                         update = FALSE,
+                         use_original_size = FALSE,
+                         session = NULL) {
+  # 1) id is NULL,                     update is TRUE : proceed
+  # 2) id is NULL,                     update is FALSE: proceed
+  # 3) id is NULL but the page exists, update is TRUE : proceed
+  # 4) id is NULL but the page exists, update is FALSE: abort
+  # 5) id is not NULL,                 update is TRUE : proceed
+  # 6) id is not NULL,                 update is FALSE: abort
 
-  if (existing_pages$size == 0) {
-    # if the page doesn't exist, create a blank page
+  # If id is NULL, check if there's the same title of the page
+  if (is.null(id)) {
+    # TODO: we check if there's an existing page twice; here and
+    # confl_update_interactively(). Can we remove the duplication?
+    existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
+    id <- existing_pages$results[[1]]$id
+  }
+
+  # If there's an existing page and the user don't want to update, abort
+  if (!is.null(id)) {
+    if (!isTRUE(update)) {
+      abort("Page already exists. Re-run with `update = TRUE` to overwrite.")
+    }
+  } else {
+    # if the page doesn't exist yet, create a blank page
     blank_page <- confl_post_page(
       type = type,
       spaceKey = space_key,
@@ -27,24 +46,6 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
       ancestors = parent_id
     )
     id <- blank_page$id
-  } else {
-    # Confirm if it's OK to update the existing page
-    #
-    # 1) interactive,     update is NULL : ask (default)
-    # 2) interactive,     update is TRUE : proceed
-    # 3) interactive,     update is FALSE: abort
-    # 4) non-interactive, update is NULL : abort (default)
-    # 5) non-interacitve, update is TRUE : proceed
-    # 6) non-interactive, update is FALSE: abort
-    if (interactive && is.null(update)) {
-      update <- confirm_upload(title)
-    }
-
-    if (!isTRUE(update)) {
-      abort("Page already exists. Re-run with `update = TRUE` to overwrite.")
-    }
-
-    id <- existing_pages$results[[1]]$id
   }
 
   progress <- new_progress(session, min = 0, max = 2)
@@ -115,27 +116,11 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   }
 
   # Even on non-interactive sessions, jump to the URL if knitting is done on RStudio
-  if (interactive || identical(Sys.getenv("RSTUDIO"), "1")) {
+  if (interactive() || (identical(Sys.getenv("RSTUDIO"), "1") && is.null(Sys.getenv("TESTTHAT")))) {
     browseURL(paste0(result$`_links`$base, result$`_links`$webui))
   } else {
     message(paste0("Results at: ", results_url))
   }
 
   results_url
-}
-
-confirm_upload <- function(title) {
-  ans <- rstudioapi::showQuestion(
-    "Update?",
-    glue::glue(
-      "There is already an existing page named '{title}'.\n",
-      "Are you sure to overwrite it?"
-    ),
-    ok = "OK", cancel = "cancel"
-  )
-  if (ans) {
-    TRUE
-  } else {
-    abort("Cancel to upload.")
-  }
 }

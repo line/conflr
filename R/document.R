@@ -70,8 +70,7 @@ confluence_document <- function(title = NULL,
     toc_depth = toc_depth,
     supported_syntax_highlighting = supported_syntax_highlighting,
     update = update,
-    use_original_size = use_original_size,
-    interactive = interactive
+    use_original_size = use_original_size
   )
 
   format <- rmarkdown::md_document(
@@ -109,8 +108,6 @@ confluence_document <- function(title = NULL,
       defaults <- purrr::map(formals(confluence_document), eval_bare)
       # type needs to be arg_match()ed, but let's shortcut.
       defaults$type <- "page"
-      # interactive is determined interactively
-      defaults$interactive <- interactive()
 
       confluence_settings <- purrr::list_modify(
         defaults,
@@ -136,7 +133,7 @@ confluence_document <- function(title = NULL,
 
     # upload ------------------------------------------------------------------
 
-    if (confluence_settings$interactive) {
+    if (interactive) {
       # On some Confluence, the key of a personal space can be guessed from the username
       if (is.null(confluence_settings$space_key)) {
         confluence_settings$space_key <- try_get_personal_space_key(username)
@@ -144,7 +141,6 @@ confluence_document <- function(title = NULL,
 
       # Remove unused arguments
       confluence_settings$update <- NULL
-      confluence_settings$interactive <- NULL
 
       exec(
         confl_upload_interactively,

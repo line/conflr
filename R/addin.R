@@ -89,6 +89,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        use_original_size = FALSE) {
   type <- arg_match(type)
 
+  id <- try_get_existing_page_id(title = title, space_key = space_key)
+
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
     title = title,
@@ -100,12 +102,28 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     type = type,
     toc = toc,
     toc_depth = toc_depth,
-    use_original_size = use_original_size
+    use_original_size = use_original_size,
+    # If there is already an existing page, confirm
+    confirm = !is.null(id)
   )
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
+    shiny::observeEvent(input$confirm, {
+      shiny::showModal(shiny::modalDialog(
+        glue::glue(
+          "There is already an existing page named '{title}'.\n",
+          "Are you sure to overwrite it?"
+        ),
+        footer = shiny::tagList(
+          shiny::modalButton("Cancel"),
+          shiny::actionButton("done", "OK")
+        )
+      ))
+    })
+
     shiny::observeEvent(input$done, {
+      shiny::removeModal()
 
       # TODO: this warning cannot be shown to users. Consider using shinyFeedback
       shiny::validate(
@@ -117,6 +135,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath,
+        id = id,
         space_key = input$space_key,
         parent_id = input$parent_id,
         type = input$type,
@@ -125,7 +144,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         toc_depth = input$toc_depth,
         supported_syntax_highlighting = supported_syntax_highlighting,
         use_original_size = input$use_original_size,
-        interactive = TRUE
+        # Already confirmed
+        update = TRUE
       )
 
       unset_password_if_special_envvar_is_set()
@@ -179,11 +199,11 @@ wrap_with_column <- function(..., width = 2) {
 confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
                            space_key = NULL, parent_id = NULL, type = c("page", "blogpost"),
                            toc = FALSE, toc_depth = 7,
-                           use_original_size = FALSE) {
+                           use_original_size = FALSE, confirm = TRUE) {
   type <- arg_match(type)
 
   # title bar
-  title_bar_button <- miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)
+  title_bar_button <- miniUI::miniTitleBarButton(if (confirm) "confirm" else "done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
 
   # type (page or blogpost)

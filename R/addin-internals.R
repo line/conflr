@@ -115,7 +115,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   }
 
   # Even on non-interactive sessions, jump to the URL if knitting is done on RStudio
-  if (interactive() || (identical(Sys.getenv("RSTUDIO"), "1") && is.null(Sys.getenv("TESTTHAT")))) {
+  if (interactive() ||
+      (identical(Sys.getenv("RSTUDIO"), "1") && identical(Sys.getenv("TESTTHAT"), ""))) {
     browseURL(paste0(result$`_links`$base, result$`_links`$webui))
   } else {
     message(paste0("Results at: ", results_url))

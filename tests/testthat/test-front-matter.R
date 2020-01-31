@@ -8,7 +8,7 @@ expect_confluence_settings <- function(mock, ...) {
 }
 
 Rmd_with_all_defaults <-
-'title: "title1"
+  'title: "title1"
 output:
   conflr::confluence_document:
     space_key: "space1"
@@ -61,7 +61,7 @@ test_that("confluence_settings can be set from front-matter", {
 })
 
 Rmd_with_two_titles <-
-'title: "title1"
+  'title: "title1"
 output:
   conflr::confluence_document:
     title: "title2"
@@ -113,7 +113,7 @@ test_that("confluence_settings$title is prior to title", {
 })
 
 Rmd_with_some_settings <-
-'title: "title1"
+  'title: "title1"
 output:
   conflr::confluence_document:
     space_key: "space1"'
@@ -163,7 +163,7 @@ test_that("confluence_settings raise an error when any of mandatory parameters a
 })
 
 Rmd_deprecated <-
-'title: "title1"
+  'title: "title1"
 confluence_settings:
   space_key: "space1"
   parent_id: 1234

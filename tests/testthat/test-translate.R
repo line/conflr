@@ -47,8 +47,8 @@ test_that("replace_code_chunk() works", {
     expected <- as.character(glue::glue(
       '<ac:structured-macro ac:name="code">\n',
       '  <ac:parameter ac:name="language">{expected_language}</ac:parameter>\n',
-      '  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>\n',
-      '</ac:structured-macro>'
+      "  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>\n",
+      "</ac:structured-macro>"
     ))
 
     expect_equal(replace_code_chunk(given, supported_syntax_highlighting), expected)
@@ -60,7 +60,7 @@ test_that("replace_code_chunk() works", {
   # by default R is not supported
   do_test_code_chunk('class="language-r"', "none")
   # no atrribute
-  do_test_code_chunk('', "none")
+  do_test_code_chunk("", "none")
 
   # with options, r is supported
   do_test_code_chunk('class="language-r"', "r", c(r = "r"))
@@ -281,7 +281,7 @@ test_that("mark_confluence_namespaces() works", {
   )
 
   # do not convert ac: outside of the tags
-  expect_equal(mark_confluence_namespaces('<p>ac:</p>'), '<p>ac:</p>')
+  expect_equal(mark_confluence_namespaces("<p>ac:</p>"), "<p>ac:</p>")
 })
 
 test_that("restore_confluence_namespaces() works", {
@@ -299,5 +299,5 @@ test_that("restore_confluence_namespaces() works", {
   )
 
   # do not convert cobfl-ac- outside of the tags
-  expect_equal(restore_confluence_namespaces('<p>confl-ac-</p>'), '<p>confl-ac-</p>')
+  expect_equal(restore_confluence_namespaces("<p>confl-ac-</p>"), "<p>confl-ac-</p>")
 })

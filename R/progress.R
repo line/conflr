@@ -10,7 +10,7 @@
 
 # A mock of shiny::Progress() for console usages
 ConsoleProgress <- R6::R6Class(
-  'ConsoleProgress',
+  "ConsoleProgress",
   public = list(
     initialize = function(...) {
       # All arguments are ignored

@@ -90,11 +90,11 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
   if (toc) {
     toc_tag <- paste(
-      '<p>',
+      "<p>",
       '  <ac:structured-macro ac:name="toc">',
       glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
-      '  </ac:structured-macro>',
-      '</p>',
+      "  </ac:structured-macro>",
+      "</p>",
       sep = "\n"
     )
     html_text <- paste(toc_tag, html_text, sep = "\n")
@@ -116,7 +116,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
   # Even on non-interactive sessions, jump to the URL if knitting is done on RStudio
   if (interactive() ||
-      (identical(Sys.getenv("RSTUDIO"), "1") && identical(Sys.getenv("TESTTHAT"), ""))) {
+    (identical(Sys.getenv("RSTUDIO"), "1") && identical(Sys.getenv("TESTTHAT"), ""))) {
     browseURL(paste0(result$`_links`$base, result$`_links`$webui))
   } else {
     message(paste0("Results at: ", results_url))

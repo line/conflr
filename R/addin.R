@@ -36,7 +36,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
   # Get options on the front matter
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file)
   if (is.list(front_matter$output) &&
-      has_name(front_matter$output, "conflr::confluence_document")) {
+    has_name(front_matter$output, "conflr::confluence_document")) {
     output_options <- front_matter$output$`conflr::confluence_document`
   } else {
     output_options <- list()

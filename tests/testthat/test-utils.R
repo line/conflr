@@ -25,7 +25,8 @@ test_that("confl_verb() asks for credentials if it is not set", {
     "conflr::ask_confluence_username" = mock_ask,
     "conflr::ask_confluence_password" = mock_ask,
     withr::with_envvar(
-      envvars, {
+      envvars,
+      {
         confl_verb("GET", "/")
         expect_equal(Sys.getenv("CONFLUENCE_URL"), "foo")
       }
@@ -49,7 +50,8 @@ test_that("confl_verb() asks for credentials if it is not set", {
     "conflr::ask_confluence_username" = mock_ask2,
     "conflr::ask_confluence_password" = mock_ask2,
     withr::with_envvar(
-      envvars, {
+      envvars,
+      {
         expect_error(confl_verb("GET", "/"))
         # the url provided should not be stored
         expect_equal(Sys.getenv("CONFLUENCE_URL"), "")
@@ -75,5 +77,4 @@ test_that("try_get_existing_page_id() works", {
       expect_equal(try_get_existing_page_id("foo", "bar"), NULL)
     }
   )
-
 })

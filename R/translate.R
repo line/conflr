@@ -259,8 +259,9 @@ mark_confluence_namespaces <- function(x) {
   for (loc in rev(split(locs, row(locs)))) {
     orig <- stringi::stri_sub(x, loc[1], loc[2])
     marked <- stringi::stri_replace_all_regex(orig,
-                                              pattern = "(?<=<|\\s|^)(/?)(ac|ri):",
-                                              replacement = "$1confl-$2-")
+      pattern = "(?<=<|\\s|^)(/?)(ac|ri):",
+      replacement = "$1confl-$2-"
+    )
     stringi::stri_sub(x, loc[1], loc[2]) <- marked
   }
 
@@ -277,8 +278,9 @@ restore_confluence_namespaces <- function(x) {
   for (loc in rev(split(locs, row(locs)))) {
     orig <- stringi::stri_sub(x, loc[1], loc[2])
     restored <- stringi::stri_replace_all_regex(orig,
-                                                pattern = "(?<=<|\\s|^)(/?)confl-(ac|ri)-",
-                                                replacement = "$1$2:")
+      pattern = "(?<=<|\\s|^)(/?)confl-(ac|ri)-",
+      replacement = "$1$2:"
+    )
     stringi::stri_sub(x, loc[1], loc[2]) <- restored
   }
 

@@ -99,8 +99,10 @@ confluence_document <- function(title = NULL,
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
     # For backward-compatibility
     if (has_name(front_matter, "confluence_settings")) {
-      warn(paste0("Set options via `confluence_settings` front-matter is deprecated and not fully supported.\n",
-                  "Please use `confluence_document` instead."))
+      warn(paste0(
+        "Set options via `confluence_settings` front-matter is deprecated and not fully supported.\n",
+        "Please use `confluence_document` instead."
+      ))
 
       # Dirty tweak to pass the default values. Note that, we no longer have
       # track on which arguments are defaults and which are supplied here. So,
@@ -145,7 +147,7 @@ confluence_document <- function(title = NULL,
 
       exec(
         confl_upload_interactively,
-        !!! confluence_settings,
+        !!!confluence_settings,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath
@@ -153,7 +155,7 @@ confluence_document <- function(title = NULL,
     } else {
       exec(
         confl_upload,
-        !!! confluence_settings,
+        !!!confluence_settings,
         html_text = html_text,
         imgs = imgs,
         imgs_realpath = imgs_realpath

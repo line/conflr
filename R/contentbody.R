@@ -24,7 +24,7 @@
 #' @export
 confl_contentbody_convert <- function(x,
                                       from = c("wiki", "storage", "editor", "view", "export_view", "styled_view"),
-                                      to   = c("storage", "editor", "view", "export_view", "styled_view")) {
+                                      to = c("storage", "editor", "view", "export_view", "styled_view")) {
   if (length(x) != 1) {
     abort("`x` must be length 1")
   }

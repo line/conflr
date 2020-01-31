@@ -10,7 +10,8 @@ do_confl_create_post_from_Rmd <- function(mock, front_matter = NULL, ..., body =
   with_mock(
     "conflr:::confl_upload" = mock,
     "conflr:::confl_get_current_user" = function(...) list(username = "user"),
-    "conflr:::try_get_personal_space_key" = should_not_be_called, {
+    "conflr:::try_get_personal_space_key" = should_not_be_called,
+    {
       confl_create_post_from_Rmd(tmp, interactive = FALSE, ...)
     }
   )

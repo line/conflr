@@ -6,7 +6,8 @@ test_that("confl_post_page() works", {
 
   with_mock(
     "conflr::confl_verb" = m,
-    "httr::content" = function(res) NULL, {
+    "httr::content" = function(res) NULL,
+    {
       confl_post_page("page", "space1", "title", "<p>foo</p>")
     }
   )
@@ -38,7 +39,8 @@ test_that("confl_update_page() works", {
   with_mock(
     "conflr::confl_verb" = m,
     "conflr::confl_get_page" = m2,
-    "httr::content" = function(res) NULL, {
+    "httr::content" = function(res) NULL,
+    {
       confl_update_page("1234", "title", "<p>foo</p>")
     }
   )

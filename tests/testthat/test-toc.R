@@ -3,7 +3,7 @@ test_that("TOC is added when set via argument", {
   on.exit(unlink(tmp))
 
   writeLines(
-'---
+    "---
 title: title1
 output:
   conflr::confluence_document:
@@ -13,7 +13,8 @@ output:
 
 # h1
 ## h2
-', tmp)
+", tmp
+  )
 
   mock <- mockery::mock(NULL)
   with_mock(
@@ -21,14 +22,15 @@ output:
     "conflr::confl_update_page" = mock,
     "conflr::confl_get_current_user" = function(...) list(username = "user"),
     "conflr:::try_get_existing_page_id" = function(...) 1,
-    "conflr:::try_get_personal_space_key" = should_not_be_called, {
+    "conflr:::try_get_personal_space_key" = should_not_be_called,
+    {
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE, toc = TRUE)
     }
   )
 
   expect_equal(
     mockery::mock_args(mock)[[1]]$body,
-'<p>
+    '<p>
   <ac:structured-macro ac:name="toc">
     <ac:parameter ac:name="maxLevel">7</ac:parameter>
   </ac:structured-macro>
@@ -43,7 +45,7 @@ test_that("TOC is added when set via front-matter", {
   on.exit(unlink(tmp))
 
   writeLines(
-'---
+    "---
 title: title1
 output:
   conflr::confluence_document:
@@ -54,7 +56,8 @@ output:
 
 # h1
 ## h2
-', tmp)
+", tmp
+  )
 
   mock <- mockery::mock(NULL, cycle = TRUE)
   with_mock(
@@ -62,7 +65,8 @@ output:
     "conflr::confl_update_page" = mock,
     "conflr::confl_get_current_user" = function(...) list(username = "user"),
     "conflr:::try_get_existing_page_id" = function(...) 1,
-    "conflr:::try_get_personal_space_key" = should_not_be_called, {
+    "conflr:::try_get_personal_space_key" = should_not_be_called,
+    {
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE)
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE, toc = FALSE)
     }
@@ -70,7 +74,7 @@ output:
 
   expect_equal(
     mockery::mock_args(mock)[[1]]$body,
-'<p>
+    '<p>
   <ac:structured-macro ac:name="toc">
     <ac:parameter ac:name="maxLevel">3</ac:parameter>
   </ac:structured-macro>
@@ -81,7 +85,6 @@ output:
 
   expect_equal(
     mockery::mock_args(mock)[[2]]$body,
-    '<h1>h1</h1>\n<h2>h2</h2>'
+    "<h1>h1</h1>\n<h2>h2</h2>"
   )
 })
-

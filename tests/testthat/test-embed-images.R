@@ -33,7 +33,7 @@ test_that("embed_images() works for non-ASCII dir", {
 
   # integrated test
   Rmd_with_some_settings <-
-'title: "title1"
+    'title: "title1"
 output:
   conflr::confluence_document:
     space_key: "space1"'
@@ -45,4 +45,3 @@ output:
   expect_equal(result2$imgs, "%C3%B6/plot1.png")
   expect_equal(result2$imgs_realpath, "\u00f6/plot1.png")
 })
-

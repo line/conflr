@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>REST Wrapper for the ContentService — confl_content • conflr</title>
+<title>Publish R Markdown Document to 'Confluence' — confl_create_post_from_Rmd • conflr</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="REST Wrapper for the ContentService — confl_content" />
-<meta property="og:description" content="REST Wrapper for the ContentService" />
+<meta property="og:title" content="Publish R Markdown Document to 'Confluence' — confl_create_post_from_Rmd" />
+<meta property="og:description" content="Knit and post a given R Markdown file to 'Confluence'." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,90 +108,101 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>REST Wrapper for the ContentService</h1>
-    <small class="dont-index">Source: <a href='https://github.com/line/conflr/blob/master/R/content.R'><code>R/content.R</code></a></small>
-    <div class="hidden name"><code>confl_content.Rd</code></div>
+    <h1>Publish R Markdown Document to 'Confluence'</h1>
+    <small class="dont-index">Source: <a href='https://github.com/line/conflr/blob/master/R/addin.R'><code>R/addin.R</code></a>, <a href='https://github.com/line/conflr/blob/master/R/document.R'><code>R/document.R</code></a></small>
+    <div class="hidden name"><code>confluence_document.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>REST Wrapper for the ContentService</p>
+    <p>Knit and post a given R Markdown file to 'Confluence'.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>confl_list_pages</span>(
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"page"</span>, <span class='st'>"blogpost"</span>, <span class='st'>"comment"</span>, <span class='st'>"attachment"</span>),
-  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>spaceKey</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>confl_create_post_from_Rmd</span>(<span class='no'>Rmd_file</span>, <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='fu'>confluence_document</span>(
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
-
-<span class='fu'>confl_get_page</span>(<span class='no'>id</span>, <span class='kw'>expand</span> <span class='kw'>=</span> <span class='st'>"body.storage"</span>)
-
-<span class='fu'>confl_post_page</span>(
+  <span class='kw'>space_key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parent_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"page"</span>, <span class='st'>"blogpost"</span>),
-  <span class='no'>spaceKey</span>,
-  <span class='no'>title</span>,
-  <span class='no'>body</span>,
-  <span class='kw'>ancestors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
-
-<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>)
-
-<span class='fu'>confl_delete_page</span>(<span class='no'>id</span>)</pre>
+  <span class='kw'>toc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>toc_depth</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>supported_syntax_highlighting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"conflr_supported_syntax_highlighting"</span>),
+  <span class='kw'>update</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_original_size</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>Rmd_file</th>
+      <td><p>Path to an .Rmd file.</p></td>
+    </tr>
+    <tr>
+      <th>interactive</th>
+      <td><p>If <code>FALSE</code>, shiny interface is not launched.</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>If provided, a list of named parameters that override custom
+params in the YAML front-matter.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to <code>confluence_documents()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>Title of the post.</p></td>
+    </tr>
+    <tr>
+      <th>space_key</th>
+      <td><p>The space key to find content under.</p></td>
+    </tr>
+    <tr>
+      <th>parent_id</th>
+      <td><p>The page ID of the parent pages.</p></td>
+    </tr>
+    <tr>
       <th>type</th>
       <td><p>The content type to return. Default value: <code>page</code>. Valid values: <code>page</code>, <code>blogpost</code>.</p></td>
     </tr>
     <tr>
-      <th>limit</th>
-      <td><p>The limit of the number of items to return, this may be restricted by fixed system limits.</p></td>
+      <th>toc</th>
+      <td><p>If <code>TRUE</code>, include a table of contents in the output.</p></td>
     </tr>
     <tr>
-      <th>start</th>
-      <td><p>The start point of the collection to return.</p></td>
+      <th>toc_depth</th>
+      <td><p>The max level of headers to include in the table of contents.</p></td>
     </tr>
     <tr>
-      <th>spaceKey</th>
-      <td><p>The space key to find content under.</p></td>
+      <th>supported_syntax_highlighting</th>
+      <td><p>A named character vector of supported syntax highlighting other than default (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(r = "r")</a></code>).</p></td>
     </tr>
     <tr>
-      <th>title</th>
-      <td><p>The title of the page to find. Required for <code>page</code> type.</p></td>
+      <th>update</th>
+      <td><p>If <code>TRUE</code>, overwrite the existing page (if it exists).</p></td>
     </tr>
     <tr>
-      <th>expand</th>
-      <td><p>A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. <code>body.storage,history</code>).</p></td>
-    </tr>
-    <tr>
-      <th>id</th>
-      <td><p>ID of the content.</p></td>
-    </tr>
-    <tr>
-      <th>body</th>
-      <td><p>The HTML source of the page.</p></td>
-    </tr>
-    <tr>
-      <th>ancestors</th>
-      <td><p>The page ID of the parent pages.</p></td>
+      <th>use_original_size</th>
+      <td><p>If <code>TRUE</code>, use the original image sizes.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p><a href='https://docs.atlassian.com/ConfluenceServer/rest/latest/'>https://docs.atlassian.com/ConfluenceServer/rest/latest/</a></p></div>
+    <p><code>title</code>, <code>type</code>, <code>space_key</code>, <code>parent_id</code>, <code>toc</code>, <code>toc_depth</code>, <code>update</code>, and
+<code>use_original_size</code> can be specified as <code>confluence_settings</code> item in the
+front-matter of the Rmd file to knit. The arguments of
+<code>confl_create_post_from_Rmd()</code> overwrite these settings if provided.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>

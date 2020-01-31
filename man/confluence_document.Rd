@@ -8,7 +8,6 @@
 confl_create_post_from_Rmd(Rmd_file, interactive = NULL, params = NULL, ...)
 
 confluence_document(
-  interactive = FALSE,
   title = NULL,
   space_key = NULL,
   parent_id = NULL,
@@ -17,7 +16,8 @@ confluence_document(
   toc_depth = 7,
   supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
   update = NULL,
-  use_original_size = FALSE
+  use_original_size = FALSE,
+  interactive = NULL
 )
 }
 \arguments{

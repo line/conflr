@@ -42,8 +42,7 @@
 #' @rdname confluence_document
 #'
 #' @export
-confluence_document <- function(interactive = FALSE,
-                                title = NULL,
+confluence_document <- function(title = NULL,
                                 # Use snake case for user-facing functions and use the actual API parameter name
                                 # in camel case for simple binding functions.
                                 space_key = NULL,
@@ -53,7 +52,8 @@ confluence_document <- function(interactive = FALSE,
                                 toc_depth = 7,
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
-                                use_original_size = FALSE) {
+                                use_original_size = FALSE,
+                                interactive = NULL) {
 
   type <- arg_match(type)
 
@@ -67,7 +67,8 @@ confluence_document <- function(interactive = FALSE,
     toc_depth = toc_depth,
     supported_syntax_highlighting = supported_syntax_highlighting,
     update = update,
-    use_original_size = use_original_size
+    use_original_size = use_original_size,
+    interactive = interactive
   )
 
   format <- rmarkdown::md_document(
@@ -130,11 +131,15 @@ confluence_document <- function(interactive = FALSE,
 
     # upload ------------------------------------------------------------------
 
-    if (interactive) {
+    if (confluence_settings$interactive) {
       # On some Confluence, the key of a personal space can be guessed from the username
       if (is.null(confluence_settings$space_key)) {
         confluence_settings$space_key <- try_get_personal_space_key(username)
       }
+
+      # Remove unused arguments
+      confluence_settings$update <- NULL
+      confluence_settings$interactive <- NULL
 
       exec(
         confl_upload_interactively,
@@ -149,8 +154,7 @@ confluence_document <- function(interactive = FALSE,
         !!! confluence_settings,
         html_text = html_text,
         imgs = imgs,
-        imgs_realpath = imgs_realpath,
-        interactive = interactive
+        imgs_realpath = imgs_realpath
       )
     }
 

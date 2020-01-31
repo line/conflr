@@ -36,6 +36,18 @@
 * `confl_create_post_from_Rmd()` now handles documents containing Confluence
   macro tags (i.e. `<ac:...>` or `<ri:...>`) properly (#76).
 
+* Add `confluence_document()`. Now you don't need to use addin but can just
+  specify this on the front-matter.
+  
+  ``` md
+  ---
+  title: "I love Confluence"
+  output:
+    conflr::confluence_document:
+	  space_key: "space1"
+  ---
+  ```
+
 # conflr 0.0.5
 
 * Initial release on GitHub

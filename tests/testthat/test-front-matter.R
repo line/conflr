@@ -9,16 +9,17 @@ expect_confluence_settings <- function(mock, ...) {
 
 Rmd_with_all_defaults <-
 'title: "title1"
-confluence_settings:
-  space_key: "space1"
-  parent_id: 1234
-  toc: true
-  toc_depth: 4
-  supported_syntax_highlighting:
-    r: r
-    foo: bar
-  update: true
-  use_original_size: true'
+output:
+  conflr::confluence_document:
+    space_key: "space1"
+    parent_id: 1234
+    toc: true
+    toc_depth: 4
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true'
 
 test_that("confluence_settings can be set from front-matter", {
 
@@ -61,17 +62,18 @@ test_that("confluence_settings can be set from front-matter", {
 
 Rmd_with_two_titles <-
 'title: "title1"
-confluence_settings:
-  title: "title2"
-  space_key: "space1"
-  parent_id: 1234
-  toc: TRUE
-  toc_depth: 4
-  supported_syntax_highlighting:
-    r: r
-    foo: bar
-  update: true
-  use_original_size: true'
+output:
+  conflr::confluence_document:
+    title: "title2"
+    space_key: "space1"
+    parent_id: 1234
+    toc: TRUE
+    toc_depth: 4
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true'
 
 test_that("confluence_settings$title is prior to title", {
 
@@ -112,8 +114,9 @@ test_that("confluence_settings$title is prior to title", {
 
 Rmd_with_some_settings <-
 'title: "title1"
-confluence_settings:
-  space_key: "space1"'
+output:
+  conflr::confluence_document:
+    space_key: "space1"'
 
 test_that("confluence_settings can be specified partially", {
 
@@ -149,12 +152,6 @@ Rmd_without_space_key <- 'title: "title1"'
 
 test_that("confluence_settings raise an error when any of mandatory parameters are missing", {
 
-  # case: when space_key is neither in the front-matter or in the arguments, it fails
-  confl_upload_mock <- mockery::mock(NULL)
-  expect_error(
-    do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key)
-  )
-
   # case: when space_key is not in the front-matter but in the arguments, it works
   confl_upload_mock <- mockery::mock(NULL)
   do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_without_space_key, space_key = "space2")
@@ -162,5 +159,39 @@ test_that("confluence_settings raise an error when any of mandatory parameters a
     confl_upload_mock,
     title = "title1",
     space_key = "space2"
+  )
+})
+
+Rmd_deprecated <-
+'title: "title1"
+confluence_settings:
+  space_key: "space1"
+  parent_id: 1234
+  toc: true
+  toc_depth: 4
+  supported_syntax_highlighting:
+    r: r
+    foo: bar
+  update: true
+  use_original_size: true'
+
+test_that("confluence_settings are accepted for backward-compatibility", {
+
+  # case: all settings are specified in the Rmd
+  confl_upload_mock <- mockery::mock(NULL)
+  expect_warning(
+    do_confl_create_post_from_Rmd(confl_upload_mock, Rmd_deprecated)
+  )
+
+  expect_confluence_settings(
+    confl_upload_mock,
+    title = "title1",
+    space_key = "space1",
+    parent_id = 1234,
+    toc = TRUE,
+    toc_depth = 4,
+    supported_syntax_highlighting = list(r = "r", foo = "bar"),
+    update = TRUE,
+    use_original_size = TRUE
   )
 })

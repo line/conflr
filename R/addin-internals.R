@@ -13,11 +13,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          toc = FALSE, toc_depth = 7,
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = NULL, use_original_size = FALSE,
-                         interactive = NULL, session = NULL) {
-  if (is.null(interactive)) {
-    interactive <- interactive()
-  }
-
+                         interactive = FALSE, session = NULL) {
   # check if there is an existing page
   existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
 
@@ -83,21 +79,6 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   # Step 2) Upload the document
   progress$set(message = "Uploading the document...")
 
-  if (toc) {
-    toc_html <- paste(
-      '<p>',
-      '  <ac:structured-macro ac:name="toc">',
-      glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
-      '  </ac:structured-macro>',
-      '</p>',
-      sep = "\n"
-    )
-
-    # html_text is already replaced <ac:...> and <ri:...>
-    toc_html <- mark_confluence_namespaces(toc_html)
-    html_text <- paste(toc_html, html_text, sep = "\n")
-  }
-
   html_text <- translate_to_confl_macro(
     html_text,
     image_size_default = if (!use_original_size) 600 else NULL,
@@ -106,6 +87,18 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
   # Restore <ac:...> and <ri:...> tags before actually posting to Confluence
   html_text <- restore_confluence_namespaces(html_text)
+
+  if (toc) {
+    toc_tag <- paste(
+      '<p>',
+      '  <ac:structured-macro ac:name="toc">',
+      glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
+      '  </ac:structured-macro>',
+      '</p>',
+      sep = "\n"
+    )
+    html_text <- paste(toc_tag, html_text, sep = "\n")
+  }
 
   result <- confl_update_page(
     id = id,
@@ -121,7 +114,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     shiny::stopApp()
   }
 
-  if (interactive) {
+  # Even on non-interactive sessions, jump to the URL if knitting is done on RStudio
+  if (interactive || identical(Sys.getenv("RSTUDIO"), "1")) {
     browseURL(paste0(result$`_links`$base, result$`_links`$webui))
   } else {
     message(paste0("Results at: ", results_url))

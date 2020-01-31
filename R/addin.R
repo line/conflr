@@ -35,7 +35,12 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
 
   # Get options on the front matter
   front_matter <- rmarkdown::yaml_front_matter(Rmd_file)
-  output_options <- front_matter$output$`conflr::confluence_document` %||% list()
+  if (is.list(front_matter$output) &&
+      has_name(front_matter$output, "conflr::confluence_document")) {
+    output_options <- front_matter$output$`conflr::confluence_document`
+  } else {
+    output_options <- list()
+  }
 
   # Override the options by those via arguments (title will be handled in post_processor())
   output_options <- purrr::list_modify(output_options, ..., interactive = interactive)
@@ -119,7 +124,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         toc = input$toc,
         toc_depth = input$toc_depth,
         supported_syntax_highlighting = supported_syntax_highlighting,
-        use_original_size = input$use_original_size
+        use_original_size = input$use_original_size,
+        interactive = TRUE
       )
 
       unset_password_if_special_envvar_is_set()

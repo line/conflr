@@ -109,6 +109,8 @@ confluence_document <- function(title = NULL,
       defaults <- purrr::map(formals(confluence_document), eval_bare)
       # type needs to be arg_match()ed, but let's shortcut.
       defaults$type <- "page"
+      # interactive is determined interactively
+      defaults$interactive <- interactive()
 
       confluence_settings <- purrr::list_modify(
         defaults,

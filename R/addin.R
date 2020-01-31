@@ -89,8 +89,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        use_original_size = FALSE) {
   type <- arg_match(type)
 
-  existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
-  id <- existing_pages$results[[1]]$id
+  id <- try_get_existing_page_id(title = title, space_key = space_key)
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(

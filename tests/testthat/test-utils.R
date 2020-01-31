@@ -60,3 +60,20 @@ test_that("confl_verb() asks for credentials if it is not set", {
   mockery::expect_called(mock_ask2, 1)
   mockery::expect_call(mock_ask2, n = 1, ask_confluence_url())
 })
+
+test_that("try_get_existing_page_id() works", {
+  with_mock(
+    "conflr::confl_list_pages" = function(...) list(size = 1, results = list(list(id = 1))),
+    {
+      expect_equal(try_get_existing_page_id("foo", "bar"), 1)
+    }
+  )
+
+  with_mock(
+    "conflr::confl_list_pages" = function(...) list(size = 0, results = list()),
+    {
+      expect_equal(try_get_existing_page_id("foo", "bar"), NULL)
+    }
+  )
+
+})

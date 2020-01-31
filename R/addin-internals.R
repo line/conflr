@@ -27,8 +27,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   if (is.null(id)) {
     # TODO: we check if there's an existing page twice; here and
     # confl_update_interactively(). Can we remove the duplication?
-    existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
-    id <- existing_pages$results[[1]]$id
+    id <- try_get_existing_page_id(title = title, space_key = space_key)
   }
 
   # If there's an existing page and the user don't want to update, abort
@@ -123,4 +122,12 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   }
 
   results_url
+}
+
+try_get_existing_page_id <- function(title, space_key) {
+  existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
+  if (length(existing_pages$results) == 0) {
+    return(NULL)
+  }
+  existing_pages$results[[1]]$id
 }

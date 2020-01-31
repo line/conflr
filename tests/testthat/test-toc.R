@@ -17,10 +17,10 @@ output:
 
   mock <- mockery::mock(NULL)
   with_mock(
-    "conflr::confl_list_pages" = function(...) list(size = 1, results = list(list(id = 1))),
     "conflr::confl_list_attachments" = function(...) list(results = list()),
     "conflr::confl_update_page" = mock,
     "conflr::confl_get_current_user" = function(...) list(username = "user"),
+    "conflr:::try_get_existing_page_id" = function(...) 1,
     "conflr:::try_get_personal_space_key" = should_not_be_called, {
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE, toc = TRUE)
     }
@@ -58,10 +58,10 @@ output:
 
   mock <- mockery::mock(NULL, cycle = TRUE)
   with_mock(
-    "conflr::confl_list_pages" = function(...) list(size = 1, results = list(list(id = 1))),
     "conflr::confl_list_attachments" = function(...) list(results = list()),
     "conflr::confl_update_page" = mock,
     "conflr::confl_get_current_user" = function(...) list(username = "user"),
+    "conflr:::try_get_existing_page_id" = function(...) 1,
     "conflr:::try_get_personal_space_key" = should_not_be_called, {
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE)
       confl_create_post_from_Rmd(tmp, interactive = FALSE, update = TRUE, toc = FALSE)

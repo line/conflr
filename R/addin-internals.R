@@ -13,11 +13,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          toc = FALSE, toc_depth = 7,
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = NULL, use_original_size = FALSE,
-                         interactive = NULL, session = NULL) {
-  if (is.null(interactive)) {
-    interactive <- interactive()
-  }
-
+                         interactive = FALSE, session = NULL) {
   # check if there is an existing page
   existing_pages <- confl_list_pages(title = title, spaceKey = space_key)
 

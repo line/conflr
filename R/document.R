@@ -54,6 +54,9 @@ confluence_document <- function(title = NULL,
                                 update = NULL,
                                 use_original_size = FALSE,
                                 interactive = NULL) {
+  if (is.null(interactive)) {
+    interactive <- interactive()
+  }
 
   type <- arg_match(type)
 

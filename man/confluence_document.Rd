@@ -52,8 +52,23 @@ params in the YAML front-matter.}
 Knit and post a given R Markdown file to 'Confluence'.
 }
 \details{
-\code{title}, \code{type}, \code{space_key}, \code{parent_id}, \code{toc}, \code{toc_depth}, \code{update}, and
-\code{use_original_size} can be specified as \code{confluence_settings} item in the
-front-matter of the Rmd file to knit. The arguments of
-\code{confl_create_post_from_Rmd()} overwrite these settings if provided.
+All options of \code{confluence_document()} can also be specified via the argument
+of \code{confl_create_post_from_Rmd}. If an option is specified on both, the one given
+as an argument will be used.\preformatted{---
+title: "title1"
+output:
+  confluence_document:
+    space_key: "space1"
+    parent_id: 1234
+    toc: TRUE
+    toc_depth: 4
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true
+---
+
+...
+}
 }

@@ -20,12 +20,12 @@ You can install conflr from GitHub.
 devtools::install_github("line/conflr")
 ```
 
-### Preparation
+## Preparation
 
 conflr uses these environmental variables to access your Confluence.
 
-  - `CONFLUENCE_URL`: The base URL of your Confluence. e.g.
-    `https://confluence.example.com` (On Atlassian Cloud,
+  - `CONFLUENCE_URL`: The base URL of your Confluence.
+    e.g. `https://confluence.example.com` (On Atlassian Cloud,
     `https://<your-domain>.atlassian.net/wiki`).
   - `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
     address).
@@ -36,12 +36,7 @@ conflr uses these environmental variables to access your Confluence.
 There are several ways to set these environmental variables. The
 quickest way is to enter in the popups that are displayed when you run
 the addin (see Usages section below). The inputs are cached in the
-environmental variables listed above by default. If you don’t want to
-cache the password, please set the following option.
-
-``` r
-options(conflr_addin_clear_password_after_success = TRUE)
-```
+environmental variables listed above by default.
 
 Another way is to set the variables in the `.Renviron` file (you can
 open the file with `usethis::edit_r_environ()`). For example, you can
@@ -49,9 +44,18 @@ set the base URL in the file as the following.
 
     CONFLUENCE_URL=https://confluence.example.com
 
-## Usage
+## Usages
 
-### 1\. Move focus to the .Rmd file and click “Post to Confluence” Addin
+conflr provides the following ways to post R Markdown documents to
+Confluence.
+
+1.  Use an RStudio Addin
+2.  Run `confl_create_post_from_Rmd()` on console
+3.  Specify `conflr::confluence_document` on the YAML front-matter
+
+### RStudio Addin
+
+#### 1\. Move focus to the .Rmd file and click “Post to Confluence” Addin
 
 (**Caution for those who are not familiar with R Markdown**: R
 Markdown’s powerfulness allows you to execute arbitrary code; be sure
@@ -65,19 +69,85 @@ Then, you will be asked your username and password.
 
 ![](man/figures/popup1.png)
 
-### 2\. Check the preview and click “Publish”
+#### 2\. Check the preview and click “Publish”
 
   - **type**: The type of the page (*page* means a normal wiki page,
     whereas *blogpost* mean a blog post, not a page).
   - **Space Key**: The key of the space you want to post.
   - **Parent page ID**: (optional): The ID of the parent page to the
     page.
+  - **Use original image sizes**: If checked, do not resize the images.
+  - **TOC**: If checked, add a Table of Contents.
+  - **TOC depth**: The lowest heading level to include in the Table of
+    Contents.
 
 ![](man/figures/screenshot3.png)
 
-### 3\. Check the result
+#### 3\. Check the result
 
 ![](man/figures/screenshot4.png)
+
+### `confl_create_post_from_Rmd()`
+
+If you don’t use RStudio, you can use `confl_create_post_from_Rmd()`.
+The basic usage is
+
+``` r
+confl_create_post_from_Rmd("~/path/to/your.Rmd")
+```
+
+#### Batch use
+
+If you want to use this function without interaction, specify
+`interactive = FALSE`. This skips any confirmations or previews.
+
+``` r
+confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE)
+```
+
+Note that, if you want to run this periodically, you also need to set
+`update = TRUE` to allow conflr to overwrite the existing page.
+
+``` r
+confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = TRUE)
+```
+
+### `conflr::conflence_document`
+
+conflr’s functionality is also available as a custom R Markdown format;
+You can sepcify `conflr::confluence_document` to `output` in the front
+matter of your R Markdown document.
+
+For example, if you set the following front matter, pressing `Knit`
+button on RStudio (or running `rmarkdown::render()`) will publish the R
+Markdown document to Confluence.
+
+``` md
+---
+title: "title1"
+output:
+  conflr::confluence_document:
+    space_key: "space1"
+    update: true
+---
+
+...
+```
+
+For the detail about available options, please refer to
+[`?confluence_document`](https://line.github.io/conflr/reference/confluence_document.html).
+
+## Options
+
+conflr recognizes these options:
+
+  - `conflr_supported_syntax_highlighting`: A character vector of
+    languages that your Confluence supports the syntax highlighting in
+    addition to the default languages (by default, `sql`, `cpp`,
+    `python`, `html`, `css`, `bash`, and `yaml` are supported).
+  - `conflr_addin_clear_password_after_success`: If `TRUE`, unset
+    `CONFLUENCE_PASSWORD` after the page is successfully uploaded via
+    addin.
 
 ## Know limitations
 
@@ -96,7 +166,12 @@ plotly. Instead, you can embed the screenshot by setting
 `screenshot.force = TRUE` in the chunk option (c.f.
 <https://bookdown.org/yihui/bookdown/html-widgets.html>).
 
-## Usage in console
+## Advanced Usages
+
+conflr is also a (non-complete) binding to [Confluence’s REST
+API](https://developer.atlassian.com/server/confluence/confluence-server-rest-api/).
+These low-level functions might be useful when you need to access to
+your Confluence programmatically.
 
 ``` r
 library(conflr)

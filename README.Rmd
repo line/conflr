@@ -46,7 +46,7 @@ CONFLUENCE_URL=https://confluence.example.com
 
 ## Usages
 
-conflr provides several ways to post R Markdown documents to Confluence.
+conflr provides the following ways to post R Markdown documents to Confluence.
 
 1. Use an RStudio Addin
 2. Run `confl_create_post_from_Rmd()` on console
@@ -83,7 +83,7 @@ Then, you will be asked your username and password.
 
 ### `confl_create_post_from_Rmd()`
 
-If you don't use RStudio, use `confl_create_post_from_Rmd()`, which is run inside the addin above.
+If you don't use RStudio, you can use `confl_create_post_from_Rmd()`.
 The basic usage is
 
 ``` r
@@ -99,33 +99,34 @@ This skips any confirmations or previews.
 confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE)
 ```
 
-Note that, if you want to run this periodically, you probably need to set `update = TRUE` to allow
+Note that, if you want to run this periodically, you also need to set `update = TRUE` to allow
 conflr to overwrite the existing page.
 
 ``` r
 confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = TRUE)
 ```
 
-### `conflence_document`
+### `conflr::conflence_document`
+
+conflr's functionality is also available as a custom R Markdown format;
+You can sepcify `conflr::confluence_document` to `output` in the front matter of your R Markdown document.
+
+For example, if you set the following front matter, pressing `Knit` button on RStudio
+(or running `rmarkdown::render()`) will publish the R Markdown document to Confluence.
 
 ``` md
 ---
 title: "title1"
 output:
-  confluence_document:
+  conflr::confluence_document:
     space_key: "space1"
-    parent_id: 1234
-    toc: TRUE
-    toc_depth: 4
-    supported_syntax_highlighting:
-      r: r
-      foo: bar
     update: true
-    use_original_size: true
 ---
 
 ...
 ```
+
+For the detail about available options, please refer to [`?confluence_document`](https://line.github.io/conflr/reference/confluence_document.html).
 
 ## Options
 

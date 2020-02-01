@@ -34,10 +34,28 @@
 #' @inheritParams confl_content
 #'
 #' @details
-#' `title`, `type`, `space_key`, `parent_id`, `toc`, `toc_depth`, `update`, and
-#' `use_original_size` can be specified as `confluence_settings` item in the
-#' front-matter of the Rmd file to knit. The arguments of
-#' `confl_create_post_from_Rmd()` overwrite these settings if provided.
+#' All options of `confluence_document()` can also be specified via the argument
+#' of `confl_create_post_from_Rmd`. If an option is specified on both, the one given
+#' as an argument will be used.
+#'
+#' ```
+#' ---
+#' title: "title1"
+#' output:
+#'   confluence_document:
+#'     space_key: "space1"
+#'     parent_id: 1234
+#'     toc: TRUE
+#'     toc_depth: 4
+#'     supported_syntax_highlighting:
+#'       r: r
+#'       foo: bar
+#'     update: true
+#'     use_original_size: true
+#' ---
+#'
+#' ...
+#' ```
 #'
 #' @rdname confluence_document
 #'

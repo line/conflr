@@ -226,7 +226,7 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
                                          width = "4em")
   code_folding_input <- shiny::checkboxInput(inputId = "code_folding",
                                              label = "Fold code blocks",
-                                             value = identical(code_folding, "hdie"))
+                                             value = identical(code_folding, "hide"))
 
   # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)

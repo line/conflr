@@ -150,7 +150,10 @@ replace_code_chunk <- function(x,
     lang_param <- glue::glue('  <ac:parameter ac:name="language">{lang}</ac:parameter>')
 
     # collapse
-    if (identical(code_folding, "hide")) {
+    if (identical(code_folding, "hide") &&
+        # do not collapse when the code block is of the result, which probably
+        # doesn't have language-* class.
+        isTRUE(startsWith(class, "language-"))) {
       collapse_param <- '\n  <ac:parameter ac:name="collapse">true</ac:parameter>'
     } else {
       collapse_param <- ""

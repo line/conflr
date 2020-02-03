@@ -50,7 +50,8 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
   # Knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
-    collapse = TRUE,
+    # If code_folding is enabled, do not collapse
+    collapse = !identical(output_options$code_folding, "hide"),
     comment = "#>"
   )
 

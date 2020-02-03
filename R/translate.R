@@ -44,7 +44,10 @@ normalise_supported_syntax_highlighting <- function(x) {
   x
 }
 
-translate_to_confl_macro <- function(html_text, image_size_default = 600, supported_syntax_highlighting = NULL) {
+translate_to_confl_macro <- function(html_text,
+                                     image_size_default = 600,
+                                     supported_syntax_highlighting = NULL,
+                                     code_folding = "none") {
   supported_syntax_highlighting <- normalise_supported_syntax_highlighting(supported_syntax_highlighting)
   supported_syntax_highlighting <- c(supported_syntax_highlighting, supported_syntax_highlighting_default)
 
@@ -68,7 +71,9 @@ translate_to_confl_macro <- function(html_text, image_size_default = 600, suppor
   html_text <- paste(as.character(html_contents), collapse = "\n")
 
   # replace syntax with macros
-  html_text <- replace_code_chunk(html_text, supported_syntax_highlighting = supported_syntax_highlighting)
+  html_text <- replace_code_chunk(html_text,
+                                  supported_syntax_highlighting = supported_syntax_highlighting,
+                                  code_folding = code_folding)
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
   html_text <- replace_image(html_text, image_size_default = image_size_default)

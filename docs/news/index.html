@@ -121,15 +121,12 @@
 <li><p><code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> gets <code>params</code> argument for parameterized R Markdown (<a href='https://github.com/line/conflr/issues/37'>#37</a>, <a href='https://github.com/ellisvalentiner'>@ellisvalentiner</a>).</p></li>
 <li><p>External images are now converted properly (<a href='https://github.com/line/conflr/issues/39'>#39</a>).</p></li>
 <li><p>Add an option <code>conflr_addin_clear_password_after_success</code> not to cache the password as envvars. (<a href='https://github.com/line/conflr/issues/41'>#41</a> and <a href='https://github.com/line/conflr/issues/48'>#48</a>, <a href='https://github.com/Curycu'>@Curycu</a>).</p></li>
-</ul>
-<p>" conflr now accepts <code>confluence_settings</code> front-matter, which is useful for automation (<a href='https://github.com/line/conflr/issues/44'>#44</a>, <a href='https://github.com/kazutan'>@kazutan</a>).</p>
-<ul>
 <li><p>A new function <code><a href="../reference/confl_contentbody.html">confl_contentbody_convert()</a></code> converts the Confluence-related formats by using the Confluence REST API (<a href='https://github.com/line/conflr/issues/58'>#58</a>).</p></li>
 <li><p><code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> gets <code>toc</code> and <code>toc_depth</code> argument. When <code>toc = TRUE</code>, TOC is added at the top of the document (<a href='https://github.com/line/conflr/issues/64'>#64</a>). The depth of the TOC can be specified via <code>toc_depth</code> argument (<a href='https://github.com/line/conflr/issues/67'>#67</a>).</p></li>
 <li><p><code><a href="../reference/confl_content.html">confl_post_page()</a></code> and <code><a href="../reference/confl_content.html">confl_update_page()</a></code> no longer translate the Confluence macros automatically. Accordingly, they lose <code>image_size_default</code> and <code>supported_syntax_highlighting</code> arguments (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
 <li><p><code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> now handles documents containing Confluence macro tags (i.e. <code>&lt;ac:...&gt;</code> or <code>&lt;ri:...&gt;</code>) properly (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
 <li>
-<p>Add <code><a href="../reference/confluence_document.html">confluence_document()</a></code>. Now you don’t need to use addin but can just specify this on the front-matter.</p>
+<p>Add <code><a href="../reference/confluence_document.html">confluence_document()</a></code>. Now you don’t need to use addin but can just specify this on the front-matter (<a href='https://github.com/line/conflr/issues/44'>#44</a>, <a href='https://github.com/kazutan'>@kazutan</a> / <a href='https://github.com/line/conflr/issues/80'>#80</a>).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb1-1" data-line-number="1">---</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">title: "I love Confluence"</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">output:</a>
@@ -137,6 +134,7 @@
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="bn">    space_key: "space1"</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">---</a></code></pre></div>
 </li>
+<li><p>conflr now supports code_folding (<a href='https://github.com/line/conflr/issues/81'>#81</a>).</p></li>
 </ul>
 </div>
     <div id="conflr-0-0-5" class="section level1">

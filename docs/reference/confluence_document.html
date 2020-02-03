@@ -126,6 +126,7 @@
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"page"</span>, <span class='st'>"blogpost"</span>),
   <span class='kw'>toc</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>toc_depth</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>code_folding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"hide"</span>),
   <span class='kw'>supported_syntax_highlighting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"conflr_supported_syntax_highlighting"</span>),
   <span class='kw'>update</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>use_original_size</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -177,6 +178,10 @@ params in the YAML front-matter.</p></td>
       <td><p>The max level of headers to include in the table of contents.</p></td>
     </tr>
     <tr>
+      <th>code_folding</th>
+      <td><p>If <code>"hide"</code>, fold code blocks by default.</p></td>
+    </tr>
+    <tr>
       <th>supported_syntax_highlighting</th>
       <td><p>A named character vector of supported syntax highlighting other than default (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(r = "r")</a></code>).</p></td>
     </tr>
@@ -192,10 +197,27 @@ params in the YAML front-matter.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>title</code>, <code>type</code>, <code>space_key</code>, <code>parent_id</code>, <code>toc</code>, <code>toc_depth</code>, <code>update</code>, and
-<code>use_original_size</code> can be specified as <code>confluence_settings</code> item in the
-front-matter of the Rmd file to knit. The arguments of
-<code>confl_create_post_from_Rmd()</code> overwrite these settings if provided.</p>
+    <p>All options of <code>confluence_document()</code> can also be specified via the argument
+of <code>confl_create_post_from_Rmd</code>. If an option is specified on both, the one given
+as an argument will be used.</p><pre>---
+title: "title1"
+output:
+  confluence_document:
+    space_key: "space1"
+    parent_id: 1234
+    toc: TRUE
+    toc_depth: 4
+    code_folding: hide
+    supported_syntax_highlighting:
+      r: r
+      foo: bar
+    update: true
+    use_original_size: true
+---
+
+...
+</pre>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

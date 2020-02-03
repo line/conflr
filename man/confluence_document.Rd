@@ -43,7 +43,7 @@ params in the YAML front-matter.}
 
 \item{toc_depth}{The max level of headers to include in the table of contents.}
 
-\item{code_folding}{If \code{"hide"}, collapse code blocks by default.}
+\item{code_folding}{If \code{"hide"}, fold code blocks by default.}
 
 \item{supported_syntax_highlighting}{A named character vector of supported syntax highlighting other than default (e.g. \code{c(r = "r")}).}
 

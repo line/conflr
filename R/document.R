@@ -25,7 +25,7 @@
 #' @param toc_depth
 #'   The max level of headers to include in the table of contents.
 #' @param code_folding
-#'   If `"hide"`, collapse code blocks by default.
+#'   If `"hide"`, fold code blocks by default.
 #' @param update
 #'   If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size

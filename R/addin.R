@@ -220,9 +220,12 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
 
   # add TOC or not
   toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
-  toc_depth_input <- shiny::numericInput(inputId = "toc_depth", label = "TOC depth", value = toc_depth)
+  toc_depth_input <- shiny::numericInput(inputId = "toc_depth",
+                                         label = "TOC depth",
+                                         value = toc_depth,
+                                         width = "4em")
   code_folding_input <- shiny::checkboxInput(inputId = "code_folding",
-                                             label = "Collapse code blocks",
+                                             label = "Fold code blocks",
                                              value = identical(code_folding, "hdie"))
 
   # Preview
@@ -237,10 +240,9 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
         wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
         wrap_with_column(use_original_size_input,
-                         toc_input,
-                         toc_depth_input,
-                         code_folding_input,
-                         width = 4)
+                         code_folding_input),
+        wrap_with_column(toc_input,
+                         toc_depth_input)
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),

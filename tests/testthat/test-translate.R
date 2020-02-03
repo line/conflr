@@ -76,6 +76,21 @@ test_that("replace_code_chunk() works", {
   )
 })
 
+test_that("replace_code_chunk() works with collapse specified", {
+  pre_tag <- '<pre>\n<code class="language-r">print(1)</code>  </pre>'
+  collapse_param <- '\n  <ac:parameter ac:name="collapse">true</ac:parameter>'
+
+  expected_tmpl <- '<ac:structured-macro ac:name="code">
+  <ac:parameter ac:name="language">none</ac:parameter>{collapse}
+  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
+</ac:structured-macro>'
+
+  expect_equal(replace_code_chunk(pre_tag, code_folding = "hide"),
+               as.character(glue::glue(expected_tmpl, collapse = collapse_param)))
+  expect_equal(replace_code_chunk(pre_tag, code_folding = "none"),
+               as.character(glue::glue(expected_tmpl, collapse = "")))
+})
+
 test_that("replace_inline_math() works", {
   x <- mark_inline_math("$\\frac{1}{3}$")
   expect_equal(x, "%1%D%O%L%L%A%R%\\frac{1}{3}%1%D%O%L%L%A%R%")

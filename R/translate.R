@@ -115,7 +115,9 @@ get_corresponding_lang <- function(x, supported_syntax_highlighting = character(
   }
 }
 
-replace_code_chunk <- function(x, supported_syntax_highlighting = character(0)) {
+replace_code_chunk <- function(x,
+                               supported_syntax_highlighting = character(0),
+                               code_folding = "none") {
   locs <- stringi::stri_locate_all_regex(
     x,
     "<pre>\\s*<code[^>]*>(.*?)</code>\\s*</pre>",
@@ -140,10 +142,18 @@ replace_code_chunk <- function(x, supported_syntax_highlighting = character(0)) 
     }
 
     lang <- get_corresponding_lang(lang, supported_syntax_highlighting)
+    lang_param <- glue::glue('  <ac:parameter ac:name="language">{lang}</ac:parameter>')
+
+    # collapse
+    if (identical(code_folding, "hide")) {
+      collapse_param <- '\n  <ac:parameter ac:name="collapse">true</ac:parameter>'
+    } else {
+      collapse_param <- ""
+    }
 
     stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
       '<ac:structured-macro ac:name="code">
-  <ac:parameter ac:name="language">{lang}</ac:parameter>
+{lang_param}{collapse_param}
   <ac:plain-text-body><![CDATA[{code_text}]]></ac:plain-text-body>
 </ac:structured-macro>'
     )

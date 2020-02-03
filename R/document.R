@@ -24,6 +24,8 @@
 #'   If `TRUE`, include a table of contents in the output.
 #' @param toc_depth
 #'   The max level of headers to include in the table of contents.
+#' @param code_folding
+#'   If `"hide"`, fold code blocks by default.
 #' @param update
 #'   If `TRUE`, overwrite the existing page (if it exists).
 #' @param use_original_size
@@ -47,6 +49,7 @@
 #'     parent_id: 1234
 #'     toc: TRUE
 #'     toc_depth: 4
+#'     code_folding: hide
 #'     supported_syntax_highlighting:
 #'       r: r
 #'       foo: bar
@@ -68,6 +71,7 @@ confluence_document <- function(title = NULL,
                                 type = c("page", "blogpost"),
                                 toc = FALSE,
                                 toc_depth = 7,
+                                code_folding = c("none", "hide"),
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
                                 use_original_size = FALSE,
@@ -77,6 +81,7 @@ confluence_document <- function(title = NULL,
   }
 
   type <- arg_match(type)
+  code_folding <- arg_match(code_folding)
 
   # This will be refered in post_processor()
   confluence_settings <- list(
@@ -86,6 +91,7 @@ confluence_document <- function(title = NULL,
     type = type,
     toc = toc,
     toc_depth = toc_depth,
+    code_folding = code_folding,
     supported_syntax_highlighting = supported_syntax_highlighting,
     update = update,
     use_original_size = use_original_size
@@ -128,6 +134,7 @@ confluence_document <- function(title = NULL,
       defaults <- purrr::map(formals(confluence_document), eval_bare)
       # type needs to be arg_match()ed, but let's shortcut.
       defaults$type <- "page"
+      defaults$code_folding <- "none"
 
       confluence_settings <- purrr::list_modify(
         defaults,

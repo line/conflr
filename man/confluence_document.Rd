@@ -14,6 +14,7 @@ confluence_document(
   type = c("page", "blogpost"),
   toc = FALSE,
   toc_depth = 7,
+  code_folding = c("none", "hide"),
   supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
   update = NULL,
   use_original_size = FALSE,
@@ -42,6 +43,8 @@ params in the YAML front-matter.}
 
 \item{toc_depth}{The max level of headers to include in the table of contents.}
 
+\item{code_folding}{If \code{"hide"}, fold code blocks by default.}
+
 \item{supported_syntax_highlighting}{A named character vector of supported syntax highlighting other than default (e.g. \code{c(r = "r")}).}
 
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
@@ -62,6 +65,7 @@ output:
     parent_id: 1234
     toc: TRUE
     toc_depth: 4
+    code_folding: hide
     supported_syntax_highlighting:
       r: r
       foo: bar

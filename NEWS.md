@@ -19,9 +19,6 @@
 * Add an option `conflr_addin_clear_password_after_success` not to cache the
   password as envvars. (#41 and #48, @Curycu).
 
-" conflr now accepts `confluence_settings` front-matter, which is useful for
-  automation (#44, @kazutan).
-
 * A new function `confl_contentbody_convert()` converts the Confluence-related
   formats by using the Confluence REST API (#58).
 
@@ -37,7 +34,7 @@
   macro tags (i.e. `<ac:...>` or `<ri:...>`) properly (#76).
 
 * Add `confluence_document()`. Now you don't need to use addin but can just
-  specify this on the front-matter.
+  specify this on the front-matter (#44, @kazutan / #80).
   
   ``` md
   ---
@@ -47,6 +44,8 @@
 	  space_key: "space1"
   ---
   ```
+
+* conflr now supports code_folding (#81).
 
 # conflr 0.0.5
 

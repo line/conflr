@@ -72,6 +72,7 @@ Then, you will be asked your username and password.
 * **Space Key**: The key of the space you want to post.
 * **Parent page ID**: (optional): The ID of the parent page to the page.
 * **Use original image sizes**: If checked, do not resize the images.
+* **Fold code blocks**: If checked, code blocks are folded by default. 
 * **TOC**: If checked, add a Table of Contents.
 * **TOC depth**: The lowest heading level to include in the Table of Contents.
 

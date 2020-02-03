@@ -104,6 +104,15 @@ confluence_document <- function(title = NULL,
     preserve_yaml = FALSE
   )
 
+  knitr::opts_chunk$set(
+    # NOTE: Usually, Confluence doesn't support syntax highlighting for R, which
+    # makes it harder to distinguish the code block and the result block. So,
+    # by default, collapse code and the result. But, if code_folding is enabled,
+    # do not collapse because folded code blocks can be easily distinguished.
+    collapse = !identical(confluence_settings$code_folding, "hide"),
+    comment = "#>"
+  )
+
   username <- NULL
 
   format$pre_knit <- function(input_file) {

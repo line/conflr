@@ -50,7 +50,10 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
   # Knit --------------------------------------------------------------------
 
   knitr::opts_chunk$set(
-    # If code_folding is enabled, do not collapse
+    # NOTE: Usually, Confluence doesn't support syntax highlighting for R, which
+    # makes it harder to distinguish the code block and the result block. So,
+    # by default, collapse code and the result. But, if code_folding is enabled,
+    # do not collapse because folded code blocks can be easily distinguished.
     collapse = !identical(output_options$code_folding, "hide"),
     comment = "#>"
   )

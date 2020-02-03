@@ -24,8 +24,8 @@ devtools::install_github("line/conflr")
 
 conflr uses these environmental variables to access your Confluence.
 
-  - `CONFLUENCE_URL`: The base URL of your Confluence.
-    e.g. `https://confluence.example.com` (On Atlassian Cloud,
+  - `CONFLUENCE_URL`: The base URL of your Confluence. e.g.
+    `https://confluence.example.com` (On Atlassian Cloud,
     `https://<your-domain>.atlassian.net/wiki`).
   - `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
     address).
@@ -51,7 +51,8 @@ Confluence.
 
 1.  Use an RStudio Addin
 2.  Run `confl_create_post_from_Rmd()` on console
-3.  Specify `conflr::confluence_document` on the YAML front-matter
+3.  Specify `conflr::confluence_document` on the YAML
+front-matter
 
 ### RStudio Addin
 
@@ -77,6 +78,7 @@ Then, you will be asked your username and password.
   - **Parent page ID**: (optional): The ID of the parent page to the
     page.
   - **Use original image sizes**: If checked, do not resize the images.
+  - **Fold code blocks**: If checked, code blocks are folded by default.
   - **TOC**: If checked, add a Table of Contents.
   - **TOC depth**: The lowest heading level to include in the Table of
     Contents.
@@ -106,7 +108,8 @@ confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE)
 ```
 
 Note that, if you want to run this periodically, you also need to set
-`update = TRUE` to allow conflr to overwrite the existing page.
+`update = TRUE` to allow conflr to overwrite the existing
+page.
 
 ``` r
 confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = TRUE)

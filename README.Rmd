@@ -110,7 +110,7 @@ confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = T
 ### `conflr::conflence_document`
 
 conflr's functionality is also available as a custom R Markdown format;
-You can sepcify `conflr::confluence_document` to `output` in the front matter of your R Markdown document.
+You can specify `conflr::confluence_document` to `output` in the front matter of your R Markdown document.
 
 For example, if you set the following front matter, pressing `Knit` button on RStudio
 (or running `rmarkdown::render()`) will publish the R Markdown document to Confluence.

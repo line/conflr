@@ -83,12 +83,11 @@ confl_create_post_from_Rmd_addin <- function() {
 confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        space_key = NULL,
                                        parent_id = NULL,
-                                       type = c("page", "blogpost"),
+                                       type = "page",
                                        toc = FALSE, toc_depth = 7,
+                                       code_folding = "none",
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
-  type <- arg_match(type)
-
   id <- try_get_existing_page_id(title = title, space_key = space_key)
 
   # Shiny UI -----------------------------------------------------------
@@ -102,6 +101,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     type = type,
     toc = toc,
     toc_depth = toc_depth,
+    code_folding = code_folding,
     use_original_size = use_original_size,
     # If there is already an existing page, confirm
     confirm = !is.null(id)
@@ -142,6 +142,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         session = session,
         toc = input$toc,
         toc_depth = input$toc_depth,
+        code_folding = if (input$code_folding) "hide" else "none",
         supported_syntax_highlighting = supported_syntax_highlighting,
         use_original_size = input$use_original_size,
         # Already confirmed
@@ -197,11 +198,10 @@ wrap_with_column <- function(..., width = 2) {
 #       it's not a feature frequently used and is a bit difficult to input
 #       via Shiny interface.
 confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
-                           space_key = NULL, parent_id = NULL, type = c("page", "blogpost"),
+                           space_key = NULL, parent_id = NULL, type = "page",
                            toc = FALSE, toc_depth = 7,
+                           code_folding = "none",
                            use_original_size = FALSE, confirm = TRUE) {
-  type <- arg_match(type)
-
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton(if (confirm) "confirm" else "done", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
@@ -221,6 +221,9 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
   # add TOC or not
   toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
   toc_depth_input <- shiny::numericInput(inputId = "toc_depth", label = "TOC depth", value = toc_depth)
+  code_folding_input <- shiny::checkboxInput(inputId = "code_folding",
+                                             label = "Collapse code blocks",
+                                             value = identical(code_folding, "hdie"))
 
   # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
@@ -233,7 +236,11 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
         wrap_with_column(type_input),
         wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
-        wrap_with_column(use_original_size_input, toc_input, toc_depth_input, width = 4)
+        wrap_with_column(use_original_size_input,
+                         toc_input,
+                         toc_depth_input,
+                         code_folding_input,
+                         width = 4)
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),

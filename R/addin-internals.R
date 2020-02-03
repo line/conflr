@@ -12,6 +12,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          imgs, imgs_realpath,
                          id = NULL,
                          toc = FALSE, toc_depth = 7,
+                         code_folding = "none",
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = FALSE,
                          use_original_size = FALSE,
@@ -82,7 +83,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   html_text <- translate_to_confl_macro(
     html_text,
     image_size_default = if (!use_original_size) 600 else NULL,
-    supported_syntax_highlighting = supported_syntax_highlighting
+    supported_syntax_highlighting = supported_syntax_highlighting,
+    code_folding = code_folding
   )
 
   # Restore <ac:...> and <ri:...> tags before actually posting to Confluence

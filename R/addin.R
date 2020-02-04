@@ -106,16 +106,18 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     done <- shiny::reactiveVal(FALSE)
 
     shiny::observeEvent(input$confirm, {
+      # if the space key is empty, tell the user to provide it and exit early
       if (identical(input$space_key, "")) {
         shiny::showModal(
           shiny::modalDialog("Please provide a space key!",
                              footer = shiny::modalButton("OK"))
         )
         return()
-      } else {
-        id <<- try_get_existing_page_id(title = title, space_key = input$space_key)
       }
 
+      id <<- try_get_existing_page_id(title = title, space_key = input$space_key)
+
+      # If there is already an existing page, confirm user
       if (!is.null(id)) {
         shiny::showModal(shiny::modalDialog(
           glue::glue(

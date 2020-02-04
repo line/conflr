@@ -33,7 +33,7 @@ test_that("embed_images() works for non-ASCII dir", {
   dir.create(tmp_dir)
   file.copy("plot1.png", file.path(tmp_dir, "plot1.png"))
 
-  md_text <- "# \u30c6\u30b9\u30c8\n![](%C3%B6/plot1.png)\n"
+  md_text <- "# test\n![](%C3%B6/plot1.png)\n"
   html_text <- commonmark::markdown_html(md_text)
   expected <- stringi::stri_replace_all_fixed(html_text, "%C3%B6/plot1.png", base64_img)
 

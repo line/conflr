@@ -18,7 +18,13 @@ collaboration tool by Atlassian.
 
 ## Installation
 
-You can install conflr from GitHub.
+Install conflr from CRAN with:
+
+``` r
+install.packages("conflr")
+```
+
+Alternatively, if you need the development version, install it with:
 
 ``` r
 # install.packages("devtools")

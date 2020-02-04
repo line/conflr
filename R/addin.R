@@ -110,7 +110,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
       if (identical(input$space_key, "")) {
         shiny::showModal(
           shiny::modalDialog("Please provide a space key!",
-                             footer = shiny::modalButton("OK"))
+            footer = shiny::modalButton("OK")
+          )
         )
         return()
       }
@@ -232,13 +233,17 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
 
   # add TOC or not
   toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
-  toc_depth_input <- shiny::numericInput(inputId = "toc_depth",
-                                         label = "TOC depth",
-                                         value = toc_depth,
-                                         width = "4em")
-  code_folding_input <- shiny::checkboxInput(inputId = "code_folding",
-                                             label = "Fold code blocks",
-                                             value = identical(code_folding, "hide"))
+  toc_depth_input <- shiny::numericInput(
+    inputId = "toc_depth",
+    label = "TOC depth",
+    value = toc_depth,
+    width = "4em"
+  )
+  code_folding_input <- shiny::checkboxInput(
+    inputId = "code_folding",
+    label = "Fold code blocks",
+    value = identical(code_folding, "hide")
+  )
 
   # Preview
   html_text_for_preview <- embed_images(html_text, imgs, imgs_realpath)
@@ -251,10 +256,14 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
         wrap_with_column(type_input),
         wrap_with_column(space_key_input),
         wrap_with_column(parent_id_input),
-        wrap_with_column(use_original_size_input,
-                         code_folding_input),
-        wrap_with_column(toc_input,
-                         toc_depth_input)
+        wrap_with_column(
+          use_original_size_input,
+          code_folding_input
+        ),
+        wrap_with_column(
+          toc_input,
+          toc_depth_input
+        )
       ),
       shiny::hr(),
       shiny::h1(title, align = "center"),

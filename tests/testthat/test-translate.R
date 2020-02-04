@@ -85,17 +85,25 @@ test_that("replace_code_chunk() works with collapse specified", {
   <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>
 </ac:structured-macro>'
 
-  expect_equal(replace_code_chunk(pre_tag, code_folding = "hide"),
-               as.character(glue::glue(expected_tmpl, collapse = collapse_param)))
-  expect_equal(replace_code_chunk(pre_tag, code_folding = "none"),
-               as.character(glue::glue(expected_tmpl, collapse = "")))
+  expect_equal(
+    replace_code_chunk(pre_tag, code_folding = "hide"),
+    as.character(glue::glue(expected_tmpl, collapse = collapse_param))
+  )
+  expect_equal(
+    replace_code_chunk(pre_tag, code_folding = "none"),
+    as.character(glue::glue(expected_tmpl, collapse = ""))
+  )
 
   # do not fold when the code block is of a result
   pre_tag_wo_lang <- '<pre>\n<code class="foo">print(1)</code>  </pre>'
-  expect_equal(replace_code_chunk(pre_tag_wo_lang, code_folding = "hide"),
-               as.character(glue::glue(expected_tmpl, collapse = "")))
-  expect_equal(replace_code_chunk(pre_tag_wo_lang, code_folding = "none"),
-               as.character(glue::glue(expected_tmpl, collapse = "")))
+  expect_equal(
+    replace_code_chunk(pre_tag_wo_lang, code_folding = "hide"),
+    as.character(glue::glue(expected_tmpl, collapse = ""))
+  )
+  expect_equal(
+    replace_code_chunk(pre_tag_wo_lang, code_folding = "none"),
+    as.character(glue::glue(expected_tmpl, collapse = ""))
+  )
 })
 
 test_that("replace_inline_math() works", {

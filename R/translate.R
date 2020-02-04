@@ -72,8 +72,9 @@ translate_to_confl_macro <- function(html_text,
 
   # replace syntax with macros
   html_text <- replace_code_chunk(html_text,
-                                  supported_syntax_highlighting = supported_syntax_highlighting,
-                                  code_folding = code_folding)
+    supported_syntax_highlighting = supported_syntax_highlighting,
+    code_folding = code_folding
+  )
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
   html_text <- replace_image(html_text, image_size_default = image_size_default)
@@ -151,9 +152,9 @@ replace_code_chunk <- function(x,
 
     # collapse
     if (identical(code_folding, "hide") &&
-        # do not collapse when the code block is of the result, which probably
-        # doesn't have language-* class.
-        isTRUE(startsWith(class, "language-"))) {
+      # do not collapse when the code block is of the result, which probably
+      # doesn't have language-* class.
+      isTRUE(startsWith(class, "language-"))) {
       collapse_param <- '\n  <ac:parameter ac:name="collapse">true</ac:parameter>'
     } else {
       collapse_param <- ""

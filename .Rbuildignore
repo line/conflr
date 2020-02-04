@@ -9,3 +9,4 @@
 ^CONTRIBUTING\.md$
 ^\.travis\.yml$
 ^\.drone\.yml$
+^cran-comments\.md$

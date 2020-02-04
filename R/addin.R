@@ -92,7 +92,6 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        code_folding = "none",
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
-  id <- try_get_existing_page_id(title = title, space_key = space_key)
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
@@ -106,33 +105,63 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     toc = toc,
     toc_depth = toc_depth,
     code_folding = code_folding,
-    use_original_size = use_original_size,
-    # If there is already an existing page, confirm
-    confirm = !is.null(id)
+    use_original_size = use_original_size
   )
+
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
+    id <- NULL
+
     shiny::observeEvent(input$confirm, {
-      shiny::showModal(shiny::modalDialog(
-        glue::glue(
-          "There is already an existing page named '{title}'.\n",
-          "Are you sure to overwrite it?"
-        ),
-        footer = shiny::tagList(
-          shiny::modalButton("Cancel"),
-          shiny::actionButton("done", "OK")
+      if (identical(input$space_key, "")) {
+        shiny::showModal(
+          shiny::modalDialog("Please provide a space key!",
+                             footer = shiny::modalButton("OK"))
         )
-      ))
+        return()
+      } else {
+        id <- try_get_existing_page_id(title = title, space_key = input$space_key)
+      }
+
+      if (!is.null(id)) {
+        shiny::showModal(shiny::modalDialog(
+          glue::glue(
+            "There is already an existing page named '{title}'.\n",
+            "Are you sure to overwrite it?"
+          ),
+          footer = shiny::tagList(
+            shiny::modalButton("Cancel"),
+            shiny::actionButton("done", "OK")
+          )
+        ))
+      } else {
+        # TOOD: needs to trigger input$done, but I don't know how to do it programatically...
+        confl_upload(
+          title = title,
+          html_text = html_text,
+          imgs = imgs,
+          imgs_realpath = imgs_realpath,
+          id = id,
+          space_key = input$space_key,
+          parent_id = input$parent_id,
+          type = input$type,
+          session = session,
+          toc = input$toc,
+          toc_depth = input$toc_depth,
+          code_folding = if (input$code_folding) "hide" else "none",
+          supported_syntax_highlighting = supported_syntax_highlighting,
+          use_original_size = input$use_original_size,
+          # Already confirmed
+          update = TRUE
+        )
+
+        unset_password_if_special_envvar_is_set()
+      }
     })
 
     shiny::observeEvent(input$done, {
       shiny::removeModal()
-
-      # TODO: this warning cannot be shown to users. Consider using shinyFeedback
-      shiny::validate(
-        shiny::need(input$space_key != "", "Please provide a space key")
-      )
 
       confl_upload(
         title = title,
@@ -205,9 +234,9 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
                            space_key = NULL, parent_id = NULL, type = "page",
                            toc = FALSE, toc_depth = 7,
                            code_folding = "none",
-                           use_original_size = FALSE, confirm = TRUE) {
+                           use_original_size = FALSE) {
   # title bar
-  title_bar_button <- miniUI::miniTitleBarButton(if (confirm) "confirm" else "done", "Publish", primary = TRUE)
+  title_bar_button <- miniUI::miniTitleBarButton("confirm", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
 
   # type (page or blogpost)

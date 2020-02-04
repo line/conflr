@@ -3,8 +3,13 @@
 
 # conflr
 
+<!-- badges: start -->
+
 [![Travis build
 status](https://travis-ci.org/line/conflr.svg?branch=master)](https://travis-ci.org/line/conflr)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/conflr)](https://CRAN.R-project.org/package=conflr)
+<!-- badges: end -->
 
 conflr is an R package to post [R
 Markdown](https://rmarkdown.rstudio.com/) documents to

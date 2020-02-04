@@ -103,6 +103,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
     id <- NULL
+    done <- shiny::reactiveVal(FALSE)
 
     shiny::observeEvent(input$confirm, {
       if (identical(input$space_key, "")) {
@@ -123,36 +124,21 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
           ),
           footer = shiny::tagList(
             shiny::modalButton("Cancel"),
-            shiny::actionButton("done", "OK")
+            shiny::actionButton("trigger_done", "OK")
           )
         ))
       } else {
-        # TOOD: needs to trigger input$done, but I don't know how to do it programatically...
-        confl_upload(
-          title = title,
-          html_text = html_text,
-          imgs = imgs,
-          imgs_realpath = imgs_realpath,
-          id = id,
-          space_key = input$space_key,
-          parent_id = input$parent_id,
-          type = input$type,
-          session = session,
-          toc = input$toc,
-          toc_depth = input$toc_depth,
-          code_folding = if (input$code_folding) "hide" else "none",
-          supported_syntax_highlighting = supported_syntax_highlighting,
-          use_original_size = input$use_original_size,
-          # Already confirmed
-          update = TRUE
-        )
-
-        unset_password_if_special_envvar_is_set()
+        done(TRUE)
       }
     })
 
-    shiny::observeEvent(input$done, {
+    shiny::observeEvent(input$trigger_done, {
       shiny::removeModal()
+      done(TRUE)
+    })
+
+    shiny::observe({
+      shiny::req(done())
 
       confl_upload(
         title = title,

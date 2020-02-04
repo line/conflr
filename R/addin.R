@@ -102,8 +102,6 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
-    id <- NULL
-
     shiny::observeEvent(input$confirm, {
       if (identical(input$space_key, "")) {
         shiny::showModal(

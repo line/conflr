@@ -102,6 +102,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
 
   # Shiny Server -------------------------------------------------------
   server <- function(input, output, session) {
+    id <- NULL
+
     shiny::observeEvent(input$confirm, {
       if (identical(input$space_key, "")) {
         shiny::showModal(
@@ -110,7 +112,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         )
         return()
       } else {
-        id <- try_get_existing_page_id(title = title, space_key = input$space_key)
+        id <<- try_get_existing_page_id(title = title, space_key = input$space_key)
       }
 
       if (!is.null(id)) {

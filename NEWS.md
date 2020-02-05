@@ -17,7 +17,7 @@
     title: "I love Confluence"
     output:
       conflr::confluence_document:
-      space_key: "space1"
+        space_key: "space1"
     ---
     ```
 

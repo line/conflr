@@ -172,8 +172,7 @@ confluence_document <- function(title = NULL,
     if (interactive) {
       # On some Confluence, the key of a personal space can be guessed from the username
       if (is.null(confluence_settings$space_key)) {
-        # FIXME: uncomment this after #78 gets merged
-        # confluence_settings$space_key <- try_get_personal_space_key(username)
+        confluence_settings$space_key <- try_get_personal_space_key(username)
       }
 
       # Remove unused arguments

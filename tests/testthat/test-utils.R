@@ -88,3 +88,7 @@ test_that("try_get_existing_page_id() works", {
     }
   )
 })
+
+test_that("try_get_personal_space_key() handles unknown personal spaces", {
+  expect_equal(try_get_personal_space_key("unknown"), NULL)
+})

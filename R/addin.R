@@ -193,14 +193,12 @@ extract_image_paths <- function(html_text) {
 try_get_personal_space_key <- function(username) {
   # check if the space really exists
   tryCatch(
-    space <- confl_get_space(spaceKey = paste0("~", username)),
+    confl_get_space(spaceKey = paste0("~", username))$key,
     error = function(e) {
       # Do not show even warnings because it's likely to happen as the keys of personal spaces are often numeric (#30).
-      return(NULL)
+      NULL
     }
   )
-
-  space$key
 }
 
 wrap_with_column <- function(..., width = 2) {

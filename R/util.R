@@ -85,3 +85,17 @@ embed_images <- function(html_text, imgs, imgs_realpath) {
 
   html_text
 }
+
+abort_if_null <- function(...) {
+  x <- quos(..., .named = TRUE)
+  nulls <- purrr::map_lgl(x, ~ is.null(eval_tidy(.)))
+  null_variables <- names(x)[nulls]
+
+  if (length(null_variables) == 0) {
+    return(invisible(NULL))
+  }
+
+  null_variables <- glue::glue("`{null_variables}`")
+  null_variables <- glue::glue_collapse(null_variables, sep = ", ", last = " and ")
+  abort(glue::glue("Please provide {null_variables}!"))
+}

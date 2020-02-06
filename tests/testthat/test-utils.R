@@ -104,3 +104,18 @@ test_that("try_get_personal_space_key() handles personal spaces", {
     }
   )
 })
+
+test_that("abort_if_null() works", {
+  expect_error(abort_if_null(x = NULL), "Please provide `x`!")
+  expect_error(abort_if_null(x = NULL, y = 1), "Please provide `x`!")
+  expect_error(abort_if_null(x = NULL, y = 1, z = NULL), "Please provide `x` and `z`!")
+  expect_silent(abort_if_null(x = 1, y = "a", z = NA))
+
+  x <- NULL
+  y <- 1
+  z <- NULL
+  expect_error(abort_if_null(x), "Please provide `x`!")
+  expect_error(abort_if_null(x, y, z), "Please provide `x` and `z`!")
+  expect_error(abort_if_null(x, y = NULL, z), "Please provide `x`, `y` and `z`!")
+  expect_silent(abort_if_null(x = 1, y = "a", z = NA))
+})

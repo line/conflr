@@ -91,7 +91,7 @@ test_that("try_get_existing_page_id() works", {
 
 test_that("try_get_personal_space_key() handles personal spaces", {
   with_mock(
-    "conflr::confl_get_space" = function(...) list(space = "space"),
+    "conflr::confl_get_space" = function(...) list(key = "space"),
     {
       expect_equal(try_get_personal_space_key("username"), "space")
     }

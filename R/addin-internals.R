@@ -17,6 +17,11 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          update = FALSE,
                          use_original_size = FALSE,
                          session = NULL) {
+  # TODO: NULL arguments should be `compact()`ed in confluence_document(),
+  # but it's not possible to provide a backward-compatibility for
+  # confluence_settings. So we need to detect the NULL here.
+  abort_if_null(title, space_key, type)
+
   # 1) id is NULL,                     update is TRUE : proceed
   # 2) id is NULL,                     update is FALSE: proceed
   # 3) id is NULL but the page exists, update is TRUE : proceed

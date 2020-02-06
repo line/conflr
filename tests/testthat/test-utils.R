@@ -89,6 +89,18 @@ test_that("try_get_existing_page_id() works", {
   )
 })
 
-test_that("try_get_personal_space_key() handles unknown personal spaces", {
-  expect_equal(try_get_personal_space_key("unknown"), NULL)
+test_that("try_get_personal_space_key() handles personal spaces", {
+  with_mock(
+    "conflr::confl_get_space" = function(...) list(key = "space"),
+    {
+      expect_equal(try_get_personal_space_key("username"), "space")
+    }
+  )
+
+  with_mock(
+    "conflr::confl_get_space" = function(...) abort(),
+    {
+      expect_equal(try_get_personal_space_key("unknown"), NULL)
+    }
+  )
 })

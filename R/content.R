@@ -28,6 +28,23 @@
 #'
 #' @seealso <https://docs.atlassian.com/ConfluenceServer/rest/latest/>
 #'
+#' @examples
+#' \dontrun{
+#' # Create a page titled "title1" on a space named "space1"
+#' result <- confl_post_page(
+#'   type = "page",
+#'   spaceKey = "space1",
+#'   title = "title1",
+#'   body = "<h2>example</h2><p>This is example</p>"
+#' )
+#'
+#' # Jump to the result page
+#' browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+#'
+#' # List pages under space "space1" up to 10 pages
+#' confl_list_pages(spaceKey = "space1")
+#' }
+#'
 #' @export
 confl_list_pages <- function(type = c("page", "blogpost", "comment", "attachment"),
                              limit = 10,

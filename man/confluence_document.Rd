@@ -76,3 +76,20 @@ output:
 ...
 }
 }
+\examples{
+\dontrun{
+# Convert an R Markdown document into a 'Confluence' page interactively
+confl_create_post_from_Rmd("path/to/file.Rmd")
+
+# You can override most of the parameters of confluence_document()
+confl_create_post_from_Rmd("path/to/file.Rmd", space = "space1", toc = TRUE)
+}
+
+# A custom R markdown format that can be passed to rmarkdown::render()
+format <- confluence_document(space_key = "space1")
+
+\dontrun{
+rmarkdown::render("path/to/file.Rmd", output.format)
+}
+
+}

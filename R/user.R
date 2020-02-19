@@ -17,6 +17,19 @@
 #' @param username
 #'   Username of the user to request from this resource.
 #' @inheritParams confl_content
+#'
+#' @examples
+#' \dontrun{
+#' # Get the information of the current user
+#' my_user <- confl_get_current_user()
+#'
+#' # Show display name
+#' my_user$displayName
+#'
+#' # Get the information of a user whose name is "user1"
+#' other_user <- confl_get_user(username = "user1")
+#' }
+#'
 #' @export
 confl_get_user <- function(key = NULL, username = NULL, expand = NULL) {
   query <- list(key = key, username = username, expand = expand)

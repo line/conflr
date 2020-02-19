@@ -15,6 +15,15 @@
 #'
 #' @rdname confluence_document
 #'
+#' @examples
+#' \dontrun{
+#' # Convert an R Markdown document into a 'Confluence' page interactively
+#' confl_create_post_from_Rmd("path/to/file.Rmd")
+#'
+#' # You can override most of the parameters of confluence_document()
+#' confl_create_post_from_Rmd("path/to/file.Rmd", space = "space1", toc = TRUE)
+#' }
+#'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NULL, ...) {
 

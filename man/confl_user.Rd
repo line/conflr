@@ -21,3 +21,16 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 \description{
 Non-admin User Operations
 }
+\examples{
+\dontrun{
+# Get the information of the current user
+my_user <- confl_get_current_user()
+
+# Show display name
+my_user$displayName
+
+# Get the information of a user whose name is "user1"
+other_user <- confl_get_user(username = "user1")
+}
+
+}

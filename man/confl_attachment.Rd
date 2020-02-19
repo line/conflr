@@ -46,3 +46,14 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 \description{
 CRUD Operations for Attachments on Content
 }
+\examples{
+\dontrun{
+# Upload an image to a page whose ID is "123"
+confl_post_attachment("123", "path/to/image.png")
+
+# Confirm the page has an attachment "image.png"
+result <- confl_list_attachments("123", filename = "image.png")
+length(result$results) # should be 1
+}
+
+}

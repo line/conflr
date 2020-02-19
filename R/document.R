@@ -62,6 +62,14 @@
 #'
 #' @rdname confluence_document
 #'
+#' @examples
+#' # A custom R markdown format that can be passed to rmarkdown::render()
+#' format <- confluence_document(space_key = "space1")
+#'
+#' \dontrun{
+#' rmarkdown::render("path/to/file.Rmd", output.format)
+#' }
+#'
 #' @export
 confluence_document <- function(title = NULL,
                                 # Use snake case for user-facing functions and use the actual API parameter name

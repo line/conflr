@@ -40,3 +40,10 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 \description{
 REST Wrapper for the SpaceService
 }
+\examples{
+\dontrun{
+# Get the information of a space named "space1"
+confl_get_space("space1")
+}
+
+}

@@ -19,6 +19,17 @@
 #' @param mediaType
 #'   Filter parameter to return only Attachments with a matching Media-Type. Optional.
 #' @inheritParams confl_content
+#'
+#' @examples
+#' \dontrun{
+#' # Upload an image to a page whose ID is "123"
+#' confl_post_attachment("123", "path/to/image.png")
+#'
+#' # Confirm the page has an attachment "image.png"
+#' result <- confl_list_attachments("123", filename = "image.png")
+#' length(result$results) # should be 1
+#' }
+#'
 #' @export
 confl_list_attachments <- function(id,
                                    filename = NULL,

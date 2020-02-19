@@ -21,6 +21,16 @@ confl_contentbody_convert(
 \description{
 Converts between content body representations
 }
+\examples{
+\dontrun{
+# Convert to a Math macro
+confl_contentbody_convert("\\\\[1+1=2\\\\]")
+
+# Convert to an Expand macro
+confl_contentbody_convert("\{expand\}detail is here \{expand\}")
+}
+
+}
 \seealso{
 \url{https://docs.atlassian.com/ConfluenceServer/rest/latest/}
 }

@@ -1,6 +1,6 @@
 Package: conflr
 Type: Package
-Title: R Client for 'Confluence' API
+Title: Client for 'Confluence' API
 Version: 0.1.0
 Authors@R: c(
     person("Hiroaki", "Yutani", email = "hiroaki.yutani@linecorp.com", role = c("aut", "cre")),

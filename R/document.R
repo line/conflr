@@ -186,7 +186,7 @@ confluence_document <- function(title = NULL,
       # Remove unused arguments
       confluence_settings$update <- NULL
 
-      exec(
+      result_url <- exec(
         confl_upload_interactively,
         !!!confluence_settings,
         html_text = html_text,
@@ -194,7 +194,7 @@ confluence_document <- function(title = NULL,
         imgs_realpath = imgs_realpath
       )
     } else {
-      exec(
+      result_url <- exec(
         confl_upload,
         !!!confluence_settings,
         html_text = html_text,
@@ -202,6 +202,8 @@ confluence_document <- function(title = NULL,
         imgs_realpath = imgs_realpath
       )
     }
+
+    cat(result_url, file = paste0(output_file, "_result_url"))
 
     output_file
   }

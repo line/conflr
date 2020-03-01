@@ -49,7 +49,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
 
   # Knit --------------------------------------------------------------------
 
-  rmarkdown::render(
+  output_file <- rmarkdown::render(
     input = Rmd_file,
     output_format = output_format,
     encoding = "UTF-8",
@@ -59,6 +59,9 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
     #   assignInNamespace("cedta.pkgEvalsUserCode", c(data.table:::cedta.pkgEvalsUserCode, "conflr"), "data.table")
     env = globalenv()
   )
+
+  # Read the result URL (ignore warning of "incomplete final line")
+  readLines(paste0(output_file, "_result_url"), warn = FALSE)
 }
 
 confl_create_post_from_Rmd_addin <- function() {
@@ -83,6 +86,9 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        code_folding = "none",
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                        use_original_size = FALSE) {
+
+  # This will be assigned in Shiny's server function
+  result_url <- NULL
 
   # Shiny UI -----------------------------------------------------------
   ui <- confl_addin_ui(
@@ -143,7 +149,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     shiny::observe({
       shiny::req(done())
 
-      confl_upload(
+      result_url <<- confl_upload(
         title = title,
         html_text = html_text,
         imgs = imgs,
@@ -168,6 +174,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
 
   viewer <- shiny::dialogViewer("Preview", width = 1000, height = 800)
   shiny::runGadget(ui, server, viewer = viewer)
+
+  result_url
 }
 
 # if the user doesn't want to store the password as envvar, clear it.

@@ -112,7 +112,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     title = title,
     body = html_text
   )
-  results_url <- paste0(result$`_links`$base, result$`_links`$webui)
+  result_url <- paste0(result$`_links`$base, result$`_links`$webui)
 
   progress$set(value = 2, message = "Done!")
   Sys.sleep(2)
@@ -124,12 +124,12 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   # Even on non-interactive sessions, jump to the URL if knitting is done on RStudio
   if (interactive() ||
     (identical(Sys.getenv("RSTUDIO"), "1") && identical(Sys.getenv("TESTTHAT"), ""))) {
-    browseURL(paste0(result$`_links`$base, result$`_links`$webui))
+    browseURL(result_url)
   } else {
-    message(paste0("Results at: ", results_url))
+    message(paste0("Results at: ", result_url))
   }
 
-  results_url
+  result_url
 }
 
 try_get_existing_page_id <- function(title, space_key) {

@@ -60,8 +60,8 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
     env = globalenv()
   )
 
-  # Read the result URL
-  readLines(paste0(output_file, "_result_url"))
+  # Read the result URL (ignore warning of "incomplete final line")
+  readLines(paste0(output_file, "_result_url"), warn = FALSE)
 }
 
 confl_create_post_from_Rmd_addin <- function() {

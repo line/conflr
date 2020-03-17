@@ -18,6 +18,22 @@ confl_get_current_user(expand = NULL)
 \item{expand}{A comma separated list of properties to expand. To refer the nested
 contents, use periods. (e.g. \verb{body.storage,history}).}
 }
+\value{
+The API response as a list.
+}
 \description{
 Non-admin User Operations
+}
+\examples{
+\dontrun{
+# Get the information of the current user
+my_user <- confl_get_current_user()
+
+# Show display name
+my_user$displayName
+
+# Get the information of a user whose name is "user1"
+other_user <- confl_get_user(username = "user1")
+}
+
 }

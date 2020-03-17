@@ -23,6 +23,16 @@
 #' @param favourite
 #'   Filter the list of spaces returned by favourites.
 #' @inheritParams confl_content
+#'
+#' @return
+#'   The API response as a list.
+#'
+#' @examples
+#' \dontrun{
+#' # Get the information of a space named "space1"
+#' confl_get_space("space1")
+#' }
+#'
 #' @export
 confl_list_spaces <- function(spaceKey = NULL,
                               type = c("global", "personal"),

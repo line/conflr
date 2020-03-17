@@ -43,6 +43,24 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{...}{Other arguments passed to 'query'.}
 }
+\value{
+The API response as a list.
+}
 \description{
 CRUD Operations for Attachments on Content
+}
+\examples{
+\dontrun{
+# Create a dummy text file
+tmp_txt <- tempfile(fileext = ".txt")
+cat("foo", file = tmp_txt)
+
+# Upload the file to a page whose ID is "123"
+confl_post_attachment("123", tmp_txt)
+
+# Confirm the file is attatched to the page
+result <- confl_list_attachments("123", filename = basename(tmp_txt))
+length(result$results) # should be 1
+}
+
 }

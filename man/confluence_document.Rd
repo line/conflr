@@ -51,6 +51,11 @@ params in the YAML front-matter.}
 
 \item{use_original_size}{If \code{TRUE}, use the original image sizes.}
 }
+\value{
+\code{confl_create_post_from_Rmd()} returns the URL of the published page.
+
+\code{confluence_document()} returns an \code{rmarkdown_output_format} object.
+}
 \description{
 Knit and post a given R Markdown file to 'Confluence'.
 }
@@ -75,4 +80,22 @@ output:
 
 ...
 }
+}
+\examples{
+example_Rmd <- system.file("extdata/example.Rmd", package = "conflr")
+
+\dontrun{
+# Convert an R Markdown document into a 'Confluence' page interactively
+confl_create_post_from_Rmd(example_Rmd)
+
+# You can override most of the parameters of confluence_document()
+confl_create_post_from_Rmd(example_Rmd, space = "space1", toc = TRUE)
+}
+
+\dontrun{
+# A custom R markdown format that can be passed to rmarkdown::render()
+format <- confluence_document(space_key = "space1")
+rmarkdown::render(system.file("extdata/example.Rmd", package = "conflr"), format)
+}
+
 }

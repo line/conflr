@@ -1,0 +1,38 @@
+---
+title: "Conflr Example"
+output: 
+  conflr::confluence_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simple example
+
+You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure}
+plot(pressure)
+```
+
+## Tables
+
+```{r table}
+knitr::kable(head(iris))
+```
+
+## Math
+
+$$
+2 + 2 = 5
+$$

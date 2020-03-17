@@ -212,7 +212,7 @@ new_page$`_links`
 
 ## How to contribute
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/line/conflr/blob/master/CONTRIBUTING.md)
 
 ## License
 
@@ -230,4 +230,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-See [LICENSE.md](LICENSE.md) for more detail.
+See [LICENSE.md](https://github.com/line/conflr/blob/master/LICENSE.md) for more detail.

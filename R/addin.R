@@ -8,12 +8,29 @@
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
-#' @param Rmd_file Path to an .Rmd file.
-#' @param params If provided, a list of named parameters that override custom
+#' @param Rmd_file
+#'   Path to an .Rmd file.
+#' @param params
+#'   If provided, a list of named parameters that override custom
 #'   params in the YAML front-matter.
-#' @param ... Arguments passed to `confluence_documents()`.
+#' @param ...
+#'   Arguments passed to `confluence_documents()`.
+#'
+#' @return
+#'   `confl_create_post_from_Rmd()` returns the URL of the published page.
 #'
 #' @rdname confluence_document
+#'
+#' @examples
+#' example_Rmd <- system.file("extdata/example.Rmd", package = "conflr")
+#'
+#' \dontrun{
+#' # Convert an R Markdown document into a 'Confluence' page interactively
+#' confl_create_post_from_Rmd(example_Rmd)
+#'
+#' # You can override most of the parameters of confluence_document()
+#' confl_create_post_from_Rmd(example_Rmd, space = "space1", toc = TRUE)
+#' }
 #'
 #' @export
 confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NULL, ...) {

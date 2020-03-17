@@ -1,3 +1,5 @@
+# conflr (development version)
+
 # conflr 0.1.0
 
 * First CRAN release.

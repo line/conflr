@@ -6,7 +6,10 @@
 \alias{conflr-package}
 \title{R Client for 'Confluence' API}
 \description{
-Post R Markdown documents as 'Confluence' pages via its API.
+Provides utilities for working with various 'Confluence' API 
+    <https://docs.atlassian.com/ConfluenceServer/rest/latest/>, including a
+    functionality to convert an R Markdown document to 'Confluence' format and
+    upload it to 'Confluence' automatically.
 }
 \seealso{
 Useful links:

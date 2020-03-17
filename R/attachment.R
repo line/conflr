@@ -19,6 +19,24 @@
 #' @param mediaType
 #'   Filter parameter to return only Attachments with a matching Media-Type. Optional.
 #' @inheritParams confl_content
+#'
+#' @return
+#'   The API response as a list.
+#'
+#' @examples
+#' \dontrun{
+#' # Create a dummy text file
+#' tmp_txt <- tempfile(fileext = ".txt")
+#' cat("foo", file = tmp_txt)
+#'
+#' # Upload the file to a page whose ID is "123"
+#' confl_post_attachment("123", tmp_txt)
+#'
+#' # Confirm the file is attatched to the page
+#' result <- confl_list_attachments("123", filename = basename(tmp_txt))
+#' length(result$results) # should be 1
+#' }
+#'
 #' @export
 confl_list_attachments <- function(id,
                                    filename = NULL,

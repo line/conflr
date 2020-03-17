@@ -37,6 +37,16 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{limit}{The limit of the number of items to return, this may be restricted by fixed system limits.}
 }
+\value{
+The API response as a list.
+}
 \description{
 REST Wrapper for the SpaceService
+}
+\examples{
+\dontrun{
+# Get the information of a space named "space1"
+confl_get_space("space1")
+}
+
 }

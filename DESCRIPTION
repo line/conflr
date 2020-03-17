@@ -1,12 +1,15 @@
 Package: conflr
 Type: Package
-Title: R Client for 'Confluence' API
-Version: 0.0.5.9000
+Title: Client for 'Confluence' API
+Version: 0.1.0
 Authors@R: c(
     person("Hiroaki", "Yutani", email = "hiroaki.yutani@linecorp.com", role = c("aut", "cre")),
     person(family = "LINE Corporation", role = c("cph"))
     )
-Description: Post R Markdown documents as 'Confluence' pages via its API.
+Description: Provides utilities for working with various 'Confluence' API 
+    <https://docs.atlassian.com/ConfluenceServer/rest/latest/>, including a
+    functionality to convert an R Markdown document to 'Confluence' format and
+    upload it to 'Confluence' automatically.
 URL: https://line.github.io/conflr/, https://github.com/line/conflr
 BugReports: https://github.com/line/conflr/issues
 License: GPL-3

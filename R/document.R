@@ -33,6 +33,9 @@
 #' @param supported_syntax_highlighting
 #'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
 #'
+#' @return
+#'   `confluence_document()` returns an `rmarkdown_output_format` object.
+#'
 #' @inheritParams confl_content
 #'
 #' @details
@@ -61,6 +64,13 @@
 #' ```
 #'
 #' @rdname confluence_document
+#'
+#' @examples
+#' \dontrun{
+#' # A custom R markdown format that can be passed to rmarkdown::render()
+#' format <- confluence_document(space_key = "space1")
+#' rmarkdown::render(system.file("extdata/example.Rmd", package = "conflr"), format)
+#' }
 #'
 #' @export
 confluence_document <- function(title = NULL,

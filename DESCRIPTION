@@ -11,7 +11,7 @@ Description: Provides utilities for working with various 'Confluence' API
     functionality to convert an R Markdown document to 'Confluence' format and
     upload it to 'Confluence' automatically.
 URL: https://line.github.io/conflr/, https://github.com/line/conflr
-SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
+SystemRequirements: pandoc (>= 1.12.3) - https://pandoc.org
 BugReports: https://github.com/line/conflr/issues
 License: GPL-3
 Encoding: UTF-8

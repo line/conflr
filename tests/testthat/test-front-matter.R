@@ -32,6 +32,7 @@ output:
     use_original_size: true'
 
 test_that("confluence_settings can be set from front-matter", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
 
   # case: all settings are specified in the Rmd
   confl_upload_mock <- mockery::mock(NULL)
@@ -86,6 +87,7 @@ output:
     use_original_size: true'
 
 test_that("confluence_settings$title is prior to title", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
 
   # case: confluence_settings$title is prior to title
   confl_upload_mock <- mockery::mock(NULL)
@@ -129,6 +131,7 @@ output:
     space_key: "space1"'
 
 test_that("confluence_settings can be specified partially", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
 
   # case: confluence_settings$title is prior to title
   confl_upload_mock <- mockery::mock(NULL)
@@ -142,6 +145,7 @@ test_that("confluence_settings can be specified partially", {
 })
 
 test_that("supported_syntax_highlighting can be set via option", {
+  skip_if_not(rmarkdown::pandoc_available())
 
   # case: confluence_settings$title is prior to title
   confl_upload_mock <- mockery::mock(NULL)
@@ -161,6 +165,7 @@ test_that("supported_syntax_highlighting can be set via option", {
 Rmd_without_space_key <- 'title: "title1"'
 
 test_that("confluence_settings raise an error when any of mandatory parameters are missing", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
 
   # case: when space_key is not in the front-matter but in the arguments, it works
   confl_upload_mock <- mockery::mock(NULL)
@@ -186,6 +191,7 @@ confluence_settings:
   use_original_size: true'
 
 test_that("confluence_settings are accepted for backward-compatibility", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
 
   # case: all settings are specified in the Rmd
   confl_upload_mock <- mockery::mock(NULL)

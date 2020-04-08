@@ -9,6 +9,8 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 test_that("rmarkdown::render() works when no space_key", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
+
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp))
 
@@ -41,6 +43,8 @@ output:
 
 
 test_that("rmarkdown::render() aborts when no space_key", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
+
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp))
 

@@ -9,6 +9,8 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 test_that("TOC is added when set via argument", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
+
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp))
 
@@ -51,6 +53,8 @@ output:
 })
 
 test_that("TOC is added when set via front-matter", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
+
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp))
 

@@ -9,6 +9,8 @@
 # A PARTICULAR PURPOSE. See <http://www.gnu.org/licenses/> for more details.
 
 test_that("confluence_document() stops early", {
+  skip_if_not(rmarkdown::pandoc_available("1.12.3"))
+
   tmp <- tempfile(fileext = ".Rmd")
   on.exit(unlink(tmp), add = TRUE)
   writeLines(c("---", "title: title1", "---\n", "test"), tmp, sep = "\n")

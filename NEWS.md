@@ -1,3 +1,5 @@
+# conflr (development version)
+
 # conflr 0.1.1
 
 * A maintainance relase to fix errors on CRAN check.

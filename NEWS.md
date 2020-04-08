@@ -1,4 +1,4 @@
-# conflr (development version)
+# conflr 0.1.1
 
 # conflr 0.1.0
 

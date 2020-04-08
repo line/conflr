@@ -1,5 +1,7 @@
 # conflr 0.1.1
 
+* A maintainance relase to fix errors on CRAN check.
+
 # conflr 0.1.0
 
 * First CRAN release.

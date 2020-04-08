@@ -8,6 +8,6 @@
 
 0 errors | 0 warnings | 0 note
 
-* This is a maintainance release to fix the error on CRAN checks:
+* This is a maintainance release to fix the errors on CRAN checks:
     * Add pandoc to SystemRequirements on DESCRIPTION.
     * Skip tests when pandoc is not available.

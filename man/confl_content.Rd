@@ -28,7 +28,7 @@ confl_post_page(
   ancestors = NULL
 )
 
-confl_update_page(id, title, body)
+confl_update_page(id, title, body, minor_edit = FALSE)
 
 confl_delete_page(id)
 }

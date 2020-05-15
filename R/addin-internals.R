@@ -16,6 +16,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = FALSE,
                          use_original_size = FALSE,
+                         minor_edit = FALSE,
                          session = NULL) {
   # TODO: NULL arguments should be `compact()`ed in confluence_document(),
   # but it's not possible to provide a backward-compatibility for
@@ -110,7 +111,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   result <- confl_update_page(
     id = id,
     title = title,
-    body = html_text
+    body = html_text,
+    minor_edit = minor_edit
   )
   result_url <- paste0(result$`_links`$base, result$`_links`$webui)
 

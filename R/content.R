@@ -104,6 +104,8 @@ confl_post_page <- function(type = c("page", "blogpost"),
 }
 
 #' @rdname confl_content
+#' @param minor_edit
+#'   If `TRUE`, will mark the `update` as a minor edit not notifying watchers.
 #' @export
 confl_update_page <- function(id,
                               title,

@@ -51,6 +51,8 @@ contents, use periods. (e.g. \verb{body.storage,history}).}
 \item{body}{The HTML source of the page.}
 
 \item{ancestors}{The page ID of the parent pages.}
+
+\item{minor_edit}{If \code{TRUE}, will mark the \code{update} as a minor edit not notifying watchers.}
 }
 \value{
 The API response as a list.

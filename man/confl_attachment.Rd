@@ -17,11 +17,11 @@ confl_list_attachments(
   expand = NULL
 )
 
-confl_post_attachment(id, path)
+confl_post_attachment(id, path, minor_edit = FALSE)
 
 confl_update_attachment_metadata(id, attachmentId, ...)
 
-confl_update_attachment_data(id, attachmentId, path, ...)
+confl_update_attachment_data(id, attachmentId, path, ..., minor_edit = FALSE)
 }
 \arguments{
 \item{id}{The ID of a page that attachments belong to.}
@@ -38,6 +38,8 @@ confl_update_attachment_data(id, attachmentId, path, ...)
 contents, use periods. (e.g. \verb{body.storage,history}).}
 
 \item{path}{Path to a file to upload.}
+
+\item{minor_edit}{If \code{TRUE}, will mark the \code{update} as a minor edit not notifying watchers.}
 
 \item{attachmentId}{The ID of an attachment.}
 

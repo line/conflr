@@ -18,6 +18,7 @@ confluence_document(
   supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
   update = NULL,
   use_original_size = FALSE,
+  minor_edit = FALSE,
   interactive = NULL
 )
 }
@@ -50,6 +51,8 @@ params in the YAML front-matter.}
 \item{update}{If \code{TRUE}, overwrite the existing page (if it exists).}
 
 \item{use_original_size}{If \code{TRUE}, use the original image sizes.}
+
+\item{minor_edit}{If \code{TRUE}, will mark the \code{update} as a minor edit not notifying watchers.}
 }
 \value{
 \code{confl_create_post_from_Rmd()} returns the URL of the published page.
@@ -76,6 +79,7 @@ output:
       foo: bar
     update: true
     use_original_size: true
+    minor_edit: false
 ---
 
 ...

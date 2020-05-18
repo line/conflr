@@ -102,7 +102,8 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
                                        toc = FALSE, toc_depth = 7,
                                        code_folding = "none",
                                        supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
-                                       use_original_size = FALSE) {
+                                       use_original_size = FALSE,
+                                       minor_edit = FALSE) {
 
   # This will be assigned in Shiny's server function
   result_url <- NULL
@@ -119,6 +120,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
     toc = toc,
     toc_depth = toc_depth,
     code_folding = code_folding,
+    minor_edit = minor_edit,
     use_original_size = use_original_size
   )
 
@@ -181,6 +183,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
         code_folding = if (input$code_folding) "hide" else "none",
         supported_syntax_highlighting = supported_syntax_highlighting,
         use_original_size = input$use_original_size,
+        minor_edit = minor_edit,
         # Already confirmed
         update = TRUE
       )
@@ -237,7 +240,8 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
                            space_key = NULL, parent_id = NULL, type = "page",
                            toc = FALSE, toc_depth = 7,
                            code_folding = "none",
-                           use_original_size = FALSE) {
+                           use_original_size = FALSE,
+                           minor_edit = FALSE) {
   # title bar
   title_bar_button <- miniUI::miniTitleBarButton("confirm", "Publish", primary = TRUE)
   title_bar <- miniUI::gadgetTitleBar("Preview", right = title_bar_button)
@@ -253,6 +257,8 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
 
   # use the original size or not
   use_original_size_input <- shiny::checkboxInput(inputId = "use_original_size", label = "Use original image sizes", value = use_original_size)
+
+  minor_edit_input <- shiny::checkboxInput(inputId = "minor_edit", label = "Minor edit", value = minor_edit)
 
   # add TOC or not
   toc_input <- shiny::checkboxInput(inputId = "toc", label = "TOC", value = toc)
@@ -281,7 +287,8 @@ confl_addin_ui <- function(title, html_text, imgs, imgs_realpath,
         wrap_with_column(parent_id_input),
         wrap_with_column(
           use_original_size_input,
-          code_folding_input
+          code_folding_input,
+          minor_edit_input
         ),
         wrap_with_column(
           toc_input,

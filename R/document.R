@@ -32,6 +32,8 @@
 #'   If `TRUE`, use the original image sizes.
 #' @param supported_syntax_highlighting
 #'   A named character vector of supported syntax highlighting other than default (e.g. `c(r = "r")`).
+#' @param minor_edit
+#'   If `TRUE`, will mark the `update` as a minor edit not notifying watchers.
 #'
 #' @return
 #'   `confluence_document()` returns an `rmarkdown_output_format` object.
@@ -58,6 +60,7 @@
 #'       foo: bar
 #'     update: true
 #'     use_original_size: true
+#'     minor_edit: false
 #' ---
 #'
 #' ...
@@ -85,6 +88,7 @@ confluence_document <- function(title = NULL,
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
                                 use_original_size = FALSE,
+                                minor_edit = FALSE,
                                 interactive = NULL) {
   if (is.null(interactive)) {
     interactive <- interactive()
@@ -104,7 +108,8 @@ confluence_document <- function(title = NULL,
     code_folding = code_folding,
     supported_syntax_highlighting = supported_syntax_highlighting,
     update = update,
-    use_original_size = use_original_size
+    use_original_size = use_original_size,
+    minor_edit = minor_edit
   )
 
   format <- rmarkdown::md_document(

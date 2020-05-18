@@ -1,5 +1,7 @@
 # conflr (development version)
 
+* Added `minor_edit` option not to notify watchers (#20, @daroczig).
+
 # conflr 0.1.1
 
 * A maintainance relase to fix errors on CRAN check.

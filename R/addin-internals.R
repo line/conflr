@@ -75,9 +75,9 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
     img_id <- imgs_exist_ids[basename(imgs[i])]
     if (is.na(img_id)) {
-      confl_post_attachment(id, imgs_realpath[i])
+      confl_post_attachment(id, imgs_realpath[i], minor_edit = minor_edit)
     } else {
-      confl_update_attachment_data(id, img_id, imgs_realpath[i])
+      confl_update_attachment_data(id, img_id, imgs_realpath[i], minor_edit = minor_edit)
     }
 
     progress$set(value = i / num_imgs)

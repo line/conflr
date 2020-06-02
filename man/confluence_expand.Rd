@@ -4,12 +4,12 @@
 \alias{confluence_expand}
 \title{Generate Confluence macro for an expand block}
 \usage{
-confluence_expand(title, content)
+confluence_expand(title, body)
 }
 \arguments{
 \item{title}{defines the text that appears next to the expand/collapse icon}
 
-\item{content}{this HTML content will be visible when someone clicks the macro title}
+\item{body}{this HTML content will be visible when someone clicks the macro title}
 }
 \value{
 HTML as string

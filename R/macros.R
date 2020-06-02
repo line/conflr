@@ -7,40 +7,40 @@
 #' @keywords internal
 conf_macro_generator <- function(type = c('inline', 'block'),
                                  name, parameters, body) {
-    type <- match.arg(type)
+  type <- match.arg(type)
 
-    macro <- switch(
-        type,
-        inline = '`',
-        block = '\n```{=html}\n')
+  macro <- switch(
+    type,
+    inline = '`',
+    block = '\n```{=html}\n')
 
-    macro <- glue('{macro}<ac:structured-macro ac:name="{name}">')
+  macro <- glue('{macro}<ac:structured-macro ac:name="{name}">')
 
-    if (!missing(parameters)) {
-        for (parameter in names(parameters)) {
-            macro <- paste0(
-                macro,
-                glue('<ac:parameter ac:name="{parameter}">'),
-                parameters[[parameter]],
-                '</ac:parameter>')
-        }
+  if (!missing(parameters)) {
+    for (parameter in names(parameters)) {
+      macro <- paste0(
+        macro,
+        glue('<ac:parameter ac:name="{parameter}">'),
+        parameters[[parameter]],
+        '</ac:parameter>')
     }
+  }
 
-    if (!missing(body)) {
-        macro <- paste0(
-            macro,
-            '<confl-ac-rich-text-body>',
-            body,
-            '</confl-ac-rich-text-body>')
-    }
+  if (!missing(body)) {
+    macro <- paste0(
+      macro,
+      '<confl-ac-rich-text-body>',
+      body,
+      '</confl-ac-rich-text-body>')
+  }
 
-    macro <- paste0(macro, '</ac:structured-macro>')
-    macro <- paste0(macro, switch(
-        type,
-        inline = '`{=html}',
-        block = '\n```\n'))
+  macro <- paste0(macro, '</ac:structured-macro>')
+  macro <- paste0(macro, switch(
+    type,
+    inline = '`{=html}',
+    block = '\n```\n'))
 
-    macro
+  macro
 
 }
 
@@ -80,9 +80,9 @@ confl_macro_jira <- function(key) {
 #'   commonmark::markdown_html(pander::pander_return(list(a = list(b = 4), c = 2))))
 #' }
 confl_macro_expand <- function(title, body) {
-    conf_macro_generator(type = 'block', name = 'expand',
-                         parameters = list(title = title),
-                         body = body)
+  conf_macro_generator(type = 'block', name = 'expand',
+                       parameters = list(title = title),
+                       body = body)
 }
 
 
@@ -93,7 +93,7 @@ confl_macro_expand <- function(title, body) {
 #' @export
 #' @references \url{https://confluence.atlassian.com/doc/excerpt-macro-148062.html}
 confl_macro_excerpt <- function(hidden = TRUE, body) {
-    conf_macro_generator(type = 'block', name = 'excerpt',
-                         parameters = list(hidden = tolower(hidden)),
-                         body = body)
+  conf_macro_generator(type = 'block', name = 'excerpt',
+                       parameters = list(hidden = tolower(hidden)),
+                       body = body)
 }

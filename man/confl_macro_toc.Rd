@@ -18,3 +18,6 @@ Generate Confluence macro for dynamic Table of Contents
 \examples{
 confl_macro_toc(2)
 }
+\references{
+\url{https://confluence.atlassian.com/doc/table-of-contents-macro-182682099.html}
+}

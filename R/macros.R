@@ -48,6 +48,7 @@ conf_macro_generator <- function(type = c('inline', 'block'),
 #' @param levels max number of levels to show
 #' @return HTML as string
 #' @export
+#' @references \url{https://confluence.atlassian.com/doc/table-of-contents-macro-182682099.html}
 #' @examples
 #' confl_macro_toc(2)
 confl_macro_toc <- function(levels) {

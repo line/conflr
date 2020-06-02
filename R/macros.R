@@ -75,11 +75,11 @@ confl_macro_jira <- function(key) {
 #' @references \url{https://confluence.atlassian.com/doc/expand-macro-223222352.html}
 #' @note \code{content} needs to be HTML, so look at \code{commonmark::markdown_html}, \code{pander::pander} and eg \code{xtable} for doing the conversion before passing to \code{confluence_expand}
 #' @examples \dontrun{
-#' confluence_expand(
+#' confl_macro_expand(
 #'   'Example block',
 #'   commonmark::markdown_html(pander::pander_return(list(a = list(b = 4), c = 2))))
 #' }
-confluence_expand <- function(title, body) {
+confl_macro_expand <- function(title, body) {
     conf_macro_generator(type = 'block', name = 'expand',
                          parameters = list(title = title),
                          body = body)
@@ -92,7 +92,7 @@ confluence_expand <- function(title, body) {
 #' @return HTML as string
 #' @export
 #' @references \url{https://confluence.atlassian.com/doc/excerpt-macro-148062.html}
-confluence_excerpt <- function(hidden = TRUE, body) {
+confl_macro_excerpt <- function(hidden = TRUE, body) {
     conf_macro_generator(type = 'block', name = 'excerpt',
                          parameters = list(hidden = tolower(hidden)),
                          body = body)

@@ -1,3 +1,18 @@
+#' Generate Confluence macro for dynamic Table of Contents
+#' @param levels max number of levels to show
+#' @return HTML as string
+#' @export
+#' @importFrom glue glue
+#' @examples
+#' confl_macro_toc(2)
+confl_macro_toc <- function(levels) {
+  glue(
+    '`<ac:structured-macro ac:name="toc">',
+    '<ac:parameter ac:name="maxLevel">{levels}</ac:parameter>',
+    '</ac:structured-macro>`{{=html}}')
+}
+
+
 #' Generate Confluence macro referencing a Jira ticket
 #' @param id Jira ticket id, eg CONFLR-XXXX
 #' @return HTML as string

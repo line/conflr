@@ -4,10 +4,10 @@
 \alias{confl_macro_jira}
 \title{Generate Confluence macro referencing a Jira ticket}
 \usage{
-confl_macro_jira(id)
+confl_macro_jira(key)
 }
 \arguments{
-\item{id}{Jira ticket id, eg CONFLR-XXXX}
+\item{key}{Jira ticket id, eg CONFLR-XXXX}
 }
 \value{
 HTML as string

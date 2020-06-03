@@ -4,7 +4,12 @@
 \alias{conf_macro_generator}
 \title{General Confluence macro builder for internal use}
 \usage{
-conf_macro_generator(type = c("inline", "block"), name, parameters, body)
+conf_macro_generator(
+  type = c("inline", "block"),
+  name,
+  parameters = NULL,
+  body = NULL
+)
 }
 \arguments{
 \item{type}{inline or block code style to be used for the HTML content}

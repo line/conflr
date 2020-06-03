@@ -6,7 +6,7 @@
 #' @return HTML
 #' @keywords internal
 conf_macro_generator <- function(type = c('inline', 'block'),
-                                 name, parameters, body) {
+                                 name, parameters = NULL, body = NULL) {
   type <- match.arg(type)
 
   macro <- switch(
@@ -16,7 +16,7 @@ conf_macro_generator <- function(type = c('inline', 'block'),
 
   macro <- glue('{macro}<ac:structured-macro ac:name="{name}">')
 
-  if (!missing(parameters)) {
+  if (!is.null(parameters)) {
     for (parameter in names(parameters)) {
       macro <- paste0(
         macro,
@@ -26,7 +26,7 @@ conf_macro_generator <- function(type = c('inline', 'block'),
     }
   }
 
-  if (!missing(body)) {
+  if (!is.null(body)) {
     macro <- paste0(
       macro,
       '<confl-ac-rich-text-body>',

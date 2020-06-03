@@ -63,7 +63,7 @@ confl_macro_toc <- function(levels) {
 #' @examples
 #' confl_macro_jira('CONFLR-42')
 confl_macro_jira <- function(key) {
-  conf_macro_generator(type = 'inline', name = 'jira', parameters = list(key = id))
+  conf_macro_generator(type = 'inline', name = 'jira', parameters = list(key = key))
 }
 
 

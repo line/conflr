@@ -29,9 +29,9 @@ conf_macro_generator <- function(type = c('inline', 'block'),
   if (!is.null(body)) {
     macro <- paste0(
       macro,
-      '<confl-ac-rich-text-body>',
+      '<ac:rich-text-body>',
       body,
-      '</confl-ac-rich-text-body>')
+      '</ac:rich-text-body>')
   }
 
   macro <- paste0(macro, '</ac:structured-macro>')

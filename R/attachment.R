@@ -55,10 +55,10 @@ confl_list_attachments <- function(id,
 #' @rdname confl_attachment
 #' @param path Path to a file to upload.
 #' @export
-confl_post_attachment <- function(id, path) {
+confl_post_attachment <- function(id, path, minor_edit = FALSE) {
   id <- as.character(id)
   res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment"),
-    body = list(file = httr::upload_file(path)),
+    body = list(file = httr::upload_file(path), minorEdit = minor_edit),
     httr::add_headers(`X-Atlassian-Token` = "nocheck")
   )
   httr::content(res)
@@ -78,10 +78,10 @@ confl_update_attachment_metadata <- function(id, attachmentId, ...) {
 
 #' @rdname confl_attachment
 #' @export
-confl_update_attachment_data <- function(id, attachmentId, path, ...) {
+confl_update_attachment_data <- function(id, attachmentId, path, ..., minor_edit = FALSE) {
   id <- as.character(id)
   res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment/{attachmentId}/data"),
-    body = list(file = httr::upload_file(path)),
+    body = list(file = httr::upload_file(path), minorEdit = minor_edit),
     httr::add_headers(`X-Atlassian-Token` = "nocheck")
   )
   httr::content(res)

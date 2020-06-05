@@ -104,10 +104,13 @@ confl_post_page <- function(type = c("page", "blogpost"),
 }
 
 #' @rdname confl_content
+#' @param minor_edit
+#'   If `TRUE`, will mark the `update` as a minor edit not notifying watchers.
 #' @export
 confl_update_page <- function(id,
                               title,
-                              body) {
+                              body,
+                              minor_edit = FALSE) {
   id <- as.character(id)
   page_info <- confl_get_page(id, expand = "version")
 
@@ -117,7 +120,8 @@ confl_update_page <- function(id,
       title = title,
       body = list(storage = list(value = body, representation = "storage")),
       version = list(
-        number = page_info$version$number + 1L
+        number = page_info$version$number + 1L,
+        minorEdit = minor_edit
       )
     ),
     encode = "json"

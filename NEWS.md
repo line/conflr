@@ -2,11 +2,11 @@
 
 * New `minor_edit` parameter (default to `FALSE`) in the YAML front
   matter to skip sending notifications on page or attachment updates
-  to watchers (#107, #108).
+  to watchers (#20, #107 @daroczig, #108).
 
 * New helper functions with the `confl_macro` prefix to generate HTML
   tags for the following Confluence macros: Table of Contents, Jira
-  ticket references, Expand and Excerpt blocks (#111).
+  ticket references, Expand and Excerpt blocks (#111 @daroczig).
 
 # conflr 0.1.1
 

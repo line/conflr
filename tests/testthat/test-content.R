@@ -65,7 +65,8 @@ test_that("confl_update_page() works", {
       )
     ),
     version = list(
-      number = 12L
+      number = 12L,
+      minorEdit = FALSE
     )
   ))
 })

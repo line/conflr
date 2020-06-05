@@ -16,6 +16,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
                          supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                          update = FALSE,
                          use_original_size = FALSE,
+                         minor_edit = FALSE,
                          session = NULL) {
   # TODO: NULL arguments should be `compact()`ed in confluence_document(),
   # but it's not possible to provide a backward-compatibility for
@@ -74,9 +75,9 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
 
     img_id <- imgs_exist_ids[basename(imgs[i])]
     if (is.na(img_id)) {
-      confl_post_attachment(id, imgs_realpath[i])
+      confl_post_attachment(id, imgs_realpath[i], minor_edit = minor_edit)
     } else {
-      confl_update_attachment_data(id, img_id, imgs_realpath[i])
+      confl_update_attachment_data(id, img_id, imgs_realpath[i], minor_edit = minor_edit)
     }
 
     progress$set(value = i / num_imgs)
@@ -110,7 +111,8 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
   result <- confl_update_page(
     id = id,
     title = title,
-    body = html_text
+    body = html_text,
+    minor_edit = minor_edit
   )
   result_url <- paste0(result$`_links`$base, result$`_links`$webui)
 

@@ -4,12 +4,12 @@
 \alias{confl_macro_excerpt}
 \title{Generate Confluence macro for an excerpt block}
 \usage{
-confl_macro_excerpt(hidden = TRUE, body)
+confl_macro_excerpt(body, hidden = TRUE)
 }
 \arguments{
-\item{hidden}{if the \code{body} should be shown on the actual page}
-
 \item{body}{HTML content of the excerpt}
+
+\item{hidden}{if the \code{body} should be shown on the actual page}
 }
 \value{
 HTML as string

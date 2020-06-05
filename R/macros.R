@@ -88,12 +88,12 @@ confl_macro_expand <- function(title, body) {
 
 
 #' Generate Confluence macro for an excerpt block
-#' @param hidden if the \code{body} should be shown on the actual page
 #' @param body HTML content of the excerpt
+#' @param hidden if the \code{body} should be shown on the actual page
 #' @return HTML as string
 #' @export
 #' @references \url{https://confluence.atlassian.com/doc/excerpt-macro-148062.html}
-confl_macro_excerpt <- function(hidden = TRUE, body) {
+confl_macro_excerpt <- function(body, hidden = TRUE) {
   conf_macro_generator(type = 'block', name = 'excerpt',
                        parameters = list(hidden = tolower(hidden)),
                        body = body)

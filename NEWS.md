@@ -1,6 +1,12 @@
 # conflr (development version)
 
-* Added `minor_edit` option not to notify watchers (#20, @daroczig).
+* New `minor_edit` parameter (default to `FALSE`) in the YAML front
+  matter to skip sending notifications on page or attachment updates
+  to watchers (#20, #107 @daroczig, #108).
+
+* New helper functions with the `confl_macro` prefix to generate HTML
+  tags for the following Confluence macros: Table of Contents, Jira
+  ticket references, Expand and Excerpt blocks (#111 @daroczig).
 
 # conflr 0.1.1
 
@@ -19,7 +25,7 @@
        doesn't show Shiny popups (#32, @ndiquattro).
     2. set `output: conflr::confluence_document` in the YAML front matter of the
        R Markdown file, and run `rmarkdown::render()` (#44, @kazutan / #80).
-    
+
     ``` md
     ---
     title: "I love Confluence"

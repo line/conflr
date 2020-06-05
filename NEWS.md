@@ -1,5 +1,9 @@
 # conflr (development version)
 
+* New helper functions with the `confl_macro` prefix to generate HTML
+  tags for the following Confluence macros: Table of Contents, Jira
+  ticket references, Expand and Excerpt blocks (#111).
+
 # conflr 0.1.1
 
 * A maintainance relase to fix errors on CRAN check.
@@ -17,7 +21,7 @@
        doesn't show Shiny popups (#32, @ndiquattro).
     2. set `output: conflr::confluence_document` in the YAML front matter of the
        R Markdown file, and run `rmarkdown::render()` (#44, @kazutan / #80).
-    
+
     ``` md
     ---
     title: "I love Confluence"

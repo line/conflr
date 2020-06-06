@@ -118,6 +118,10 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#conflr-development-version" class="anchor"></a>conflr (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li><p>New <code>minor_edit</code> parameter (default to <code>FALSE</code>) in the YAML front matter to skip sending notifications on page or attachment updates to watchers (<a href='https://github.com/line/conflr/issues/20'>#20</a>, <a href='https://github.com/line/conflr/issues/107'>#107</a> <a href='https://github.com/daroczig'>@daroczig</a>, <a href='https://github.com/line/conflr/issues/108'>#108</a>).</p></li>
+<li><p>New helper functions with the <code>confl_macro</code> prefix to generate HTML tags for the following Confluence macros: Table of Contents, Jira ticket references, Expand and Excerpt blocks (<a href='https://github.com/line/conflr/issues/111'>#111</a> <a href='https://github.com/daroczig'>@daroczig</a>).</p></li>
+</ul>
 </div>
     <div id="conflr-011" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1">
@@ -142,15 +146,15 @@
 <li>
 <p>conflr now fits batch/console uses; you can either</p>
 <ol>
-<li>run <code>confl_create_post_from_Rmd()</code> with <code>interactive = FALSE</code> so that it doesn’t show Shiny popups (<a href='https://github.com/line/conflr/issues/32'>#32</a>, <a href='https://github.com/ndiquattro'>@ndiquattro</a>).</li>
+<li>run <code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> with <code>interactive = FALSE</code> so that it doesn’t show Shiny popups (<a href='https://github.com/line/conflr/issues/32'>#32</a>, <a href='https://github.com/ndiquattro'>@ndiquattro</a>).</li>
 <li>set <code>output: conflr::confluence_document</code> in the YAML front matter of the R Markdown file, and run <code><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">rmarkdown::render()</a></code> (<a href='https://github.com/line/conflr/issues/44'>#44</a>, <a href='https://github.com/kazutan'>@kazutan</a> / <a href='https://github.com/line/conflr/issues/80'>#80</a>).</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="an">title:</span><span class="co"> "I love Confluence"</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="an">output:</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">  conflr::confluence_document:</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">    space_key: "space1"</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">---</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="an">title:</span><span class="co"> "I love Confluence"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="an">output:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co">  conflr::confluence_document:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="co">    space_key: "space1"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">---</span></span></code></pre></div>
 </li>
 <li>
 <p>conflr provides several new options:</p>
@@ -165,12 +169,12 @@
 <h3 class="hasAnchor">
 <a href="#minor-changes" class="anchor"></a>Minor changes</h3>
 <ul>
-<li><p><code>confl_create_post_from_Rmd()</code> gets <code>params</code> argument for parameterized R Markdown (<a href='https://github.com/line/conflr/issues/37'>#37</a>, <a href='https://github.com/ellisvalentiner'>@ellisvalentiner</a>).</p></li>
+<li><p><code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> gets <code>params</code> argument for parameterized R Markdown (<a href='https://github.com/line/conflr/issues/37'>#37</a>, <a href='https://github.com/ellisvalentiner'>@ellisvalentiner</a>).</p></li>
 <li><p>External images are now converted properly (<a href='https://github.com/line/conflr/issues/39'>#39</a>).</p></li>
 <li><p>Add an option <code>conflr_addin_clear_password_after_success</code> not to cache the password as envvars. (<a href='https://github.com/line/conflr/issues/41'>#41</a> and <a href='https://github.com/line/conflr/issues/48'>#48</a>, <a href='https://github.com/Curycu'>@Curycu</a>).</p></li>
-<li><p>A new function <code>confl_contentbody_convert()</code> converts the Confluence-related formats by using the Confluence REST API (<a href='https://github.com/line/conflr/issues/58'>#58</a>).</p></li>
-<li><p><code>confl_post_page()</code> and <code>confl_update_page()</code> no longer translate the Confluence macros automatically. Accordingly, they lose <code>image_size_default</code> and <code>supported_syntax_highlighting</code> arguments (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
-<li><p><code>confl_create_post_from_Rmd()</code> now handles documents containing Confluence macro tags (i.e. <code>&lt;ac:...&gt;</code> or <code>&lt;ri:...&gt;</code>) properly (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
+<li><p>A new function <code><a href="../reference/confl_contentbody.html">confl_contentbody_convert()</a></code> converts the Confluence-related formats by using the Confluence REST API (<a href='https://github.com/line/conflr/issues/58'>#58</a>).</p></li>
+<li><p><code><a href="../reference/confl_content.html">confl_post_page()</a></code> and <code><a href="../reference/confl_content.html">confl_update_page()</a></code> no longer translate the Confluence macros automatically. Accordingly, they lose <code>image_size_default</code> and <code>supported_syntax_highlighting</code> arguments (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
+<li><p><code><a href="../reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> now handles documents containing Confluence macro tags (i.e. <code>&lt;ac:...&gt;</code> or <code>&lt;ri:...&gt;</code>) properly (<a href='https://github.com/line/conflr/issues/76'>#76</a>).</p></li>
 </ul>
 </div>
 </div>

@@ -139,7 +139,7 @@
   <span class='kw'>ancestors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
 
-<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>)
+<span class='fu'>confl_update_page</span>(<span class='no'>id</span>, <span class='no'>title</span>, <span class='no'>body</span>, <span class='kw'>minor_edit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>confl_delete_page</span>(<span class='no'>id</span>)</pre>
 
@@ -182,6 +182,10 @@ contents, use periods. (e.g. <code>body.storage,history</code>).</p></td>
     <tr>
       <th>ancestors</th>
       <td><p>The page ID of the parent pages.</p></td>
+    </tr>
+    <tr>
+      <th>minor_edit</th>
+      <td><p>If <code>TRUE</code>, will mark the <code>update</code> as a minor edit not notifying watchers.</p></td>
     </tr>
     </table>
 

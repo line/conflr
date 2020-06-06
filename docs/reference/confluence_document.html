@@ -133,6 +133,7 @@
   <span class='kw'>supported_syntax_highlighting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"conflr_supported_syntax_highlighting"</span>),
   <span class='kw'>update</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>use_original_size</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>minor_edit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -196,6 +197,10 @@ params in the YAML front-matter.</p></td>
       <th>use_original_size</th>
       <td><p>If <code>TRUE</code>, use the original image sizes.</p></td>
     </tr>
+    <tr>
+      <th>minor_edit</th>
+      <td><p>If <code>TRUE</code>, will mark the <code>update</code> as a minor edit not notifying watchers.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -220,6 +225,7 @@ as an argument will be used.</p><pre>---
       <span class='no'>foo</span>: <span class='no'>bar</span>
     <span class='no'>update</span>: <span class='no'>true</span>
     <span class='no'>use_original_size</span>: <span class='no'>true</span>
+    <span class='no'>minor_edit</span>: <span class='no'>false</span>
 ---
 
 <span class='no'>...</span></pre>

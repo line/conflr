@@ -101,7 +101,7 @@
 </ul>
 <p>There are several ways to set these environmental variables. The quickest way is to enter in the popups that are displayed when you run the addin (see Usages section below). The inputs are cached in the environmental variables listed above by default.</p>
 <p>Another way is to set the variables in the <code>.Renviron</code> file (you can open the file with <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>). For example, you can set the base URL in the file as the following.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>CONFLUENCE_URL=https<span class="op">:</span><span class="er">//</span>confluence.example.com</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>CONFLUENCE_URL=https<span class="op">:</span><span class="er">//</span>confluence.example.com</span></code></pre></div>
 </div>
 <div id="usages" class="section level2">
 <h2 class="hasAnchor">
@@ -109,8 +109,8 @@
 <p>conflr provides the following ways to post R Markdown documents to Confluence.</p>
 <ol>
 <li>Use an RStudio Addin</li>
-<li>Run <code><a href="https://rdrr.io/pkg/conflr/man/confluence_document.html">confl_create_post_from_Rmd()</a></code> on console</li>
-<li>Specify <code><a href="https://rdrr.io/pkg/conflr/man/confluence_document.html">conflr::confluence_document</a></code> on the YAML front-matter</li>
+<li>Run <code><a href="reference/confluence_document.html">confl_create_post_from_Rmd()</a></code> on console</li>
+<li>Specify <code><a href="reference/confluence_document.html">conflr::confluence_document</a></code> on the YAML front-matter</li>
 </ol>
 <div id="rstudio-addin" class="section level3">
 <h3 class="hasAnchor">
@@ -155,33 +155,33 @@
 <h3 class="hasAnchor">
 <a href="#confl_create_post_from_rmd" class="anchor"></a><code>confl_create_post_from_Rmd()</code>
 </h3>
-<p>If you don’t use RStudio, you can use <code><a href="https://rdrr.io/pkg/conflr/man/confluence_document.html">confl_create_post_from_Rmd()</a></code>. The basic usage is</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu">confl_create_post_from_Rmd</span>(<span class="st">"~/path/to/your.Rmd"</span>)</pre></div>
+<p>If you don’t use RStudio, you can use <code><a href="reference/confluence_document.html">confl_create_post_from_Rmd()</a></code>. The basic usage is</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/confluence_document.html">confl_create_post_from_Rmd</a></span>(<span class="st">"~/path/to/your.Rmd"</span>)</pre></div>
 <div id="batch-use" class="section level4">
 <h4 class="hasAnchor">
 <a href="#batch-use" class="anchor"></a>Batch use</h4>
 <p>If you want to use this function without interaction, specify <code>interactive = FALSE</code>. This skips any confirmations or previews.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu">confl_create_post_from_Rmd</span>(<span class="st">"~/path/to/your.Rmd"</span>, <span class="kw">interactive</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="reference/confluence_document.html">confl_create_post_from_Rmd</a></span>(<span class="st">"~/path/to/your.Rmd"</span>, <span class="kw">interactive</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></div>
 <p>Note that, if you want to run this periodically, you also need to set <code>update = TRUE</code> to allow conflr to overwrite the existing page.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu">confl_create_post_from_Rmd</span>(<span class="st">"~/path/to/your.Rmd"</span>, <span class="kw">interactive</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">update</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="reference/confluence_document.html">confl_create_post_from_Rmd</a></span>(<span class="st">"~/path/to/your.Rmd"</span>, <span class="kw">interactive</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">update</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
 </div>
 </div>
 <div id="conflrconflence_document" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conflrconflence_document" class="anchor"></a><code>conflr::conflence_document</code>
 </h3>
-<p>conflr’s functionality is also available as a custom R Markdown format; You can specify <code><a href="https://rdrr.io/pkg/conflr/man/confluence_document.html">conflr::confluence_document</a></code> to <code>output</code> in the front matter of your R Markdown document.</p>
+<p>conflr’s functionality is also available as a custom R Markdown format; You can specify <code><a href="reference/confluence_document.html">conflr::confluence_document</a></code> to <code>output</code> in the front matter of your R Markdown document.</p>
 <p>For example, if you set the following front matter, pressing <code>Knit</code> button on RStudio (or running <code><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">rmarkdown::render()</a></code>) will publish the R Markdown document to Confluence.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">---</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="an">title:</span><span class="co"> "title1"</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="an">output:</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">  conflr::confluence_document:</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">    space_key: "space1"</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">    update: true</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">---</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a></span>
-<span id="cb7-9"><a href="#cb7-9"></a>...</span></code></pre></div>
-<p>For the detail about available options, please refer to <a href="https://line.github.io/conflr/reference/confluence_document.html"><code><a href="https://rdrr.io/pkg/conflr/man/confluence_document.html">?confluence_document</a></code></a>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="an">title:</span><span class="co"> "title1"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="an">output:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co">  conflr::confluence_document:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co">    space_key: "space1"</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">    update: true</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co">---</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>...</span></code></pre></div>
+<p>For the detail about available options, please refer to <a href="https://line.github.io/conflr/reference/confluence_document.html"><code><a href="reference/confluence_document.html">?confluence_document</a></code></a>.</p>
 </div>
 </div>
 <div id="options" class="section level2">
@@ -216,15 +216,15 @@
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">conflr</span>)
 
 <span class="co"># list pages</span>
-<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/conflr/man/confl_content.html">confl_list_pages</a></span>(<span class="kw">spaceKey</span> <span class="kw">=</span> <span class="st">"foo"</span>)
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/confl_content.html">confl_list_pages</a></span>(<span class="kw">spaceKey</span> <span class="kw">=</span> <span class="st">"foo"</span>)
 <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(<span class="no">res</span>$<span class="no">results</span>, <span class="st">"id"</span>)
 
 <span class="co"># get page info</span>
-<span class="no">page</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/conflr/man/confl_content.html">confl_get_page</a></span>(<span class="no">res</span>$<span class="no">results</span><span class="kw">[[</span><span class="fl">2</span>]]$<span class="no">id</span>)
+<span class="no">page</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/confl_content.html">confl_get_page</a></span>(<span class="no">res</span>$<span class="no">results</span><span class="kw">[[</span><span class="fl">2</span>]]$<span class="no">id</span>)
 <span class="no">page</span>$<span class="no">title</span>
 
 <span class="co"># create a page</span>
-<span class="no">new_page</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/conflr/man/confl_content.html">confl_post_page</a></span>(
+<span class="no">new_page</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/confl_content.html">confl_post_page</a></span>(
   <span class="kw">spaceKey</span> <span class="kw">=</span> <span class="st">"foo"</span>,
   <span class="kw">title</span> <span class="kw">=</span> <span class="st">"Test"</span>,
   <span class="kw">body</span> <span class="kw">=</span> <span class="kw pkg">glue</span><span class="kw ns">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span>(
@@ -242,19 +242,19 @@
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">Copyright</span> (C) <span class="dv">2019</span> LINE Corporation</span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a>This program is free software<span class="op">:</span><span class="st"> </span>you can redistribute it and<span class="op">/</span>or modify</span>
-<span id="cb9-4"><a href="#cb9-4"></a>it under the terms of the GNU General Public License as published by</span>
-<span id="cb9-5"><a href="#cb9-5"></a>the Free Software Foundation, version <span class="fl">3.</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a>This program is distributed <span class="cf">in</span> the hope that it will be useful,</span>
-<span id="cb9-8"><a href="#cb9-8"></a>but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span id="cb9-9"><a href="#cb9-9"></a>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span id="cb9-10"><a href="#cb9-10"></a>GNU General Public License <span class="cf">for</span> more details.</span>
-<span id="cb9-11"><a href="#cb9-11"></a></span>
-<span id="cb9-12"><a href="#cb9-12"></a>You should have received a copy of the GNU General Public License</span>
-<span id="cb9-13"><a href="#cb9-13"></a>along with this program.  If not, see <span class="op">&lt;</span>http<span class="op">:</span><span class="er">//</span>www.gnu.org<span class="op">/</span>licenses<span class="op">/</span><span class="er">&gt;</span>.</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">Copyright</span> (C) <span class="dv">2019</span> LINE Corporation</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>This program is free software<span class="op">:</span><span class="st"> </span>you can redistribute it and<span class="op">/</span>or modify</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>it under the terms of the GNU General Public License as published by</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>the Free Software Foundation, version <span class="fl">3.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>This program is distributed <span class="cf">in</span> the hope that it will be useful,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>GNU General Public License <span class="cf">for</span> more details.</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>You should have received a copy of the GNU General Public License</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>along with this program.  If not, see <span class="op">&lt;</span>http<span class="op">:</span><span class="er">//</span>www.gnu.org<span class="op">/</span>licenses<span class="op">/</span><span class="er">&gt;</span>.</span></code></pre></div>
 <p>See <a href="https://github.com/line/conflr/blob/master/LICENSE.md">LICENSE.md</a> for more detail.</p>
 </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CRUD Operations for Attachments on Content — confl_attachment • conflr</title>
+<title>Generate Confluence macro for an expand block — confl_macro_expand • conflr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="CRUD Operations for Attachments on Content — confl_attachment" />
-<meta property="og:description" content="CRUD Operations for Attachments on Content" />
+<meta property="og:title" content="Generate Confluence macro for an expand block — confl_macro_expand" />
+<meta property="og:description" content="Generate Confluence macro for an expand block" />
 
 
 
@@ -111,92 +111,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>CRUD Operations for Attachments on Content</h1>
-    <small class="dont-index">Source: <a href='https://github.com/line/conflr/blob/master/R/attachment.R'><code>R/attachment.R</code></a></small>
-    <div class="hidden name"><code>confl_attachment.Rd</code></div>
+    <h1>Generate Confluence macro for an expand block</h1>
+    <small class="dont-index">Source: <a href='https://github.com/line/conflr/blob/master/R/macros.R'><code>R/macros.R</code></a></small>
+    <div class="hidden name"><code>confl_macro_expand.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>CRUD Operations for Attachments on Content</p>
+    <p>Generate Confluence macro for an expand block</p>
     </div>
 
-    <pre class="usage"><span class='fu'>confl_list_attachments</span>(
-  <span class='no'>id</span>,
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mediaType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>expand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
-
-<span class='fu'>confl_post_attachment</span>(<span class='no'>id</span>, <span class='no'>path</span>, <span class='kw'>minor_edit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>confl_update_attachment_metadata</span>(<span class='no'>id</span>, <span class='no'>attachmentId</span>, <span class='no'>...</span>)
-
-<span class='fu'>confl_update_attachment_data</span>(<span class='no'>id</span>, <span class='no'>attachmentId</span>, <span class='no'>path</span>, <span class='no'>...</span>, <span class='kw'>minor_edit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>confl_macro_expand</span>(<span class='no'>title</span>, <span class='no'>body</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>id</th>
-      <td><p>The ID of a page that attachments belong to.</p></td>
+      <th>title</th>
+      <td><p>defines the text that appears next to the expand/collapse icon</p></td>
     </tr>
     <tr>
-      <th>filename</th>
-      <td><p>Filter parameter to return only the Attachment with the matching file name. Optional.</p></td>
-    </tr>
-    <tr>
-      <th>mediaType</th>
-      <td><p>Filter parameter to return only Attachments with a matching Media-Type. Optional.</p></td>
-    </tr>
-    <tr>
-      <th>start</th>
-      <td><p>The start point of the collection to return.</p></td>
-    </tr>
-    <tr>
-      <th>limit</th>
-      <td><p>The limit of the number of items to return, this may be restricted by fixed system limits.</p></td>
-    </tr>
-    <tr>
-      <th>expand</th>
-      <td><p>A comma separated list of properties to expand. To refer the nested
-contents, use periods. (e.g. <code>body.storage,history</code>).</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>Path to a file to upload.</p></td>
-    </tr>
-    <tr>
-      <th>minor_edit</th>
-      <td><p>If <code>TRUE</code>, will mark the <code>update</code> as a minor edit not notifying watchers.</p></td>
-    </tr>
-    <tr>
-      <th>attachmentId</th>
-      <td><p>The ID of an attachment.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Other arguments passed to 'query'.</p></td>
+      <th>body</th>
+      <td><p>this HTML content will be visible when someone clicks the macro title</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The API response as a list.</p>
+    <p>HTML as string</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p><code>content</code> needs to be HTML, so look at <code><a href='https://rdrr.io/pkg/commonmark/man/commonmark.html'>commonmark::markdown_html</a></code>, <code>pander::pander</code> and eg <code>xtable</code> for doing the conversion before passing to <code>confluence_expand</code></p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p><a href='https://confluence.atlassian.com/doc/expand-macro-223222352.html'>https://confluence.atlassian.com/doc/expand-macro-223222352.html</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Create a dummy text file</span>
-<span class='no'>tmp_txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".txt"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"foo"</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>tmp_txt</span>)
-
-<span class='co'># Upload the file to a page whose ID is "123"</span>
-<span class='fu'>confl_post_attachment</span>(<span class='st'>"123"</span>, <span class='no'>tmp_txt</span>)
-
-<span class='co'># Confirm the file is attatched to the page</span>
-<span class='no'>result</span> <span class='kw'>&lt;-</span> <span class='fu'>confl_list_attachments</span>(<span class='st'>"123"</span>, <span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>tmp_txt</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>result</span>$<span class='no'>results</span>) <span class='co'># should be 1</span>
+<span class='fu'>confl_macro_expand</span>(
+  <span class='st'>'Example block'</span>,
+  <span class='kw pkg'>commonmark</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/commonmark/man/commonmark.html'>markdown_html</a></span>(<span class='kw pkg'>pander</span><span class='kw ns'>::</span><span class='fu'>pander_return</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fl'>2</span>))))
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

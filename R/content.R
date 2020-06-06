@@ -69,7 +69,7 @@ confl_list_pages <- function(type = c("page", "blogpost", "comment", "attachment
 #' @export
 confl_get_page <- function(id, expand = "body.storage") {
   id <- as.character(id)
-  res <- confl_verb("GET", glue::glue("/content/{id}"), query = list(expand = expand))
+  res <- confl_verb("GET", glue("/content/{id}"), query = list(expand = expand))
   httr::content(res)
 }
 
@@ -114,7 +114,7 @@ confl_update_page <- function(id,
   id <- as.character(id)
   page_info <- confl_get_page(id, expand = "version")
 
-  res <- confl_verb("PUT", glue::glue("/content/{id}"),
+  res <- confl_verb("PUT", glue("/content/{id}"),
     body = list(
       type = page_info$type,
       title = title,
@@ -134,6 +134,6 @@ confl_update_page <- function(id,
 #' @export
 confl_delete_page <- function(id) {
   id <- as.character(id)
-  res <- confl_verb("DELETE", glue::glue("/content/{id}"))
+  res <- confl_verb("DELETE", glue("/content/{id}"))
   httr::content(res)
 }

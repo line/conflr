@@ -45,7 +45,7 @@ confl_create_post_from_Rmd <- function(Rmd_file, interactive = NULL, params = NU
   # Sanity checks -----------------------------------------------------------
 
   if (!tolower(tools::file_ext(Rmd_file)) %in% c("rmd", "rmarkdown")) {
-    abort(glue::glue("{basename(Rmd_file)} is not .Rmd file!"))
+    abort(glue("{basename(Rmd_file)} is not .Rmd file!"))
   }
 
   # Combine options from arguments and front matter -------------------------
@@ -146,7 +146,7 @@ confl_upload_interactively <- function(title, html_text, imgs, imgs_realpath,
       # If there is already an existing page, confirm user
       if (!is.null(id)) {
         shiny::showModal(shiny::modalDialog(
-          glue::glue(
+          glue(
             "There is already an existing page named '{title}'.\n",
             "Are you sure to overwrite it?"
           ),

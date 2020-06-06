@@ -13,5 +13,6 @@
 #'
 #' @name conflr
 #' @importFrom utils browseURL
+#' @importFrom glue glue glue_collapse
 #' @import rlang
 "_PACKAGE"

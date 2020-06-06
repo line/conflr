@@ -14,7 +14,6 @@
 #' @param parameters named list of optional macro parameters
 #' @param body optional \code{confl-ac-rich-text-body} content
 #' @return HTML
-#' @importFrom glue glue
 #' @keywords internal
 conf_macro_generator <- function(type = c('inline', 'block'),
                                  name, parameters = NULL, body = NULL) {

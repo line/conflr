@@ -148,7 +148,7 @@ replace_code_chunk <- function(x,
     }
 
     lang <- get_corresponding_lang(lang, supported_syntax_highlighting)
-    lang_param <- glue::glue('  <ac:parameter ac:name="language">{lang}</ac:parameter>')
+    lang_param <- glue('  <ac:parameter ac:name="language">{lang}</ac:parameter>')
 
     # collapse
     if (identical(code_folding, "hide") &&
@@ -160,7 +160,7 @@ replace_code_chunk <- function(x,
       collapse_param <- ""
     }
 
-    stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
+    stringi::stri_sub(x, loc[1], loc[2]) <- glue(
       '<ac:structured-macro ac:name="code">
 {lang_param}{collapse_param}
   <ac:plain-text-body><![CDATA[{code_text}]]></ac:plain-text-body>
@@ -237,7 +237,7 @@ replace_image <- function(x, image_size_default = 600) {
 
     src <- img_attrs$src
     if (is.null(src)) {
-      warn(glue::glue("{img_tag} doesn't contain src attribute."))
+      warn(glue("{img_tag} doesn't contain src attribute."))
       next()
     }
 
@@ -255,13 +255,13 @@ replace_image <- function(x, image_size_default = 600) {
 
     # glue_collapse returns character(0) for character(0), so this if branch is needed.
     if (length(hw) > 0) {
-      hw_params <- glue::glue('ac:{names(hw)}="{hw}"')
-      hw_params <- glue::glue_collapse(hw_params, sep = " ")
+      hw_params <- glue('ac:{names(hw)}="{hw}"')
+      hw_params <- glue_collapse(hw_params, sep = " ")
     } else {
       hw_params <- ""
     }
 
-    stringi::stri_sub(x, loc[1], loc[2]) <- glue::glue(
+    stringi::stri_sub(x, loc[1], loc[2]) <- glue(
       '<ac:image {hw_params}><ri:attachment ri:filename="{basename(src)}" /></ac:image>'
     )
   }

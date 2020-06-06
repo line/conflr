@@ -46,7 +46,7 @@ confl_list_attachments <- function(id,
                                    expand = NULL) {
   id <- as.character(id)
   query <- list(limit = limit, start = start, filename = filename, mediaType = mediaType, expand = expand)
-  res <- confl_verb("GET", glue::glue("/content/{id}/child/attachment"),
+  res <- confl_verb("GET", glue("/content/{id}/child/attachment"),
     query = purrr::compact(query)
   )
   httr::content(res)
@@ -57,7 +57,7 @@ confl_list_attachments <- function(id,
 #' @export
 confl_post_attachment <- function(id, path, minor_edit = FALSE) {
   id <- as.character(id)
-  res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment"),
+  res <- confl_verb("POST", glue("/content/{id}/child/attachment"),
     body = list(file = httr::upload_file(path), minorEdit = minor_edit),
     httr::add_headers(`X-Atlassian-Token` = "nocheck")
   )
@@ -70,7 +70,7 @@ confl_post_attachment <- function(id, path, minor_edit = FALSE) {
 #' @export
 confl_update_attachment_metadata <- function(id, attachmentId, ...) {
   id <- as.character(id)
-  res <- confl_verb("PUT", glue::glue("/content/{id}/child/attachment/{attachmentId}"),
+  res <- confl_verb("PUT", glue("/content/{id}/child/attachment/{attachmentId}"),
     query = list(...)
   )
   httr::content(res)
@@ -80,7 +80,7 @@ confl_update_attachment_metadata <- function(id, attachmentId, ...) {
 #' @export
 confl_update_attachment_data <- function(id, attachmentId, path, ..., minor_edit = FALSE) {
   id <- as.character(id)
-  res <- confl_verb("POST", glue::glue("/content/{id}/child/attachment/{attachmentId}/data"),
+  res <- confl_verb("POST", glue("/content/{id}/child/attachment/{attachmentId}/data"),
     body = list(file = httr::upload_file(path), minorEdit = minor_edit),
     httr::add_headers(`X-Atlassian-Token` = "nocheck")
   )

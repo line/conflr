@@ -56,6 +56,6 @@ confl_list_spaces <- function(spaceKey = NULL,
 #' @export
 confl_get_space <- function(spaceKey, expand = NULL) {
   query <- list(expand = expand)
-  res <- confl_verb("GET", glue::glue("/space/{spaceKey}"), query = purrr::compact(query))
+  res <- confl_verb("GET", glue("/space/{spaceKey}"), query = purrr::compact(query))
   httr::content(res)
 }

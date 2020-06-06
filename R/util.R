@@ -55,7 +55,7 @@ confl_verb <- function(verb, path, ...) {
 
   res <- httr::VERB(
     verb = verb,
-    url = glue::glue("{base_url}/rest/api{path}"),
+    url = glue("{base_url}/rest/api{path}"),
     httr::authenticate(username, password),
     ...
   )
@@ -95,7 +95,7 @@ abort_if_null <- function(...) {
     return(invisible(NULL))
   }
 
-  null_variables <- glue::glue("`{null_variables}`")
-  null_variables <- glue::glue_collapse(null_variables, sep = ", ", last = " and ")
-  abort(glue::glue("Please provide {null_variables}!"))
+  null_variables <- glue("`{null_variables}`")
+  null_variables <- glue_collapse(null_variables, sep = ", ", last = " and ")
+  abort(glue("Please provide {null_variables}!"))
 }

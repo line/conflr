@@ -44,7 +44,7 @@ confl_contentbody_convert <- function(x,
   from <- arg_match(from)
   to <- arg_match(to)
 
-  res <- confl_verb("POST", glue::glue("/contentbody/convert/{to}"),
+  res <- confl_verb("POST", glue("/contentbody/convert/{to}"),
     body = list(value = x, representation = from), encode = "json"
   )
   httr::content(res)$value

@@ -100,7 +100,7 @@ confl_upload <- function(title, space_key, type, parent_id, html_text,
     toc_tag <- paste(
       "<p>",
       '  <ac:structured-macro ac:name="toc">',
-      glue::glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
+      glue('    <ac:parameter ac:name="maxLevel">{toc_depth}</ac:parameter>'),
       "  </ac:structured-macro>",
       "</p>",
       sep = "\n"

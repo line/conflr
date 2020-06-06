@@ -52,9 +52,9 @@ test_that("get_corresponding_lang() works", {
 
 test_that("replace_code_chunk() works", {
   do_test_code_chunk <- function(code_tag_attr, expected_language, supported_syntax_highlighting = supported_syntax_highlighting_default) {
-    given <- as.character(glue::glue("<pre><code {code_tag_attr}>print(1)</code></pre>"))
+    given <- as.character(glue("<pre><code {code_tag_attr}>print(1)</code></pre>"))
 
-    expected <- as.character(glue::glue(
+    expected <- as.character(glue(
       '<ac:structured-macro ac:name="code">\n',
       '  <ac:parameter ac:name="language">{expected_language}</ac:parameter>\n',
       "  <ac:plain-text-body><![CDATA[print(1)]]></ac:plain-text-body>\n",
@@ -97,22 +97,22 @@ test_that("replace_code_chunk() works with collapse specified", {
 
   expect_equal(
     replace_code_chunk(pre_tag, code_folding = "hide"),
-    as.character(glue::glue(expected_tmpl, collapse = collapse_param))
+    as.character(glue(expected_tmpl, collapse = collapse_param))
   )
   expect_equal(
     replace_code_chunk(pre_tag, code_folding = "none"),
-    as.character(glue::glue(expected_tmpl, collapse = ""))
+    as.character(glue(expected_tmpl, collapse = ""))
   )
 
   # do not fold when the code block is of a result
   pre_tag_wo_lang <- '<pre>\n<code class="foo">print(1)</code>  </pre>'
   expect_equal(
     replace_code_chunk(pre_tag_wo_lang, code_folding = "hide"),
-    as.character(glue::glue(expected_tmpl, collapse = ""))
+    as.character(glue(expected_tmpl, collapse = ""))
   )
   expect_equal(
     replace_code_chunk(pre_tag_wo_lang, code_folding = "none"),
-    as.character(glue::glue(expected_tmpl, collapse = ""))
+    as.character(glue(expected_tmpl, collapse = ""))
   )
 })
 

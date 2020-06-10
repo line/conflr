@@ -65,7 +65,7 @@ translate_to_confl_macro <- function(html_text,
 
   mark_tabsets(html_doc)
 
-  # Conflucence doesn't accept <br />, so just remove it.
+  # Confluence doesn't accept <br />, so just remove it.
   xml2::xml_remove(xml2::xml_find_all(html_doc, "//br"))
 
   # convert back to character

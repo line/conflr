@@ -12,7 +12,7 @@
 wrap_tabsets <- function(x) {
   stringi::stri_replace_all_regex(x,
     "(^#+.*?)\\{[^{}]*.tabset[^{}]*\\}",
-    "`<tabset>`{=html}\n\n$1\n\n`</tabset>`{=html}",
+    "`<tabset-start>`{=html}\n\n$1\n\n`</tabset-start>`{=html}",
     multiline = TRUE
   )
 }
@@ -30,38 +30,34 @@ mark_tabsets <- function(html_doc) {
   h_tags <- xml2::xml_find_all(html_doc, glue("//body//{tabset_h_tag_name}|//body//{tab_h_tag_name}"))
 
   h_tags_len <- length(h_tags)
-  # If the parent is <tabset>, it's the head of a tabset
+  # If the parent is <tabset-start>, it's the head of a tabset
   parent_tag_names <- purrr::map_chr(h_tags, ~ xml2::xml_name(xml2::xml_parent(.)))
-  idx_tabset <- parent_tag_names == "tabset"
+  pos_tabset_start <- which(parent_tag_names == "tabset-start")
 
-  # If the parent is not <tabset> but is the header of the same level, it's not tabset
-  idx_no_tabset <- !idx_tabset & (xml2::xml_name(h_tags) == tabset_h_tag_name)
+  # If the header of the same level, it's right after the end of the tabset
+  # But, an end must have its corresponding start, and we don't determine it here.
+  pos_tabset_end_candidates <- which(xml2::xml_name(h_tags) == tabset_h_tag_name)
 
-  idx_tab <- xml2::xml_name(h_tags) == tab_h_tag_name
+  for (start in pos_tabset_start) {
+    # The coresponding end is the nearest position among the ones that are larger than the start.
+    end <- min(pos_tabset_end_candidates[pos_tabset_end_candidates > start])
 
-  tabset_ids <- cumsum(idx_tabset)
-  tabset_pos <- which(idx_tabset)
-  no_tabset_pos <- which(idx_no_tabset)
-
-  # headers before the first tabset headers are not tabs
-  tabset_ids[tabset_ids == 0] <- NA
-
-  # headers after non-tabset header and before the next tabset headers are not tabs
-  for (pos in no_tabset_pos) {
-    end_pos <- tabset_pos[tabset_pos > pos]
-    if (length(end_pos) > 0) {
-      end_pos <- end_pos - 1
+    if (is.na(end)) {
+      # If there's no corresponding end, it means the end of the document is the end of the tabset.
+      end <- h_tags_len + 1
+      xml2::xml_add_sibling(html_doc, xml2::as_xml_document("<tabset-end/>"), where = "before")
     } else {
-      end_pos <- h_tags_len
+      xml2::xml_add_sibling(h_tags[end], xml2::as_xml_document("<tabset-end/>"), where = "before")
     }
-    tabset_ids[pos:end_pos] <- NA
+
+    xml2::xml_set_name(h_tags[(start + 1):(end - 1)], "tabset-tab")
   }
 
-  tabset_ids
+  NULL
 }
 
 determine_tabset_level <- function(html_doc) {
-  result <- xml2::xml_find_all(html_doc, "//body//tabset/*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]")
+  result <- xml2::xml_find_all(html_doc, "//body//tabset-start/*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]")
   if (length(result) == 0) {
     return(NULL)
   }

@@ -50,7 +50,8 @@ mark_tabsets <- function(html_doc) {
       xml2::xml_add_sibling(h_tags[end], xml2::as_xml_document("<tabset-end/>"), where = "before")
     }
 
-    xml2::xml_set_name(h_tags[(start + 1):(end - 1)], "tabset-tab")
+    xml2::xml_set_name(h_tags[(start + 1)], "tabset-tab-first")
+    xml2::xml_set_name(h_tags[(start + 2):(end - 1)], "tabset-tab")
   }
 
   NULL
@@ -69,4 +70,68 @@ determine_tabset_level <- function(html_doc) {
   }
 
   return(as.integer(substr(h_tag_names[1], 2, 2)))
+}
+
+
+replace_tabsets <- function(x) {
+  x <- replace_tabsets_start(x)
+  x <- replace_tabsets_tabs_first(x)
+  x <- replace_tabsets_tabs(x)
+  x <- replace_tabsets_end(x)
+  x
+}
+
+
+replace_tabsets_start <- function(x) {
+  stringi::stri_replace_all_regex(
+    x,
+    "<tabset-start>\\s*(<h\\d>)(.*?)(</h\\d>)\\s*</tabset-start>",
+    '$1$2$3
+<ac:structured-macro ac:name="deck">
+<ac:parameter ac:name="id">$2</ac:parameter>
+<ac:rich-text-body>',
+    multiline = TRUE,
+    dotall = TRUE
+  )
+}
+
+replace_tabsets_tabs_first <- function(x) {
+  stringi::stri_replace_all_regex(
+    x,
+    "<tabset-tab-first>\\s*(.*?)\\s*</tabset-tab-first>",
+    '<ac:structured-macro ac:name="card">
+<ac:parameter ac:name="label">$1</ac:parameter>
+<ac:rich-text-body>',
+    multiline = TRUE,
+    dotall = TRUE
+  )
+}
+
+replace_tabsets_tabs <- function(x) {
+  stringi::stri_replace_all_regex(
+    x,
+    "<tabset-tab-first>\\s*(.*?)\\s*</tabset-tab-first>",
+    '</ac:rich-text-body>
+</ac:structured-macro>
+
+<ac:structured-macro ac:name="card">
+<ac:parameter ac:name="label">$1</ac:parameter>
+<ac:rich-text-body>',
+    multiline = TRUE,
+    dotall = TRUE
+  )
+}
+
+replace_tabsets_end <- function(x) {
+  stringi::stri_replace_all_regex(
+    x,
+    "<tabset-end/>",
+    '</ac:rich-text-body>
+</ac:structured-macro>
+
+</ac:rich-text-body>
+</ac:structured-macro>',
+    multiline = TRUE,
+    dotall = TRUE
+  )
 }

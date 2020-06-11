@@ -144,6 +144,17 @@ confluence_document <- function(title = NULL,
     )
   }
 
+  format$pre_processor <- function(metadata, input_file, ...) {
+    md_text_orig <- read_utf8(input_file)
+    md_text <- wrap_tabsets(md_text_orig)
+
+    if (!identical(md_text, md_text_orig)) {
+      write_utf8(md_text, input_file)
+    }
+
+    NULL
+  }
+
   format$post_processor <- function(front_matter, input_file, output_file, clean, verbose) {
     # For backward-compatibility
     if (has_name(front_matter, "confluence_settings")) {

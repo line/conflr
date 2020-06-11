@@ -8,6 +8,8 @@
   tags for the following Confluence macros: Table of Contents, Jira
   ticket references, Expand and Excerpt blocks (#111 @daroczig).
 
+* Add an experimental support for tabset (#113).
+
 # conflr 0.1.1
 
 * A maintainance relase to fix errors on CRAN check.

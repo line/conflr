@@ -63,7 +63,9 @@ translate_to_confl_macro <- function(html_text,
     xml2::xml_text(node) <- text
   }
 
-  # Conflucence doesn't accept <br />, so just remove it.
+  mark_tabsets(html_doc)
+
+  # Confluence doesn't accept <br />, so just remove it.
   xml2::xml_remove(xml2::xml_find_all(html_doc, "//br"))
 
   # convert back to character
@@ -78,6 +80,7 @@ translate_to_confl_macro <- function(html_text,
   html_text <- replace_inline_math(html_text)
   html_text <- replace_math(html_text)
   html_text <- replace_image(html_text, image_size_default = image_size_default)
+  html_text <- replace_tabsets(html_text)
   # unescape texts inside CDATA
   html_text <- restore_cdata(html_text)
 

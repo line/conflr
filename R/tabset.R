@@ -24,7 +24,7 @@ mark_tabsets <- function(html_doc) {
   }
 
   xpath <- c("//body//tabset-start", glue("//body//h{i}", i = 1:9))
-  tags <- xml2::xml_find_all(html_doc,　glue_collapse(xpath, sep = "|"))
+  tags <- xml2::xml_find_all(html_doc, glue_collapse(xpath, sep = "|"))
 
   pos_tabset_start <- which(xml2::xml_name(tags) == "tabset-start")
 

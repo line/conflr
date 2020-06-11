@@ -39,15 +39,34 @@ mark_tabsets <- function(html_doc) {
   pos_tabset_end_candidates <- which(xml2::xml_name(h_tags) == tabset_h_tag_name)
 
   for (start in pos_tabset_start) {
+    # Flatten the tabset-start tags so that we can do some regex-fu a bit easier on the next step
+    #
+    # Before:
+    # <tabset-start>
+    #   <h1>title</h1>
+    # </tabset-start>
+    #
+    # After:
+    # <h1>title</h1>
+    # <tabset-start/>
+    tabset_start_tag <- xml2::xml_parent(h_tags[[start]])
+    # need to insert tabset-start tag before replacing the actual tabset,
+    # othewise h_tags[[start]] doesn't exist in the doc since it's replaced it's copy.
+    xml2::xml_add_sibling(h_tags[[start]], xml2::as_xml_document("<tabset-start/>"), .where = "after")
+    # extract the tags inside <tabset-start>...</tabset-start>
+    purrr::walk(xml2::xml_children(tabset_start_tag),
+                ~xml2::xml_add_sibling(tabset_start_tag, .x, .where = "before"))
+    xml2::xml_remove(tabset_start_tag)
+
     # The coresponding end is the nearest position among the ones that are larger than the start.
     end <- min(pos_tabset_end_candidates[pos_tabset_end_candidates > start])
 
     if (is.na(end)) {
       # If there's no corresponding end, it means the end of the document is the end of the tabset.
       end <- h_tags_len + 1
-      xml2::xml_add_sibling(html_doc, xml2::as_xml_document("<tabset-end/>"), where = "before")
+      xml2::xml_add_sibling(html_doc, xml2::as_xml_document("<tabset-end/>"), .where = "before")
     } else {
-      xml2::xml_add_sibling(h_tags[end], xml2::as_xml_document("<tabset-end/>"), where = "before")
+      xml2::xml_add_sibling(h_tags[[end]], xml2::as_xml_document("<tabset-end/>"), .where = "before")
     }
 
     xml2::xml_set_name(h_tags[(start + 1)], "tabset-tab-first")
@@ -85,7 +104,7 @@ replace_tabsets <- function(x) {
 replace_tabsets_start <- function(x) {
   stringi::stri_replace_all_regex(
     x,
-    "<tabset-start>\\s*(<h\\d>)(.*?)(</h\\d>)\\s*</tabset-start>",
+    "(<h\\d>)(.*?)(</h\\d>)\\s*<tabset-start/>",
     '$1$2$3
 <ac:structured-macro ac:name="deck">
 <ac:parameter ac:name="id">$2</ac:parameter>
@@ -110,7 +129,7 @@ replace_tabsets_tabs_first <- function(x) {
 replace_tabsets_tabs <- function(x) {
   stringi::stri_replace_all_regex(
     x,
-    "<tabset-tab-first>\\s*(.*?)\\s*</tabset-tab-first>",
+    "<tabset-tab>\\s*(.*?)\\s*</tabset-tab>",
     '</ac:rich-text-body>
 </ac:structured-macro>
 

@@ -51,21 +51,22 @@ mark_tabsets <- function(html_doc) {
     # <tabset-start/>
     tabset_start_tag <- xml2::xml_parent(h_tags[[start]])
     # need to insert tabset-start tag before replacing the actual tabset,
-    # othewise h_tags[[start]] doesn't exist in the doc since it's replaced it's copy.
+    # otherwise h_tags[[start]] doesn't exist in the doc since it's replaced it's copy.
     xml2::xml_add_sibling(h_tags[[start]], xml2::as_xml_document("<tabset-start/>"), .where = "after")
     # extract the tags inside <tabset-start>...</tabset-start>
     purrr::walk(xml2::xml_children(tabset_start_tag),
                 ~xml2::xml_add_sibling(tabset_start_tag, .x, .where = "before"))
     xml2::xml_remove(tabset_start_tag)
 
-    # The coresponding end is the nearest position among the ones that are larger than the start.
-    end <- min(pos_tabset_end_candidates[pos_tabset_end_candidates > start])
+    # The corresponding end is the nearest position among the ones that are larger than the start.
+    end <- pos_tabset_end_candidates[pos_tabset_end_candidates > start]
 
-    if (is.na(end)) {
+    if (length(end) == 0) {
       # If there's no corresponding end, it means the end of the document is the end of the tabset.
       end <- h_tags_len + 1
-      xml2::xml_add_sibling(html_doc, xml2::as_xml_document("<tabset-end/>"), .where = "before")
+      xml2::xml_add_child(xml2::xml_find_first(html_doc, "//body"), xml2::as_xml_document("<tabset-end/>"), .where = "after")
     } else {
+      end <- min(end)
       xml2::xml_add_sibling(h_tags[[end]], xml2::as_xml_document("<tabset-end/>"), .where = "before")
     }
 
@@ -104,7 +105,8 @@ replace_tabsets <- function(x) {
 replace_tabsets_start <- function(x) {
   stringi::stri_replace_all_regex(
     x,
-    "(<h\\d>)(.*?)(</h\\d>)\\s*<tabset-start/>",
+    # TODO: (<h\\d>)(.*?)(</h\\d>) doesn't work (c.f. https://stackoverflow.com/a/40556433)
+    "(<h\\d>)([^<>]+)(</h\\d>)\\s*<tabset-start/>",
     '$1$2$3
 <ac:structured-macro ac:name="deck">
 <ac:parameter ac:name="id">$2</ac:parameter>

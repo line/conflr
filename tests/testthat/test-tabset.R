@@ -24,10 +24,6 @@ content2
 
 content3
 
-## t4
-
-conent4
-
 "
   )
   expect_equal(
@@ -46,12 +42,12 @@ conent4
 <ac:structured-macro ac:name="card">
 <ac:parameter ac:name="label">t3</ac:parameter>
 <ac:rich-text-body>
-<p>conent3</p>
+<p>content3</p>
 </ac:rich-text-body>
 </ac:structured-macro>
+
 </ac:rich-text-body>
-</ac:structured-macro>
-')
+</ac:structured-macro>')
 
 
   # code chunk
@@ -96,12 +92,12 @@ conent4
 <ac:structured-macro ac:name="card">
 <ac:parameter ac:name="label">t3</ac:parameter>
 <ac:rich-text-body>
-<p>conent3</p>
-</ac:rich-text-body>
-</ac:structured-macro>
+<p>content3</p>
 </ac:rich-text-body>
 </ac:structured-macro>
 
-<h2>t4</h4>
-')
+</ac:rich-text-body>
+</ac:structured-macro>
+<h2>t4</h2>
+<p>conent4</p>')
 })

@@ -18,28 +18,27 @@ wrap_tabsets <- function(x) {
 }
 
 mark_tabsets <- function(html_doc) {
-  tabset_level <- determine_tabset_level(html_doc)
-  if (is.null(tabset_level) || is.na(tabset_level)) {
+  # If there are no tabset-start tag, do nothing
+  if (length(xml2::xml_find_all(html_doc, "//body//tabset-start")) == 0) {
     return(NULL)
   }
 
-  tabset_h_tag_name <- glue("h{tabset_level}")
-  # tabs are the headers of one level lower
-  tab_h_tag_name <- glue("h{tabset_level + 1}")
-
-  tags <- xml2::xml_find_all(
-    html_doc,
-    glue("//body//tabset-start|//body//{tabset_h_tag_name}|//body//{tab_h_tag_name}")
-  )
+  xpath <- c("//body//tabset-start", glue("//body//h{i}", i = 1:9))
+  tags <- xml2::xml_find_all(html_doc,　glue_collapse(xpath, sep = "|"))
 
   pos_tabset_start <- which(xml2::xml_name(tags) == "tabset-start")
 
-  # If the header of the same level, it's right after the end of the tabset
-  # But, an end must have its corresponding start, and we don't determine it here.
-  pos_tabset_end_candidates <- which(xml2::xml_name(tags) == tabset_h_tag_name)
+  second_char <- substr(xml2::xml_name(tags), 2, 2)
+  second_char[pos_tabset_start] <- NA
+  h_levels <- as.integer(second_char)
 
-  for (start in pos_tabset_start) {
+  i <- 1
+  while(i <= length(pos_tabset_start)) {
+    start <- pos_tabset_start[i]
+
+    h <- h_levels[start - 1]
     # The corresponding end is the nearest position among the ones that are larger than the start.
+    pos_tabset_end_candidates <- which(h_levels <= h)
     end <- pos_tabset_end_candidates[pos_tabset_end_candidates > start]
 
     if (length(end) == 0) {
@@ -54,29 +53,18 @@ mark_tabsets <- function(html_doc) {
     # Note: (start + 2) > (end - 1) when there's only one tab, so we cannot use (start + 2):(end - 1) here
     xml2::xml_set_name(tags[(start + 1):(end - 1)], "tabset-tab")
     xml2::xml_set_name(tags[(start + 1)], "tabset-tab-first")
+
+    # If there's some <tabset-start> tag inside the tabset, remove them.
+    invalid_tabsets <- pos_tabset_start[start < pos_tabset_start & pos_tabset_start < end]
+    if (length(invalid_tabsets) > 0) {
+      i <- i + length(invalid_tabsets)
+      purrr::walk(tags[invalid_tabsets], xml2::xml_remove)
+    }
+
+    i <- i + 1
   }
 
   NULL
-}
-
-determine_tabset_level <- function(html_doc) {
-  # Capture all tags that is right before of <tabset-start /> tag
-  result <- xml2::xml_find_all(html_doc, "//body//tabset-start/preceding-sibling::*[1]")
-  h_tag_names <- unique(xml2::xml_name(result))
-  # use only <h1> ~ <h9> tags
-  h_tag_names <- stringi::stri_subset_regex(h_tag_names, "h\\d")
-
-  if (length(h_tag_names) == 0) {
-    return(NULL)
-  }
-
-  if (length(h_tag_names) > 1) {
-    warn("Multiple level of headers are used for tabset")
-  }
-
-  # Use the minimum level
-  h_tag_names <- sort(h_tag_names)[1]
-  return(as.integer(substr(h_tag_names, 2, 2)))
 }
 
 

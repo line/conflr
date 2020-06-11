@@ -14,74 +14,6 @@ html_doc <- function(x) {
   )
 }
 
-test_that("determine_tabset_level() works", {
-  # return NULL for non-tabset document
-  expect_equal(determine_tabset_level(html_doc("# 1\n## 2")), NULL)
-
-  # code chunk
-  html_doc1 <- html_doc(
-    "
-## t1
-
-<tabset-start/>
-
-### t2
-
-content2
-
-### t3
-
-content3
-
-"
-  )
-  expect_equal(determine_tabset_level(html_doc1), 2)
-
-  # invalid case
-  html_doc2 <- html_doc(
-    "
-## t1
-
-<tabset-start/>
-
-### t2
-
-content2
-
-### t3
-
-content3
-
-### invalid
-
-<tabset-start/>
-
-"
-  )
-  expect_warning(
-    expect_equal(determine_tabset_level(html_doc2), 2)
-  )
-
-  # complex case
-  html_doc3 <- html_doc(
-    "
-## t1
-
-# t2
-
-### t3
-
-<tabset-start/>
-
-#### t4
-
-content4
-"
-  )
-
-  expect_equal(determine_tabset_level(html_doc3), 3)
-})
-
 test_that("mark_tabsets() works", {
   # Do nothing on the document without tabsets
   expect_null(mark_tabsets(html_doc("## t1\n##t2")))
@@ -128,17 +60,17 @@ content3
 
 content2
 
-## t3
+# t3
 
 <tabset-start/>
 
-### t4
+## t4
 
 content4
 
-### t5
+## t5
 
-## t1
+# t1
 
 ")
 
@@ -153,13 +85,57 @@ content4
   <tabset-tab-first>t2</tabset-tab-first>
   <p>content2</p>
   <tabset-end/>
-  <h2>t3</h2>
+  <h1>t3</h1>
   <tabset-start/>
   <tabset-tab-first>t4</tabset-tab-first>
   <p>content4</p>
   <tabset-tab>t5</tabset-tab>
   <tabset-end/>
+  <h1>t1</h1>
+</body>
+')
+
+  # second <tabset-start/> should be ignored
+  html_doc3 <- html_doc(
+    "
+## t1
+
+<tabset-start/>
+
+### t2
+
+content2
+
+### t3
+
+<tabset-start/>
+
+### t4
+
+content4
+
+### t5
+
+# t1
+
+")
+
+  mark_tabsets(html_doc3)
+
+  expect_equal(
+    as.character(html_doc3),
+    '<?xml version="1.0" encoding="UTF-8"?>
+<body>
   <h2>t1</h2>
+  <tabset-start/>
+  <tabset-tab-first>t2</tabset-tab-first>
+  <p>content2</p>
+  <tabset-tab>t3</tabset-tab>
+  <tabset-tab>t4</tabset-tab>
+  <p>content4</p>
+  <tabset-tab>t5</tabset-tab>
+  <tabset-end/>
+  <h1>t1</h1>
 </body>
 ')
 })

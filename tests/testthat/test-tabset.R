@@ -1,5 +1,5 @@
 test_that("wrap_tabsets() works", {
-  expect <- "# h1\n`<tabset-start>`{=html}\n\n# h2 \n\n`</tabset-start>`{=html}\ntest"
+  expect <- "# h1\n# h2 \n\n`<tabset-start/>`{=html}\ntest"
 
   expect_equal(wrap_tabsets("# h1\n# h2 {.tabset}\ntest"), expect)
   expect_equal(wrap_tabsets("# h1\n# h2 { .tabset }\ntest"), expect)
@@ -10,11 +10,9 @@ test_that("translate_to_confl_macro() can handle tabset", {
   # code chunk
   html_text1 <- commonmark::markdown_html(
     "
-<tabset-start>
-
 ## t1
 
-</tabset-start>
+<tabset-start/>
 
 ### t2
 
@@ -55,11 +53,9 @@ content3
     "
 ## t0
 
-<tabset-start>
-
 ## t1
 
-</tabset-start>
+<tabset-start/>
 
 ### t2
 

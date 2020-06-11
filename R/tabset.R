@@ -51,27 +51,32 @@ mark_tabsets <- function(html_doc) {
       xml2::xml_add_sibling(tags[[end]], xml2::as_xml_document("<tabset-end/>"), .where = "before")
     }
 
+    # Note: (start + 2) > (end - 1) when there's only one tab, so we cannot use (start + 2):(end - 1) here
+    xml2::xml_set_name(tags[(start + 1):(end - 1)], "tabset-tab")
     xml2::xml_set_name(tags[(start + 1)], "tabset-tab-first")
-    xml2::xml_set_name(tags[(start + 2):(end - 1)], "tabset-tab")
   }
 
   NULL
 }
 
 determine_tabset_level <- function(html_doc) {
-  xpath <- glue("//body//tabset-start/preceding-sibling::h{i}[1]", i = 1:5)
-  result <- xml2::xml_find_all(html_doc, glue::glue_collapse(xpath, "|"))
-  if (length(result) == 0) {
+  # Capture all tags that is right before of <tabset-start /> tag
+  result <- xml2::xml_find_all(html_doc, "//body//tabset-start/preceding-sibling::*[1]")
+  h_tag_names <- unique(xml2::xml_name(result))
+  # use only <h1> ~ <h9> tags
+  h_tag_names <- stringi::stri_subset_regex(h_tag_names, "h\\d")
+
+  if (length(h_tag_names) == 0) {
     return(NULL)
   }
-
-  h_tag_names <- sort(unique(xml2::xml_name(result)))
 
   if (length(h_tag_names) > 1) {
     warn("Multiple level of headers are used for tabset")
   }
 
-  return(as.integer(substr(h_tag_names[1], 2, 2)))
+  # Use the minimum level
+  h_tag_names <- sort(h_tag_names)[1]
+  return(as.integer(substr(h_tag_names, 2, 2)))
 }
 
 

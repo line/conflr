@@ -215,12 +215,8 @@ write_utf8 <- function(x, f) {
   # Ensure the text is encoded as UTF-8
   x <- enc2utf8(x)
 
-  withr::with_connection(
-    list(con = file(f, open = "w+", encoding = "native.enc")),
-    {
-      writeLines(x, con = con, useBytes = TRUE)
-    }
-  )
+  con <- withr::local_connection(file(f, open = "w+", encoding = "native.enc"))
+  writeLines(x, con = con, useBytes = TRUE)
 }
 
 extract_image_paths <- function(html_text) {

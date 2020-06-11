@@ -50,9 +50,15 @@ mark_tabsets <- function(html_doc) {
       xml2::xml_add_sibling(tags[[end]], xml2::as_xml_document("<tabset-end/>"), .where = "before")
     }
 
-    # Note: (start + 2) > (end - 1) when there's only one tab, so we cannot use (start + 2):(end - 1) here
-    xml2::xml_set_name(tags[(start + 1):(end - 1)], "tabset-tab")
-    xml2::xml_set_name(tags[(start + 1)], "tabset-tab-first")
+    # Tabs are the header tags whose level is one step lower than the start,
+    # and is between the start and the end
+    pos_tab_candidates <- which(h_levels == h + 1)
+    pos_tab <- pos_tab_candidates[start < pos_tab_candidates & pos_tab_candidates < end]
+
+    if (length(pos_tab) > 0) {
+      xml2::xml_set_name(tags[pos_tab[1]], "tabset-tab-first")
+      xml2::xml_set_name(tags[pos_tab[-1]], "tabset-tab")
+    }
 
     # If there's some <tabset-start> tag inside the tabset, remove them.
     invalid_tabsets <- pos_tabset_start[start < pos_tabset_start & pos_tabset_start < end]

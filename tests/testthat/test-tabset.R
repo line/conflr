@@ -95,7 +95,7 @@ content4
 </body>
 ')
 
-  # second <tabset-start/> should be ignored
+  # second <tabset-start/> should be ignored, and t4-1 is not a tab
   html_doc3 <- html_doc(
     "
 ## t1
@@ -111,6 +111,8 @@ content2
 <tabset-start/>
 
 ### t4
+
+#### t4-1
 
 content4
 
@@ -132,6 +134,7 @@ content4
   <p>content2</p>
   <tabset-tab>t3</tabset-tab>
   <tabset-tab>t4</tabset-tab>
+  <h4>t4-1</h4>
   <p>content4</p>
   <tabset-tab>t5</tabset-tab>
   <tabset-end/>

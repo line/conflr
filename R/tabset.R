@@ -12,7 +12,7 @@
 wrap_tabsets <- function(x) {
   stringi::stri_replace_all_regex(x,
     "(^#+.*?)\\{[^{}]*.tabset[^{}]*\\}",
-    "$1\n\n`<tabset-start/>`{=html}",
+    "$1\n\n<tabset-start/>\n",
     multiline = TRUE
   )
 }

@@ -107,3 +107,34 @@ confl_macro_excerpt <- function(body, hidden = TRUE) {
                        parameters = list(hidden = tolower(hidden)),
                        body = body)
 }
+
+
+#' Generate Confluence macro for a Info, Tip, Note, or Warning block
+#' @param body HTML content of the block
+#' @return HTML as string
+#' @usage
+#' confl_macro_info(body)
+#'
+#' confl_macro_tip(body)
+#'
+#' confl_macro_note(body)
+#'
+#' confl_macro_warning(body)
+#' @export
+#' @references \url{https://confluence.atlassian.com/doc/info-tip-note-and-warning-macros-51872369.html}
+#' @aliases confl_macro_info confl_macro_tip confl_macro_note confl_macro_warning
+confl_macro_info <- function(body) {
+  conf_macro_generator(type = 'block', name = 'info', body = body)
+}
+#' @export
+confl_macro_tip <- function(body) {
+  conf_macro_generator(type = 'block', name = 'tip', body = body)
+}
+#' @export
+confl_macro_note <- function(body) {
+  conf_macro_generator(type = 'block', name = 'note', body = body)
+}
+#' @export
+confl_macro_warning <- function(body) {
+  conf_macro_generator(type = 'block', name = 'warning', body = body)
+}

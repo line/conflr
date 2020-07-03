@@ -31,7 +31,7 @@ Imports:
     stringi,
     xml2,
     R6,
-    rlang
+    rlang (>= 0.3.0)
 Suggests: 
     mockery,
     testthat (>= 2.1.0),

@@ -20,7 +20,7 @@ conf_macro_generator <- function(type = c('inline', 'block'),
 
   type <- match.arg(type)
 
-  open <- switch(type, inline = '`', block = '```{=html}')
+  open <- switch(type, inline = '`', block = '\n```{=html}\n')
   close <- switch(type, inline = '`{=html}', block = '\n```\n')
   spacer <- switch(type, inline = '', block = '\n')
 
@@ -39,9 +39,9 @@ conf_macro_generator <- function(type = c('inline', 'block'),
   if (!is.null(body)) {
     macro <- paste0(
       macro,
-      '<ac:rich-text-body><![CDATA[',
-      body,
-      ']]></ac:rich-text-body>',
+      '<ac:rich-text-body>',
+      spacer, body, spacer,
+      '</ac:rich-text-body>',
       spacer)
   }
 

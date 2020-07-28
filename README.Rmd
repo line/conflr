@@ -116,7 +116,7 @@ conflr to overwrite the existing page.
 confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = TRUE)
 ```
 
-### `conflr::conflence_document`
+### `conflr::confluence_document`
 
 conflr's functionality is also available as a custom R Markdown format;
 You can specify `conflr::confluence_document` to `output` in the front matter of your R Markdown document.

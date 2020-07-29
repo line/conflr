@@ -35,8 +35,8 @@ devtools::install_github("line/conflr")
 
 conflr uses these environmental variables to access your Confluence.
 
-  - `CONFLUENCE_URL`: The base URL of your Confluence. e.g.
-    `https://confluence.example.com` (On Atlassian Cloud,
+  - `CONFLUENCE_URL`: The base URL of your Confluence.
+    e.g. `https://confluence.example.com` (On Atlassian Cloud,
     `https://<your-domain>.atlassian.net/wiki`).
   - `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
     address).
@@ -62,8 +62,7 @@ Confluence.
 
 1.  Use an RStudio Addin
 2.  Run `confl_create_post_from_Rmd()` on console
-3.  Specify `conflr::confluence_document` on the YAML
-front-matter
+3.  Specify `conflr::confluence_document` on the YAML front-matter
 
 ### RStudio Addin
 
@@ -119,14 +118,13 @@ confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE)
 ```
 
 Note that, if you want to run this periodically, you also need to set
-`update = TRUE` to allow conflr to overwrite the existing
-page.
+`update = TRUE` to allow conflr to overwrite the existing page.
 
 ``` r
 confl_create_post_from_Rmd("~/path/to/your.Rmd", interactive = FALSE, update = TRUE)
 ```
 
-### `conflr::conflence_document`
+### `conflr::confluence_document`
 
 conflr’s functionality is also available as a custom R Markdown format;
 You can specify `conflr::confluence_document` to `output` in the front
@@ -212,7 +210,7 @@ new_page$`_links`
 
 ## How to contribute
 
-See [CONTRIBUTING.md](https://github.com/line/conflr/blob/master/CONTRIBUTING.md)
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
@@ -230,4 +228,4 @@ See [CONTRIBUTING.md](https://github.com/line/conflr/blob/master/CONTRIBUTING.md
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-See [LICENSE.md](https://github.com/line/conflr/blob/master/LICENSE.md) for more detail.
+See [LICENSE.md](LICENSE.md) for more detail.

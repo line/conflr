@@ -17,14 +17,14 @@
 #' @keywords internal
 conf_macro_generator <- function(type = c('inline', 'block'),
                                  name, parameters = NULL, body = NULL) {
+
   type <- match.arg(type)
 
-  macro <- switch(
-    type,
-    inline = '`',
-    block = '\n```{=html}\n')
+  open <- switch(type, inline = '`', block = '\n```{=html}\n')
+  close <- switch(type, inline = '`{=html}', block = '\n```\n')
+  spacer <- switch(type, inline = '', block = '\n')
 
-  macro <- glue('{macro}<ac:structured-macro ac:name="{name}">')
+  macro <- glue('{open}<ac:structured-macro ac:name="{name}">{spacer}')
 
   if (!is.null(parameters)) {
     for (parameter in names(parameters)) {
@@ -32,7 +32,7 @@ conf_macro_generator <- function(type = c('inline', 'block'),
         macro,
         glue('<ac:parameter ac:name="{parameter}">'),
         parameters[[parameter]],
-        '</ac:parameter>')
+        '</ac:parameter>{spacer}')
     }
   }
 
@@ -40,15 +40,13 @@ conf_macro_generator <- function(type = c('inline', 'block'),
     macro <- paste0(
       macro,
       '<ac:rich-text-body>',
-      body,
-      '</ac:rich-text-body>')
+      spacer, body, spacer,
+      '</ac:rich-text-body>',
+      spacer)
   }
 
   macro <- paste0(macro, '</ac:structured-macro>')
-  macro <- paste0(macro, switch(
-    type,
-    inline = '`{=html}',
-    block = '\n```\n'))
+  macro <- paste0(macro, close)
 
   macro
 

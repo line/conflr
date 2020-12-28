@@ -29,7 +29,7 @@
 #' confl_create_post_from_Rmd(example_Rmd)
 #'
 #' # You can override most of the parameters of confluence_document()
-#' confl_create_post_from_Rmd(example_Rmd, space = "space1", toc = TRUE)
+#' confl_create_post_from_Rmd(example_Rmd, space_key = "space1", toc = TRUE)
 #' }
 #'
 #' @export

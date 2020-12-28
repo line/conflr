@@ -36,5 +36,5 @@ Suggests:
     mockery,
     testthat (>= 2.1.0),
     withr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

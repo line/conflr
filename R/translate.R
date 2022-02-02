@@ -174,17 +174,17 @@ replace_code_chunk <- function(x,
 }
 
 mark_inline_math <- function(x) {
-  # replace the left dallar (e.g. $\frac{1}{3}$)
+  # replace the left dollar (e.g. $\frac{1}{3}$)
   #                               ^
   # matches: "$foo", " $foo", "\n$foo"
   # doesn't match: "\\$foo", "foo$foo"
-  x <- stringi::stri_replace_all_regex(x, "(^|(?<=\\s))\\$(?=\\S)", "%1%D%O%L%L%A%R%", multiline = TRUE)
+  x <- stringi::stri_replace_all_regex(x, "(^|(?<=\\s))\\$", "%1%D%O%L%L%A%R%", multiline = TRUE)
 
-  # replace the right dallar (e.g. $\frac{1}{3}$)
+  # replace the right dollar (e.g. $\frac{1}{3}$)
   #                                            ^
   # matches: "foo$", "foo$ ", "foo$\n"
   # doesn't match: "foo\\$", "foo$foo"
-  x <- stringi::stri_replace_all_regex(x, "(?<=[^\\s\\\\])\\$($|(?=\\s))", "%1%D%O%L%L%A%R%", multiline = TRUE)
+  x <- stringi::stri_replace_all_regex(x, "(?<=[^\\s\\\\])\\$", "%1%D%O%L%L%A%R%", multiline = TRUE)
   x
 }
 
@@ -192,9 +192,9 @@ replace_inline_math <- function(x) {
   x <- stringi::stri_replace_all_regex(
     x,
     "%1%D%O%L%L%A%R%(.*?)%1%D%O%L%L%A%R%",
-    '<ac:structured-macro ac:name="mathinline">
-  <ac:parameter ac:name="body">$1</ac:parameter>
-</ac:structured-macro>',
+    '<ac:structured-macro ac:name=\"eazy-math-inline\">
+    <ac:parameter ac:name=\"body\">$1</ac:parameter>
+    </ac:structured-macro>',
     dotall = TRUE
   )
   # restore dollars that doesn't have pairs
@@ -214,9 +214,9 @@ replace_math <- function(x) {
   x <- stringi::stri_replace_all_regex(
     x,
     "(^|(?<=<p>))\\s*%2%D%O%L%L%A%R%(.*?)%2%D%O%L%L%A%R%\\s*($|(?=</p>))",
-    '<ac:structured-macro ac:name="mathblock">
-  <ac:plain-text-body><![CDATA[$2]]></ac:plain-text-body>
-</ac:structured-macro>',
+    '<ac:structured-macro ac:name=\"easy-math\">
+    <ac:plain-text-body><![CDATA[\\$\\$$2\\$\\$]]></ac:plain-text-body>
+    </ac:structured-macro>',
     multiline = TRUE,
     dotall = TRUE
   )

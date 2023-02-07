@@ -158,16 +158,18 @@ replace_code_chunk <- function(x,
       # do not collapse when the code block is of the result, which probably
       # doesn't have language-* class.
       isTRUE(startsWith(class, "language-"))) {
-      collapse_param <- '\n  <ac:parameter ac:name="collapse">true</ac:parameter>'
+      collapse_start <- '<ac:structured-macro ac:name="expand"><ac:parameter ac:name="title">CODE</ac:parameter>
+<ac:rich-text-body>'
+      collapse_end <- '</ac:rich-text-body></ac:structured-macro>'
     } else {
-      collapse_param <- ""
+      collapse_start <- ""
+      collapse_end <- ""
     }
-
     stringi::stri_sub(x, loc[1], loc[2]) <- glue(
-      '<ac:structured-macro ac:name="code">
-{lang_param}{collapse_param}
+      '{collapse_start}<ac:structured-macro ac:name="code">
+{lang_param}
   <ac:plain-text-body><![CDATA[{code_text}]]></ac:plain-text-body>
-</ac:structured-macro>'
+</ac:structured-macro>{collapse_end}'
     )
   }
   x

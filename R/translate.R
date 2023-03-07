@@ -83,7 +83,7 @@ translate_to_confl_macro <- function(html_text,
   html_text <- replace_tabsets(html_text)
   # unescape texts inside CDATA
   html_text <- restore_cdata(html_text)
-
+  html_text <- replace_callouts(html_text)
   html_text
 }
 
@@ -309,4 +309,33 @@ restore_confluence_namespaces <- function(x) {
   }
 
   x
+}
+
+# "info" gives "info" but
+# "tip" actually gives a success panel
+# "note" actually gives a warning panel
+# "warning" actually gives an error panel
+
+replace_callouts <- function(x) {
+  for (type in c("info", "success", "warning", "error")) {
+    new_type <- fix_type(type)
+    x <- stringi::stri_replace_all_regex(x, 
+      glue('<div class="callout-{type}">((.|\n)+?)</div>'),
+      glue('<confl-ac-structured-macro confl-ac-name="{new_type}">
+<confl-ac-rich-text-body>
+$1
+</confl-ac-rich-text-body>
+</confl-ac-structured-macro>'
+  ))
+  }
+  x
+}
+
+fix_type <- function(type) {
+  switch(type,
+    "success" = "tip",
+    "warning" = "note",
+    "error" = "warning",
+    type
+  )
 }

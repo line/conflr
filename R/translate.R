@@ -317,11 +317,11 @@ restore_confluence_namespaces <- function(x) {
 # "warning" actually gives an error panel
 
 replace_callouts <- function(x) {
-  for (type in c("info", "success", "warning", "error")) {
-    new_type <- fix_type(type)
+  for (type in c("note", "warning", "important", "tip", "caution")) {
+    info <- map_type(type)
     x <- stringi::stri_replace_all_regex(x, 
       glue('<div class="callout-{type}">((.|\n)+?)</div>'),
-      glue('<confl-ac-structured-macro confl-ac-name="{new_type}">
+      glue('<confl-ac-structured-macro confl-ac-name="{info[["name"]]}" ac:schema-version="1" ac:macro-id="{info[["id"]]}">
 <confl-ac-rich-text-body>
 $1
 </confl-ac-rich-text-body>
@@ -331,11 +331,15 @@ $1
   x
 }
 
-fix_type <- function(type) {
+# mapping from quarto here:
+# https://github.com/quarto-dev/quarto-cli/blob/ed1e0b8e852d4718c23a21f844d245fdc7ae8508/src/resources/extensions/quarto/confluence/overrides.lua
+map_type <- function(type) {
   switch(type,
-    "success" = "tip",
-    "warning" = "note",
-    "error" = "warning",
-    type
+    note = list(name = "info", id = "1c8062cd-87de-4701-a698-fd435e057468"),
+    warning = list(name = "note", id = "1049a0d8-470f-4f83-a0d7-b6ad35ea8eda"),
+    important = list(name = "warning", id = "0185f821-7aa4-404a-8748-ec59a46357e1"),
+    tip = list(name = "tip", id = "97c39328-9651-4c56-8a8c-ab5537001d86"),
+    caution = list(name = "note", id = "1049a0d8-470f-4f83-a0d7-b6ad35ea8eda"),
+    list(name = "info", id = "1c8062cd-87de-4701-a698-fd435e057468")
   )
 }

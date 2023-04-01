@@ -35,14 +35,14 @@ devtools::install_github("line/conflr")
 
 conflr uses these environmental variables to access your Confluence.
 
-  - `CONFLUENCE_URL`: The base URL of your Confluence.
-    e.g. `https://confluence.example.com` (On Atlassian Cloud,
-    `https://<your-domain>.atlassian.net/wiki`).
-  - `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
-    address).
-  - `CONFLUENCE_PASSWORD`: Your password (On Atlassian Cloud, your API
-    token. For more details about API token, please read [the official
-    document](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
+- `CONFLUENCE_URL`: The base URL of your Confluence.
+  e.g. `https://confluence.example.com` (On Atlassian Cloud,
+  `https://<your-domain>.atlassian.net/wiki`).
+- `CONFLUENCE_USERNAME`: Your username (On Atlassian Cloud, your email
+  address).
+- `CONFLUENCE_PASSWORD`: Your password (On Atlassian Cloud, your API
+  token. For more details about API token, please read [the official
+  document](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
 
 There are several ways to set these environmental variables. The
 quickest way is to enter in the popups that are displayed when you run
@@ -66,11 +66,11 @@ Confluence.
 
 ### RStudio Addin
 
-#### 1\. Move focus to the .Rmd file and click “Post to Confluence” Addin
+#### 1. Move focus to the .Rmd file and click “Post to Confluence” Addin
 
 (**Caution for those who are not familiar with R Markdown**: R
 Markdown’s powerfulness allows you to execute arbitrary code; be sure
-about what the code does before clicking “Post to Confluence”\!)
+about what the code does before clicking “Post to Confluence”!)
 
 ![](man/figures/screenshot1.png)
 
@@ -80,22 +80,21 @@ Then, you will be asked your username and password.
 
 ![](man/figures/popup1.png)
 
-#### 2\. Check the preview and click “Publish”
+#### 2. Check the preview and click “Publish”
 
-  - **type**: The type of the page (*page* means a normal wiki page,
-    whereas *blogpost* mean a blog post, not a page).
-  - **Space Key**: The key of the space you want to post.
-  - **Parent page ID**: (optional): The ID of the parent page to the
-    page.
-  - **Use original image sizes**: If checked, do not resize the images.
-  - **Fold code blocks**: If checked, code blocks are folded by default.
-  - **TOC**: If checked, add a Table of Contents.
-  - **TOC depth**: The lowest heading level to include in the Table of
-    Contents.
+- **type**: The type of the page (*page* means a normal wiki page,
+  whereas *blogpost* mean a blog post, not a page).
+- **Space Key**: The key of the space you want to post.
+- **Parent page ID**: (optional): The ID of the parent page to the page.
+- **Use original image sizes**: If checked, do not resize the images.
+- **Fold code blocks**: If checked, code blocks are folded by default.
+- **TOC**: If checked, add a Table of Contents.
+- **TOC depth**: The lowest heading level to include in the Table of
+  Contents.
 
 ![](man/figures/screenshot3.png)
 
-#### 3\. Check the result
+#### 3. Check the result
 
 ![](man/figures/screenshot4.png)
 
@@ -153,13 +152,13 @@ For the detail about available options, please refer to
 
 conflr recognizes these options:
 
-  - `conflr_supported_syntax_highlighting`: A character vector of
-    languages that your Confluence supports the syntax highlighting in
-    addition to the default languages (by default, `sql`, `cpp`,
-    `python`, `html`, `css`, `bash`, and `yaml` are supported).
-  - `conflr_addin_clear_password_after_success`: If `TRUE`, unset
-    `CONFLUENCE_PASSWORD` after the page is successfully uploaded via
-    addin.
+- `conflr_supported_syntax_highlighting`: A character vector of
+  languages that your Confluence supports the syntax highlighting in
+  addition to the default languages (by default, `sql`, `cpp`, `python`,
+  `html`, `css`, `bash`, and `yaml` are supported).
+- `conflr_addin_clear_password_after_success`: If `TRUE`, unset
+  `CONFLUENCE_PASSWORD` after the page is successfully uploaded via
+  addin.
 
 ## Know limitations
 
@@ -215,16 +214,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 ## License
 
     Copyright (C) 2019 LINE Corporation
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, version 3.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 

@@ -1,20 +1,40 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# conflr
-
-<!-- badges: start -->
-
-[![Travis build
-status](https://travis-ci.org/line/conflr.svg?branch=master)](https://travis-ci.org/line/conflr)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/conflr)](https://CRAN.R-project.org/package=conflr)
-<!-- badges: end -->
+# :warning: conflr is retired! :warning:
 
 conflr is an R package to post [R
 Markdown](https://rmarkdown.rstudio.com/) documents to
 [Confluence](https://www.atlassian.com/software/confluence), a content
 collaboration tool by Atlassian.
+
+While the package still can be found useful, we decided to **archive the
+project at the beginning of July 2024**.
+
+The main reason is that conflr will be superseded by Quarto. Quarto v1.3
+gained the functionality to publish documents into Confluence ([the
+official
+announcement](https://quarto.org/docs/blog/posts/2023-03-20-confluence/).
+This looks promising. At the moment, there might be some missing
+features compared to conflr, but it should be just a matter of time
+before Quarto supersedes conflr in all aspects, considering it’s one of
+Posit’s flagship projects.
+
+Another reason is that conflr has a technical debt; the primary target
+of conflr was the on-premise version of Confluence. The on-premise
+version [will be sunset in Feb
+2024](https://www.atlassian.com/migration/assess/journey-to-cloud), so
+conflr should also switch to the cloud version. However, since the
+on-premise version and the cloud version have different syntax and
+plugins, it’s not easy to migrate. Considering we don’t have much
+development bandwidth for this project, we conclude it’s not really
+feasible to support the cloud version.
+
+Thank you for all your support on conflr. While it’s a bit sad to
+announce the retirement, we are very happy to see this great evolution
+in the documentation ecosystem!
+
+------------------------------------------------------------------------
 
 ## Installation
 

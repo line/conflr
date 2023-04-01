@@ -9,7 +9,7 @@ Markdown](https://rmarkdown.rstudio.com/) documents to
 collaboration tool by Atlassian.
 
 While the package still can be found useful, we decided to **archive the
-project at the beginning of July 2024**.
+project at the beginning of July 2023**.
 
 The main reason is that conflr will be superseded by Quarto. Quarto v1.3
 gained the functionality to publish documents into Confluence ([the

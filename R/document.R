@@ -24,6 +24,12 @@
 #'   If `TRUE`, include a table of contents in the output.
 #' @param toc_depth
 #'   The max level of headers to include in the table of contents.
+#' @param df_print
+#'   Method to be used for printing data frames. Valid values include "default",
+#'   "kable", and "tibble". The "default" method uses a corresponding S3 method
+#'   of [print()], typically [`print.data.frame`]. The "kable" method uses the
+#'   [knitr:kable()] function, the "tibble" method uses the
+#'   [`tibble::print()`](tibble::print.tbl) method.
 #' @param code_folding
 #'   If `"hide"`, fold code blocks by default.
 #' @param update
@@ -84,6 +90,7 @@ confluence_document <- function(title = NULL,
                                 type = c("page", "blogpost"),
                                 toc = FALSE,
                                 toc_depth = 7,
+                                df_print = c("default", "kable", "tibble"),
                                 code_folding = c("none", "hide"),
                                 supported_syntax_highlighting = getOption("conflr_supported_syntax_highlighting"),
                                 update = NULL,
@@ -95,6 +102,7 @@ confluence_document <- function(title = NULL,
   }
 
   type <- arg_match(type)
+  df_print <- arg_match(df_print)
   code_folding <- arg_match(code_folding)
 
   # This will be refered in post_processor()
@@ -114,6 +122,7 @@ confluence_document <- function(title = NULL,
 
   format <- rmarkdown::md_document(
     variant = "commonmark",
+    df_print = df_print,
     pandoc_args = "--wrap=none",
     md_extensions = "-tex_math_single_backslash-tex_math_dollars-raw_tex",
     preserve_yaml = FALSE
